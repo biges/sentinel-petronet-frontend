@@ -283,5 +283,15 @@ export default {
     method: 'PUT',
     url: '/settings',
     data: {}
+  },
+  getListGateway: {
+    method: 'GET',
+    url: '/termolog/gateway',
+    params: {}
+  },
+  getListSensors: {
+    method: 'GET',
+    url: '/termolog/sensor',
+    params: {}
   }
 }

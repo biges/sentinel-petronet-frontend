@@ -2,7 +2,10 @@
   <!-- Liste Dashboard Tracked Device  -->
   <el-table
     v-loading="loading"
-    v-if="['List', 'Dashboard'].includes(this.$route.name)"
+    v-if="
+      ['List', 'Dashboard'].includes(this.$route.name) &&
+      this.$route.fullPath.indexOf('iot') < 0
+    "
     ref="singleTable"
     class="data-table"
     :data="data"
@@ -82,7 +85,7 @@
       <template slot-scope="scope">
         <ul>
           <li class="device-channel-icon">
-            <SvgIconFirstChannels
+            <SvgIconFirstChannel
               :status="
                 scope.row.is_active == true
                   ? scope.row.channels[0].status == true
@@ -90,7 +93,7 @@
                     : null
                   : false
               "
-            ></SvgIconFirstChannels>
+            ></SvgIconFirstChannel>
           </li>
           <li class="device-channel-icon">
             <SvgIconSecondChannel
@@ -107,7 +110,8 @@
             <SvgIconThirdChannel
               :status="
                 scope.row.is_active == true
-                  ? scope.row.channels[2].status == true
+                  ? scope.row.channels[2] &&
+                    scope.row.channels[2].status == true
                     ? !scope.row.channels[2].show_warning
                     : null
                   : false
@@ -118,7 +122,8 @@
             <SvgIconFourthChannel
               :status="
                 scope.row.is_active == true
-                  ? scope.row.channels[3].status == true
+                  ? scope.row.channels[3] &&
+                    scope.row.channels[3].status == true
                     ? !scope.row.channels[3].show_warning
                     : null
                   : false
@@ -208,6 +213,590 @@
         <SvgIconQuery :status="scope.is_active"></SvgIconQuery>
       </template>
     </el-table-column> -->
+  </el-table>
+  <!-- Liste IOT Gateway Device  -->
+  <el-table
+    v-loading="loading"
+    v-else-if="
+      ['List', 'Dashboard'].includes(this.$route.name) &&
+      this.$route.fullPath.indexOf('iot') > 0
+    "
+    ref="singleTable"
+    class="data-table"
+    :data="data"
+    style="
+      width: 99%;
+      max-height: calc(100vh - 180px);
+      overflow: none;
+      border: none;
+    "
+    cell-class-name="mycell"
+    @row-dblclick="handleDBClick"
+    :header-cell-style="
+      this.$route.name == 'List'
+        ? { background: '#f5f5f5', color: '#444444' }
+        : { color: '#444444' }
+    "
+    @selection-change="handleSelectionChange"
+    @sort-change="handleServiceSorting"
+    :row-class-name="rowClassName"
+    height="100%"
+    border="false"
+  >
+    <el-table-column type="selection" width="55"> </el-table-column>
+
+    <el-table-column
+      header-align="left"
+      prop="premise_id"
+      label="DEPO ID"
+      width="100"
+    >
+      <!-- <template slot-scope="scope">
+        <SvgIconWarning v-if="scope.row.show_warning"></SvgIconWarning>
+        {{ scope.row.premise.custom_premise_id }}
+      </template> -->
+    </el-table-column>
+    <!-- <el-table-column
+      header-align="left"
+      prop="premise.custom_premise_name"
+      label="İSTASYON ADI"
+    >
+    </el-table-column> -->
+    <el-table-column
+      header-align="left"
+      prop="premise.location.city.name"
+      label="LOKASYON"
+      width="180"
+    >
+      <template slot-scope="scope">
+        {{ scope.row.premise.location.city.name || 'İstanbul' }}
+      </template>
+    </el-table-column>
+
+    <el-table-column
+      header-align="left"
+      prop="description"
+      label="Açıklama"
+      width="80"
+    >
+    </el-table-column>
+    <el-table-column
+      header-align="left"
+      prop="sensor_count"
+      label="SENSÖR"
+      width="180"
+      ><template slot-scope="scope">
+        {{ scope.row.sensor.length }}
+      </template>
+    </el-table-column>
+
+    <el-table-column
+      header-align="center"
+      label="SENSÖR DURUMLARI"
+      style="color: #007db7"
+    >
+      <el-table-column
+        header-align="center"
+        prop="device_state"
+        label="Sıcaklık"
+      >
+        <template slot-scope="scope">
+          <div style="display: flex; justify-content: center">
+            <SvgIconTemprature
+              :status="
+                scope.row.sensor.length > 0
+                  ? scope.row.sensor[0].temp
+                    ? true
+                    : false
+                  : null
+              "
+            ></SvgIconTemprature>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column header-align="center" prop="device_state" label="Nem">
+        <template slot-scope="scope">
+          <div style="display: flex; justify-content: center">
+            <SvgIconHumidty
+              :status="
+                scope.row.sensor.length > 0
+                  ? scope.row.sensor[0].humidity
+                    ? true
+                    : false
+                  : null
+              "
+            ></SvgIconHumidty>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column header-align="center" prop="device_state" label="Tamper">
+        <template slot-scope="scope">
+          <div style="display: flex; justify-content: center">
+            <SvgIconTamper
+              :status="
+                scope.row.sensor.length > 0
+                  ? scope.row.sensor[0].tamper
+                    ? true
+                    : false
+                  : null
+              "
+            ></SvgIconTamper>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column header-align="center" prop="device_state" label="Pil">
+        <template slot-scope="scope">
+          <div style="display: flex; justify-content: center">
+            <SvgIconBattery
+              :value="
+                scope.row.sensor.length > 0 ? scope.row.sensor[0].battery : null
+              "
+            ></SvgIconBattery>
+          </div>
+        </template>
+      </el-table-column>
+    </el-table-column>
+    <el-table-column
+      header-align="center"
+      label="GATEWAY DURUMLARI"
+      style="color: #007db7"
+    >
+      <el-table-column
+        header-align="center"
+        prop="device_state"
+        label="İletişim"
+      >
+        <template slot-scope="scope">
+          <div style="display: flex; justify-content: center">
+            <SvgIconCommunication
+              :status="scope.row.status"
+            ></SvgIconCommunication>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column header-align="center" prop="device_state" label="Enerji">
+        <template slot-scope="scope">
+          <div style="display: flex; justify-content: center">
+            <SvgIconEnergy
+              :status="scope.row.electric_connection"
+            ></SvgIconEnergy>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column
+        header-align="center"
+        prop="device_state"
+        label="Batarya"
+      >
+        <template slot-scope="scope">
+          <div style="display: flex; justify-content: center">
+            <SvgIconBattery :status="scope.row.battery"></SvgIconBattery>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column
+        header-align="center"
+        prop="device_state"
+        label="Bağlantı"
+      >
+        <template slot-scope="scope">
+          <div style="display: flex; justify-content: center">
+            <span
+              v-if="scope.row.connection == 'wifi'"
+              class="connection-type-wifi"
+              >Wİ-Fİ
+            </span>
+            <span
+              v-else-if="scope.row.connection == 'eth'"
+              class="connection-type-eth"
+              >ETH
+            </span>
+            <span
+              v-else-if="scope.row.connection == 'm2m'"
+              class="connection-type-gsm"
+              >M2M
+            </span>
+            <span
+              v-else-if="scope.row.connection == undefined"
+              class="connection-type-na"
+            >
+              N/A
+            </span>
+          </div>
+        </template>
+      </el-table-column>
+    </el-table-column>
+
+    <el-table-column
+      align="left"
+      prop="updated_at"
+      label="SON SİNYAL"
+      width="180"
+    >
+      <template slot-scope="scope">
+        {{
+          scope.row.last_signal_date == null ||
+          scope.row.last_signal_date == '0001-01-01T00:00:00Z' ||
+          scope.row.last_signal_date == '0001-01-01T01:55:52+01:55'
+            ? 'Bilgi Alınamadı'
+            : formattedDatetime(scope.row.last_signal_date)
+        }}
+      </template>
+    </el-table-column>
+  </el-table>
+  <!-- Liste IOT Gateway Sensor Device  -->
+  <el-table
+    v-loading="loading"
+    v-else-if="
+      ['DeviceDetailIot'].includes(this.$route.name) &&
+      this.$route.fullPath.indexOf('iot') > 0
+    "
+    ref="singleTable"
+    class="data-table"
+    :data="data"
+    style="
+      width: 99%;
+      max-height: calc(100vh - 180px);
+      overflow: none;
+      border: none;
+    "
+    cell-class-name="mycell2"
+    @row-dblclick="handleDBClick"
+    :header-cell-style="
+      this.$route.name == 'List'
+        ? { background: '#f5f5f5', color: '#444444' }
+        : { color: '#444444' }
+    "
+    @selection-change="handleSelectionChange"
+    @sort-change="handleServiceSorting"
+    :row-class-name="rowClassName"
+    height="100%"
+    border="false"
+  >
+    <el-table-column type="selection" width="55"> </el-table-column>
+
+    <el-table-column
+      header-align="left"
+      prop="premise_id"
+      label="SENSOR"
+      width="100"
+    >
+    </el-table-column>
+
+    <el-table-column
+      header-align="left"
+      prop="sensor_id"
+      label="SENSÖR ID"
+      width="180"
+    >
+    </el-table-column>
+
+    <el-table-column
+      header-align="left"
+      prop="type"
+      label="KATEGORİ"
+      width="120"
+    >
+    </el-table-column>
+    <el-table-column
+      header-align="left"
+      prop="gateway.name"
+      label="GATEWAY"
+      width="180"
+    >
+      <!-- <template slot-scope="scope">
+        {{ scope.row.sensor.length }}
+      </template> -->
+    </el-table-column>
+    <el-table-column
+      header-align="left"
+      prop="gateway_id"
+      label="GATEWAY ID"
+      width="180"
+    >
+      <!-- <template slot-scope="scope">
+        {{ scope.row.sensor.length }}
+      </template> -->
+    </el-table-column>
+
+    <el-table-column
+      header-align="center"
+      prop="device_state"
+      label="SICAKLIK"
+      width="200"
+    >
+      <template slot-scope="scope">
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            <SvgIconTemprature
+              :status="scope.row.temp ? true : false"
+            ></SvgIconTemprature>
+            <span
+              style="
+                font-weight: 400;
+                font-size: 10px;
+                line-height: 12px;
+                color: #6fcf97;
+              "
+              >Normal</span
+            >
+          </div>
+          <span
+            style="
+              color: #6fcf97;
+              font-weight: 500;
+              font-size: 20px;
+              line-height: 23px;
+            "
+            >{{ scope.row.temp }}°C</span
+          >
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            <span
+              style="
+                font-weight: 400;
+                font-size: 10px;
+                line-height: 12px;
+                color: #a0a0a0;
+              "
+              class="label"
+              >MIN</span
+            >
+            <span
+              style="
+                font-weight: 500;
+                font-size: 10px;
+                line-height: 12px;
+                color: #444444;
+              "
+              class="value"
+              >{{ scope.row.min_temp }}°C</span
+            >
+          </div>
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            <span
+              style="
+                font-weight: 400;
+                font-size: 10px;
+                line-height: 12px;
+                color: #a0a0a0;
+              "
+              class="label"
+              >MAX</span
+            >
+            <span
+              style="
+                font-weight: 500;
+                font-size: 10px;
+                line-height: 12px;
+                color: #444444;
+              "
+              class="value"
+              >{{ scope.row.min_temp }}°C</span
+            >
+          </div>
+        </div>
+      </template>
+    </el-table-column>
+    <el-table-column header-align="center" prop="device_state" label="NEM">
+      <template slot-scope="scope">
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            <SvgIconHumidty
+              :status="scope.row.humidity ? true : false"
+            ></SvgIconHumidty>
+            <span
+              style="
+                font-weight: 400;
+                font-size: 10px;
+                line-height: 12px;
+                color: #6fcf97;
+              "
+              >Normal</span
+            >
+          </div>
+          <span
+            style="
+              color: #6fcf97;
+              font-weight: 500;
+              font-size: 20px;
+              line-height: 23px;
+            "
+            >{{ scope.row.temp }}%</span
+          >
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            <span
+              style="
+                font-weight: 400;
+                font-size: 10px;
+                line-height: 12px;
+                color: #a0a0a0;
+              "
+              class="label"
+              >MIN</span
+            >
+            <span
+              style="
+                font-weight: 500;
+                font-size: 10px;
+                line-height: 12px;
+                color: #444444;
+              "
+              class="value"
+              >{{ scope.row.min_temp }}%</span
+            >
+          </div>
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            <span
+              style="
+                font-weight: 400;
+                font-size: 10px;
+                line-height: 12px;
+                color: #a0a0a0;
+              "
+              class="label"
+              >MAX</span
+            >
+            <span
+              style="
+                font-weight: 500;
+                font-size: 10px;
+                line-height: 12px;
+                color: #444444;
+              "
+              class="value"
+              >{{ scope.row.min_temp }}%</span
+            >
+          </div>
+        </div>
+      </template>
+    </el-table-column>
+    <el-table-column header-align="center" prop="device_state" label="PİL">
+      <template slot-scope="scope">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            flex-direction: row;
+            aling-items: center;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            <SvgIconBattery :value="scope.row.battery"></SvgIconBattery>
+
+            <span
+              style="
+                aling-self: center;
+                font-weight: 400;
+                font-size: 10px;
+                line-height: 12px;
+                color: #6fcf97;
+              "
+              >Normal</span
+            >
+          </div>
+          <span
+            style="
+              color: #6fcf97;
+              font-weight: 500;
+              font-size: 20px;
+              line-height: 23px;
+            "
+            >{{ scope.row.battery }}%</span
+          >
+        </div>
+      </template>
+    </el-table-column>
+    <el-table-column header-align="center" prop="device_state" label="TAMPER">
+      <template slot-scope="scope">
+        <div style="display: flex; justify-content: center">
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            <SvgIconTamper
+              :status="scope.row.tamper ? true : false"
+            ></SvgIconTamper>
+
+            <span
+              style="
+                font-weight: 400;
+                font-size: 10px;
+                line-height: 12px;
+                color: #6fcf97;
+              "
+              >Normal</span
+            >
+          </div>
+        </div>
+      </template>
+    </el-table-column>
   </el-table>
   <!-- İstasyonlar -->
   <el-table
@@ -455,7 +1044,13 @@
 <script>
 import SvgIconDownload from '@/assets/icons/device-details/svg-icon-download.vue'
 // import SvgIconArmed from '@/components/atomic/device/hap/svg-icon-armed.vue'
-import SvgIconFirstChannels from '@/components/atomic/device/camera/svg-icon-first-channel'
+import SvgIconHumidty from '@/assets/icons/device-details/termolog/svg-icon-humudity'
+import SvgIconTemprature from '@/assets/icons/device-details/termolog/svg-icon-temprature'
+import SvgIconTamper from '@/assets/icons/device-details/termolog/svg-icon-tamper'
+import SvgIconBattery from '@/assets/icons/device-details/termolog/svg-icon-battery'
+import SvgIconCommunication from '@/assets/icons/device-details/termolog/svg-icon-communication'
+import SvgIconEnergy from '@/assets/icons/device-details/termolog/svg-icon-energy'
+import SvgIconConnection from '@/assets/icons/device-details/termolog/svg-icon-connection'
 import SvgIconSecondChannel from '@/components/atomic/device/camera/svg-icon-second-channel'
 import SvgIconThirdChannel from '@/components/atomic/device/camera/svg-icon-third-channel'
 import SvgIconFourthChannel from '@/components/atomic/device/camera/svg-icon-fourth-channel'
@@ -466,9 +1061,9 @@ import SvgIconFirstChannel from '@/assets/icons/device-details/svg-icon-first-ch
 import SvgIconAlarm from '@/components/atomic/device/hap/svg-icon-alarm.vue'
 import SvgIconFault from '@/components/atomic/device/hap/svg-icon-fault.vue'
 import SvgIconSabotage from '@/components/atomic/device/hap/svg-icon-sabotage.vue'
-import SvgIconCommunication from '@/components/atomic/device/hap/svg-icon-communication.vue'
-import SvgIconEnergy from '@/components/atomic/device/hap/svg-icon-energy.vue'
-import SvgIconBattery from '@/components/atomic/device/hap/svg-icon-battery.vue'
+// import SvgIconCommunication from '@/components/atomic/device/hap/svg-icon-communication.vue'
+// import SvgIconEnergy from '@/components/atomic/device/hap/svg-icon-energy.vue'
+// import SvgIconBattery from '@/components/atomic/device/hap/svg-icon-battery.vue'
 import SvgIconServiceRequest from '@/assets/icons/list/svg-icon-is-service-request'
 import SvgIconDeviceInterface from '@/assets/icons/list/svg-icon-device-interface'
 import SvgIconWarning from '@/assets/icons/list/svg-icon-warning.vue'
@@ -489,9 +1084,14 @@ export default {
     SvgIconDownload,
     SvgIconWarning,
     SvgIconFirstChannel,
-    SvgIconFirstChannels,
+    SvgIconHumidty,
+    SvgIconTemprature,
+    SvgIconTamper,
+    SvgIconBattery,
     SvgIconServiceRequest,
     SvgIconDeviceInterface,
+    // SvgIconConnection,
+    SvgIconEnergy,
     // SvgIconAlarm,
     SvgIconSecondChannel,
     SvgIconThirdChannel,
@@ -584,16 +1184,24 @@ export default {
       //   }
     },
     handleDBClick(val) {
+      console.log('DB Click', val)
       if (
         ['List', 'Dashboard'].includes(this.$route.name) &&
         this.getPermissions['device_show_in_dashboard']
-        // && this.getPermissions['device_show_in_dashboard']
       ) {
-        this.$router.push({
-          name: 'DeviceDetail',
-          params: { device_id: val.id }
-        })
-        this.setSelectedRow(val)
+        if (this.$route.fullPath.indexOf('iot') < 0) {
+          this.$router.push({
+            name: 'DeviceDetail',
+            params: { device_id: val.id }
+          })
+          this.setSelectedRow(val)
+        } else {
+          this.$router.push({
+            name: 'DeviceDetailIot',
+            params: { device_id: val.id }
+          })
+          this.setSelectedRow(val)
+        }
       }
     },
     rowClassName({ row }) {
@@ -632,7 +1240,10 @@ export default {
       this.$emit('onDownloadEventRecord', val)
     }
   },
-  created() {},
+  created() {
+    // console.log(this.$route)
+    console.log(this.$route.fullPath.indexOf('iot'))
+  },
   mounted() {}
 }
 </script>
@@ -673,5 +1284,31 @@ export default {
       border-left: 10px solid $hybrone_light_blue !important;
     }
   }
+}
+.connection-type {
+  display: flex;
+  justify-content: center;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  &-wifi {
+    color: #f2994a;
+  }
+  &-eth {
+    color: #007db7;
+  }
+  &-gsm {
+    color: #9b51e0;
+  }
+  &-na {
+    color: #a0a0a0;
+  }
+}
+.mycell {
+  border: none !important;
+}
+.mycell2 {
+  border: none !important;
+  padding: 0 !important;
 }
 </style>

@@ -1,8 +1,8 @@
 export const APP_NAME = 'Hybrone-Sentinel-Petronet'
 export const NAVIGATON = [
   // { label: "Takip", route: "tracked" ,disabled:false},
-  { label: 'Dashboard', route: '/dashboard/panel', disabled: true },
-  { label: 'Liste', route: '/list/panel', disabled: true },
+  { label: 'Dashboard', route: '/dashboard/iot', disabled: true },
+  { label: 'Liste', route: '/list/iot', disabled: true },
   {
     label: 'Harita',
     route: '/map',
@@ -49,10 +49,17 @@ export const DEVICE_TYPES = [
   },
   {
     id: 3,
-    label: 'Hırsız Alarm Paneli',
+    label: 'Kayıt Cihazı',
     key: 'PANEL',
     valid: true,
     route: '/panel'
+  },
+  {
+    id: 3,
+    label: 'Sensörler',
+    key: 'IOT',
+    valid: true,
+    route: '/iot'
   }
 ]
 export const DASHBOARD_VARIABLES = {
@@ -190,6 +197,109 @@ export const DASHBOARD_VARIABLES = {
           motion_detect: { label: 'Hareket Algılama', value: 10 },
           sabotage: { label: 'Sabotaj Algılama', value: 10 },
           scene_change: { label: 'Sahne Değişimi', value: 10 }
+        },
+        colors: ['#A0A0A0', '#E04141', '#9B51E0', 'rgba(255,87,93,.77)']
+      }
+    }
+  ],
+  IOT: [
+    {
+      title: 'Toplam Sensör',
+      state: {
+        series: {
+          total: { label: 'Toplam', value: 10 },
+          online: { label: 'Online', value: 5 },
+          offline: { label: 'Offline', value: 5 }
+        },
+        colors: ['#444444', '#6FCF97', '#A0A0A0', 'rgba(255,87,93,.77)']
+      }
+    },
+    {
+      title: 'Sensör Pil Durumu',
+      state: {
+        series: {
+          normal: { label: 'Pil Normal', value: 4 },
+          low: { label: 'Pil Zayıf', value: 10 },
+          alarm: { label: 'Pil Alarmı', value: 10 }
+        },
+        colors: ['#007DB7', '#E04141', 'rgba(255,87,93,.77)']
+      }
+    },
+    {
+      title: 'Gateway Bağlantı Yöntemi',
+      state: {
+        series: {
+          eth: { label: 'Ethernet', value: 10 },
+          wifi: { label: 'Wi-Fi', value: 10 },
+          m2m: { label: 'M2M', value: 10 }
+        },
+        colors: ['#444444', '#6FCF97', '#E04141', 'rgba(255,87,93,.77)']
+      }
+    },
+    {
+      title: 'Sıcaklık Alarmı',
+      state: {
+        series: {
+          normal: { label: 'Normal', value: 10 },
+          alarm: { label: 'Sıcaklık Alarmı', value: 10 }
+        },
+        colors: [
+          '#444444',
+          '#6FCF97',
+          '#007DB7',
+          '#A0A0A0',
+          'rgba(255,87,93,.77)'
+        ]
+      }
+    },
+    {
+      title: 'Nem Alarmı',
+      state: {
+        series: {
+          normal: { label: 'Normal', value: 10 },
+          alarm: { label: 'Nem Alarmı', value: 10 }
+        },
+        colors: ['#A0A0A0', '#F2994A', 'rgba(255,87,93,.77)']
+      }
+    },
+    {
+      title: 'Tamper',
+      state: {
+        series: {
+          normal: { label: 'Normal', value: 10 },
+          alarm: { label: 'Tamper Alarmı', value: 10 }
+        },
+        colors: ['#A0A0A0', '#E04141', '#9B51E0', 'rgba(255,87,93,.77)']
+      }
+    },
+    {
+      title: 'Toplam Gateway',
+      state: {
+        series: {
+          total: { label: 'Toplam Gateway', value: 10 },
+          online: { label: 'Online Gateway', value: 10 },
+          offline: { label: 'Offline Gateway', value: 10 }
+        },
+        colors: ['#A0A0A0', '#E04141', '#9B51E0', 'rgba(255,87,93,.77)']
+      }
+    },
+    {
+      title: 'Gateway Enerji Durumu',
+      state: {
+        series: {
+          normal: { label: 'Normal', value: 10 },
+          fault: { label: 'Enerji Yok', value: 10 }
+        },
+        colors: ['#A0A0A0', '#E04141', '#9B51E0', 'rgba(255,87,93,.77)']
+      }
+    },
+    {
+      title: 'Gateway Batarya Durumu',
+      state: {
+        series: {
+          normal: { label: 'Batarya Normal', value: 10 },
+          low: { label: 'Batarya Zayıf', value: 10 },
+          alarm: { label: 'Batarya Alarm', value: 10 }
         },
         colors: ['#A0A0A0', '#E04141', '#9B51E0', 'rgba(255,87,93,.77)']
       }

@@ -5,12 +5,12 @@
     :direction="direction"
     :before-close="handleClose"
     custom-class="drawer"
-    size="300px"
+    size="400px"
   >
     <span class="close-icon" @click="handleClose">
       <SvgClose />
     </span>
-    <div class="form-content">
+    <div v-if="this.$route.fullPath.indexOf('iot') < 0" class="form-content">
       <div class="title">
         <span>{{ title }}</span>
       </div>
@@ -40,36 +40,103 @@
         }}</el-button>
       </div>
     </div>
+    <div class="form-content" v-else>
+      <div class="title">
+        <span>{{ title }}</span>
+      </div>
+      <el-table
+        v-if="type === 'temp'"
+        :data="data"
+        stripe
+        style="max-width: 400px"
+        :header-cell-style="{ color: '#444444' }"
+        cell-class-name="myCell"
+      >
+        <el-table-column
+          prop="type"
+          header-align="left"
+          label="Sensör Adı"
+          width="130"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="sensor_id"
+          header-align="left"
+          label="Sensör Id"
+          width="80"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          header-align="left"
+          label="Değer"
+          width="75"
+        >
+          <template slot-scope="scope">
+            <div style="display: flex; justify-content: center">
+              {{ ('℃ ', scope.row.temp) }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          header-align="left"
+          label="Durum"
+          width="85"
+        >
+          <template slot-scope="scope">
+            <div style="display: flex; justify-content: center">
+              <SvgIconTemprature
+                :status="
+                  scope.row.temp != null
+                    ? scope.row.temp
+                      ? true
+                      : false
+                    : null
+                "
+              ></SvgIconTemprature>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
   </el-drawer>
 </template>
 
 <script>
 import SvgClose from '@/assets/icons/list/svg-icon-close.vue'
+import SvgIconTemprature from '@/assets/icons/device-details/termolog/svg-icon-temprature'
 import DeviceActions from '@/components/list/device-actions'
 import DeviceReport from '@/components/list/device-report'
 import DeviceService from '@/components/list/device-service'
 import { bus } from '@/main.js'
-
+import { mapActions } from 'vuex'
 export default {
   name: 'SentinelModal',
   components: {
     SvgClose,
     DeviceActions,
     DeviceReport,
-    DeviceService
+    DeviceService,
+    SvgIconTemprature
   },
   data() {
     return {
-      title: null
+      title: null,
+      data: []
     }
   },
   computed: {
     getSelectedRows() {
       return this.$store.state.dataTable.selectedRows
+    },
+    getSelectedRow() {
+      return this.$store.state.dataTable.selectedRow
     }
   },
   watch: {
     type: function (value) {
+      console.log('Selected Row', this.getSelectedRows[0])
       switch (value) {
         case 'action':
           this.title = 'İşlemler'
@@ -80,7 +147,11 @@ export default {
         case 'service':
           this.title = 'Servis'
           break
+        case 'temp':
+          this.title = 'Sıcaklık Durumları'
+          break
       }
+      this.fillDataTable({ premise_id: this.getSelectedRows[0].premise_id })
     }
   },
   props: {
@@ -94,6 +165,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      getSensorsGateway: 'device/getSensorsGateway'
+    }),
     handleClose() {
       console.log('OnClose Triggered')
       this.$emit('onClose', false)
@@ -112,9 +186,20 @@ export default {
         default:
           break
       }
+    },
+    fillDataTable(params) {
+      let sensors = this.getSensorsGateway({ page: 1, limit: 20, ...params })
+      sensors.then((r) => {
+        this.data = r
+      })
     }
   },
-  mounted() {}
+  created() {
+    console.log('Created')
+    if (this.$route.fullPath.indexOf('iot') > 0) {
+      this.fillDataTable()
+    }
+  }
 }
 </script>
 
@@ -154,7 +239,7 @@ export default {
   }
   .title {
     text-align: right;
-    padding: 54px 0;
+    padding: 54px 0 10px 0;
     span {
       font-family: Roboto;
       font-style: normal;
@@ -179,5 +264,13 @@ export default {
   left: -20px !important;
   cursor: pointer !important;
   z-index: 2002 !important;
+}
+.myCell {
+  padding: 3px 0 3px 0 !important;
+  .cell {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
 }
 </style>

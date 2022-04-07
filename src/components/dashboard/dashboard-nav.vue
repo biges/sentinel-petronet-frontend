@@ -1,16 +1,20 @@
 <template>
   <div class="header-content">
-    <div v-if="false">
+    <div class="route" v-if="true">
       <router-link
         v-for="device_type in device_types"
         :key="device_type.id"
-        :to="parentRoute + prefixRoute"
+        :to="'/dashboard' + device_type.route"
         active-class="nav-active"
       >
-        <!-- :to="'/dashboard' + device_type.route" -->
+        <!-- :to="parentRoute + prefixRoute" -->
 
         <el-button v-if="device_type.valid" class="__nav-button">
-          <span>{{ device_type.label }}</span>
+          <div class="group">
+            <SvgIconCCTV v-if="device_type.key == 'PANEL'"></SvgIconCCTV>
+            <SvgIconSensor v-else-if="device_type.key == 'IOT'"></SvgIconSensor>
+            <span>{{ device_type.label }}</span>
+          </div>
         </el-button>
       </router-link>
     </div>
@@ -29,10 +33,12 @@
 import { DEVICE_TYPES } from '@/constant'
 import SvgIconRefresh from '@/assets/icons/list/svg-icon-refresh.vue'
 import { bus } from '@/main.js'
+import SvgIconCCTV from '@/assets/icons/dashboard/svg-icon-cctv.vue'
+import SvgIconSensor from '@/assets/icons/dashboard/svg-icon-sensor.vue'
 
 export default {
   name: 'DashboardNav',
-  components: { SvgIconRefresh },
+  components: { SvgIconRefresh, SvgIconCCTV, SvgIconSensor },
   data() {
     return { device_types: {} }
   },
@@ -80,8 +86,21 @@ export default {
 
 .header-content {
   display: flex;
-  justify-content: flex-end;
+  //   justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 25px;
+  .route {
+    display: flex;
+    flex-direction: row;
+    .__nav-button {
+      span {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+      }
+    }
+  }
   a {
     text-decoration: none;
   }
@@ -130,9 +149,10 @@ export default {
   button {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     padding: 16px 32px;
+    // padding: 16px 32px;
     text-decoration: none;
 
     position: static;
@@ -147,8 +167,14 @@ export default {
     box-shadow: 0px 2px 4px rgba(91, 134, 245, 0.05);
     border-radius: 4px;
     margin: 0px 10px;
+    .group {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
     span {
       display: flex;
+      flex-direction: row;
       flex-wrap: nowrap;
       align-content: center;
       justify-content: center;
@@ -162,6 +188,7 @@ export default {
       text-align: center;
 
       margin: 0px;
+      //   background-color: #444444 !important;
 
       color: #444444 !important;
     }

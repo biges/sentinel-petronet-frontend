@@ -8,6 +8,7 @@ import { version } from '../../package'
 
 import Auth from '../views/Auth/auth.vue'
 import Dashboard from '../views/Dashboard/dashboard.vue'
+import DashboardIot from '../views/Dashboard/iot/dashboard.vue'
 import Tracked from '../views/Tracked/tracked.vue'
 import List from '../views/List/list.vue'
 import Maps from '../views/Map/maps.vue'
@@ -17,6 +18,7 @@ import CreatePremise from '../views/Premises/create-premise.vue'
 // import DeviceLastSignals from "../views/Devices/Hap/device-last-signals.vue";
 import CreateDevice from '../views/Devices/Hap/create-device.vue'
 import DeviceDetail from '../views/Devices/Hap/device-detail.vue'
+import DeviceDetailIot from '../views/Devices/Iot/device-detail-iot.vue'
 import Settings from '../views/Settings/settings.vue'
 import Logs from '../views/Settings/logs.vue'
 import UserPermissions from '../views/Settings/user-permissions.vue'
@@ -69,6 +71,14 @@ const routes = [
         meta: {
           layout: 'auth'
         }
+      },
+      {
+        path: 'iot',
+        name: 'DashbaordIot',
+        component: DashboardIot,
+        meta: {
+          layout: 'auth'
+        }
       }
     ],
     meta: {
@@ -91,6 +101,14 @@ const routes = [
       },
       {
         path: 'camera',
+        name: 'List',
+        component: List,
+        meta: {
+          layout: 'auth'
+        }
+      },
+      {
+        path: 'iot',
         name: 'List',
         component: List,
         meta: {
@@ -120,6 +138,15 @@ const routes = [
       layout: 'auth'
     },
     component: DeviceDetail
+  },
+  {
+    path: '/list/iot/:device_id',
+    name: 'DeviceDetailIot',
+    beforeEnter: MiddlewareAuth,
+    meta: {
+      layout: 'auth'
+    },
+    component: DeviceDetailIot
   },
   // {
   //   path: "/device-detail/:device_id/last-signals",

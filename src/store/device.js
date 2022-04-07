@@ -13,10 +13,14 @@ export default {
       state.devices = prosec_devices
     },
     SET_DEVICE: (state, prosec_device) => {
+      console.log('SET_DEVICE', prosec_device)
       state.device = prosec_device
     }
   },
   actions: {
+    setDevice({ commit }, device) {
+      commit('SET_DEVICE', device)
+    },
     getDevices({ commit }, params) {
       const device = Vue.prototype.$api({
         ...endpoints.getVguardDevices,
@@ -268,7 +272,6 @@ export default {
         }
       })
     },
-
     deleteDevice(_, device_id) {
       const deleted_device = Vue.prototype.$api({
         ...endpoints.deleteProsecDevice,
@@ -276,6 +279,50 @@ export default {
       })
       return deleted_device.then((r) => {
         return r
+      })
+    },
+    getGatewayDevices({ commit }, params) {
+      const device = Vue.prototype.$api({
+        ...endpoints.getListGateway,
+        params: { page: 1, limit: 10, ...params }
+      })
+      return device.then((r) => {
+        commit('SET_DEVICES', r.data.data.paginated)
+
+        this.dispatch(
+          'pagination/setCurrentPage',
+          r.data.data.paginated.per_page / r.data.data.paginated.per_page
+        )
+        this.dispatch(
+          'pagination/setCurrentLimit',
+          r.data.data.paginated.per_page
+        )
+        this.dispatch(
+          'pagination/setTotalRecord',
+          r.data.data.paginated.total_record
+        )
+        return r.data.data.paginated.records
+      })
+    },
+    getSensorsGateway({ commit }, params) {
+      const device = Vue.prototype.$api({
+        ...endpoints.getListSensors,
+        params: { page: 1, limit: 10, ...params }
+      })
+      return device.then((r) => {
+        console.log(r)
+        return r.data.data.paginated.records
+      })
+    },
+    getGatewayById({ commit }, id) {
+      const device = Vue.prototype.$api({
+        ...endpoints.getListGateway,
+        url: endpoints.getListGateway.url + '/' + id
+      })
+      return device.then((r) => {
+        console.log(r)
+        commit('SET_DEVICE', r.data.data.termolog_gateway)
+        return r.data.data.termolog_gateway
       })
     }
   }

@@ -16,6 +16,11 @@ export default {
       type: Object,
       default: () => {}
     }
+  },
+  watch: {
+    data: function (val) {
+      console.log('Watch İnformation', val)
+    }
   }
 }
 </script>

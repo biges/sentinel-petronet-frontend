@@ -55,7 +55,8 @@ export default {
   methods: {
     ...mapActions({
       refreshVguardDeviceData: 'device/refreshVguardDeviceData',
-      getVguardDevices: 'device/getVguardDevices'
+      getVguardDevices: 'device/getVguardDevices',
+      getGatewayDevices: 'device/getGatewayDevices'
     }),
     handleChangePagination() {
       this.fillDataTable({
@@ -70,7 +71,8 @@ export default {
           this.modal_type = 'action'
           break
         case 'report':
-          this.modal_type = 'report'
+          //   this.modal_type = 'report'
+          this.modal_type = 'temp'
           break
         case 'service':
           this.modal_type = 'service'
@@ -85,11 +87,18 @@ export default {
       this.modal_visible = val
     },
     async fillDataTable(params) {
-      console.log('Gelen Datalar', params)
-      let devices = this.getVguardDevices({ page: 1, limit: 20, ...params })
-      devices.then((r) => {
-        this.table_data = r
-      })
+      console.log('Gelen Paramlar', params)
+      if (this.$route.fullPath.indexOf('iot') < 0) {
+        let devices = this.getVguardDevices({ page: 1, limit: 20, ...params })
+        devices.then((r) => {
+          this.table_data = r
+        })
+      } else {
+        let devices = this.getGatewayDevices({ page: 1, limit: 20, ...params })
+        devices.then((r) => {
+          this.table_data = r
+        })
+      }
     },
     async refreshVguardDeviceAndData() {
       let refresh = null
