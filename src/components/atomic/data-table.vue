@@ -6,7 +6,7 @@
       ['List', 'Dashboard'].includes(this.$route.name) &&
       this.$route.fullPath.indexOf('iot') < 0
     "
-    ref="singleTable"
+    ref="cameraTable"
     class="data-table"
     :data="data"
     style="width: 99%; max-height: calc(100vh - 180px); overflow: none"
@@ -85,21 +85,23 @@
       <template slot-scope="scope">
         <ul>
           <li class="device-channel-icon">
-            <SvgIconFirstChannel
+            <SvgIconFirstChannels
               :status="
                 scope.row.is_active == true
-                  ? scope.row.channels[0].status == true
+                  ? scope.row.channels[0] &&
+                    scope.row.channels[0].status == true
                     ? !scope.row.channels[0].show_warning
                     : null
                   : false
               "
-            ></SvgIconFirstChannel>
+            ></SvgIconFirstChannels>
           </li>
           <li class="device-channel-icon">
             <SvgIconSecondChannel
               :status="
                 scope.row.is_active == true
-                  ? scope.row.channels[1].status == true
+                  ? scope.row.channels[1] &&
+                    scope.row.channels[1].status == true
                     ? !scope.row.channels[1].show_warning
                     : null
                   : false
@@ -221,7 +223,7 @@
       ['List', 'Dashboard'].includes(this.$route.name) &&
       this.$route.fullPath.indexOf('iot') > 0
     "
-    ref="singleTable"
+    ref="iotGatewayTable"
     class="data-table"
     :data="data"
     style="
@@ -451,7 +453,7 @@
       ['DeviceDetailIot'].includes(this.$route.name) &&
       this.$route.fullPath.indexOf('iot') > 0
     "
-    ref="singleTable"
+    ref="sensorTable"
     class="data-table"
     :data="data"
     style="
@@ -469,10 +471,10 @@
     "
     @selection-change="handleSelectionChange"
     @sort-change="handleServiceSorting"
-    :row-class-name="rowClassName"
     height="100%"
     border="false"
   >
+    <!-- :row-class-name="rowClassName" -->
     <el-table-column type="selection" width="55"> </el-table-column>
 
     <el-table-column
@@ -1116,6 +1118,10 @@ export default {
     ...mapGetters({
       getPermissions: 'auth/getPermissions'
     })
+    // updateTableForChangeRoute() {
+
+    // 	return ''
+    // }
   },
   watch: {
     data: function (val) {
@@ -1135,6 +1141,7 @@ export default {
         else this.loading = true
       }
       if (val && this.$route.name == 'Premises') this.setCurrent(val[0])
+      this.$forceUpdate()
     }
   },
   methods: {
@@ -1205,7 +1212,7 @@ export default {
       }
     },
     rowClassName({ row }) {
-      return this.$refs.singleTable.selection.find(
+      return this.$refs.cameraTable.selection.find(
         (element) => element.id == row.id
       )
         ? 'selected-row'
@@ -1244,7 +1251,12 @@ export default {
     // console.log(this.$route)
     console.log(this.$route.fullPath.indexOf('iot'))
   },
-  mounted() {}
+  mounted() {
+    console.log('This.Route', this.$route)
+  },
+  destroyed() {
+    console.log('Destroyed', this.$route.fullPath)
+  }
 }
 </script>
 

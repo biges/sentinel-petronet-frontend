@@ -11,6 +11,7 @@ import Dashboard from '../views/Dashboard/dashboard.vue'
 import DashboardIot from '../views/Dashboard/iot/dashboard.vue'
 import Tracked from '../views/Tracked/tracked.vue'
 import List from '../views/List/list.vue'
+import IotList from '../views/List/iot/IotList.vue'
 import Maps from '../views/Map/maps.vue'
 import Services from '../views/Services/services.vue'
 import Premises from '../views/Premises/premises.vue'
@@ -75,7 +76,7 @@ const routes = [
       {
         path: 'iot',
         name: 'DashbaordIot',
-        component: DashboardIot,
+        component: Dashboard,
         meta: {
           layout: 'auth'
         }
@@ -85,6 +86,14 @@ const routes = [
       layout: 'auth'
     },
     component: Dashboard
+  },
+  {
+    path: '/list/iot',
+    name: 'List',
+    component: IotList,
+    meta: {
+      layout: 'auth'
+    }
   },
   {
     path: '/list',
@@ -101,14 +110,6 @@ const routes = [
       },
       {
         path: 'camera',
-        name: 'List',
-        component: List,
-        meta: {
-          layout: 'auth'
-        }
-      },
-      {
-        path: 'iot',
         name: 'List',
         component: List,
         meta: {

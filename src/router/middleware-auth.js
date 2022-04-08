@@ -1,7 +1,8 @@
 import store from '../store/index.js'
-
+import Vue from 'vue'
 export default function (to, from, next) {
-  console.log(to)
+  console.log('From', from)
+  console.log('To', to)
   const auth = store.state.auth
   //Route Değiştikçe 0 lanacak olan Store değişkenleri
   store.state.dataTable.selectedRows = []

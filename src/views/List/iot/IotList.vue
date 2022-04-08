@@ -6,12 +6,7 @@
       @onActionClick="handleActionClick"
       @onFilteredData="handleFilteredData"
     ></ListFilter>
-    <DataTable
-      v-if="this.$route.fullPath.indexOf('iot') < 0"
-      class="data-layer"
-      :data="table_data"
-    ></DataTable>
-    <GatewayDeviceTable v-else :data="table_data"></GatewayDeviceTable>
+    <GatewayDeviceTable :data="table_data"></GatewayDeviceTable>
     <DataTablePagination
       class="bottom"
       @onChangeCurrentPage="handleChangePagination"
@@ -27,7 +22,6 @@
 
 <script>
 import GatewayDeviceTable from '@/components/device/iot/GatewayDeviceTable.vue'
-import DataTable from '@/components/atomic/data-table.vue'
 import DataTablePagination from '@/components/atomic/data-table-pagination.vue'
 import ListFilter from '@/components/list/list-filter'
 import SentinelModal from '@/components/modal/sentinel-modal.vue'
@@ -36,11 +30,10 @@ import DashboardNav from '@/components/dashboard/dashboard-nav'
 import { bus } from '@/main.js'
 import { mapActions, mapGetters } from 'vuex'
 export default {
-  name: 'List',
+  name: 'IotList',
   components: {
     DashboardNav,
     ListFilter,
-    DataTable,
     DataTablePagination,
     SentinelModal,
     GatewayDeviceTable

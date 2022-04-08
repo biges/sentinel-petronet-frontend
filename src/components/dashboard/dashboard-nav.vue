@@ -1,15 +1,25 @@
 <template>
-  <div class="header-content">
+  <div
+    :class="
+      ['List'].includes(this.$route.name)
+        ? 'header-content-list'
+        : 'header-content'
+    "
+  >
     <div class="route" v-if="true">
       <router-link
         v-for="device_type in device_types"
         :key="device_type.id"
-        :to="'/dashboard' + device_type.route"
+        :to="'/' + getNormalRoute + device_type.route"
         active-class="nav-active"
       >
         <!-- :to="parentRoute + prefixRoute" -->
+        <!-- :to="'/dashboard' + device_type.route" -->
 
-        <el-button v-if="device_type.valid" class="__nav-button">
+        <el-button
+          v-if="device_type.valid"
+          class="__nav-button sentinel-button"
+        >
           <div class="group">
             <SvgIconCCTV v-if="device_type.key == 'PANEL'"></SvgIconCCTV>
             <SvgIconSensor v-else-if="device_type.key == 'IOT'"></SvgIconSensor>
@@ -18,7 +28,7 @@
         </el-button>
       </router-link>
     </div>
-    <div class="refresh-button">
+    <div v-if="!['List'].includes(this.$route.name)" class="refresh-button">
       <div class="component">
         <span>Yenile</span>
         <el-button @click="refreshDeviceData"
@@ -49,6 +59,10 @@ export default {
         return '/last-signals'
       }
     },
+    getNormalRoute() {
+      console.log('getNormalRoute', this.$route.path.split('/')[1])
+      return this.$route.path.split('/')[1]
+    },
     parentRoute() {
       if (this.$route.name == 'Dashboard') {
         return '/' + this.$route.path.split('/')[1]
@@ -73,6 +87,7 @@ export default {
     }
   },
   created() {
+    console.log('Route Path', this.$route.path.split('/')[1])
     this.device_types = { ...DEVICE_TYPES }
   },
   mounted() {
@@ -104,6 +119,7 @@ export default {
   a {
     text-decoration: none;
   }
+
   .nav-active {
     button {
       display: flex;
@@ -229,5 +245,11 @@ export default {
       }
     }
   }
+}
+.header-content-list {
+  @extend .header-content;
+  background-color: $hybrone_header_background_color;
+  padding: 27px 38px 0px 32px;
+  margin: 0;
 }
 </style>

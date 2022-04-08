@@ -36,7 +36,10 @@
             class="sentinel-input device-form-item"
             label="CİHAZ TİPİ"
           >
-            <el-select v-model="form.hardware_type_id">
+            <el-select
+              @change="handleHardwareTypeChange"
+              v-model="form.hardware_type_id"
+            >
               <el-option
                 v-for="item in hardware_options"
                 :key="item.value"
@@ -96,8 +99,8 @@
           </el-form-item>
         </div>
 
-        <h3>Bağlantı Bilgileri</h3>
-        <div class="form-section full-width">
+        <h3 v-if="form.hardware_type_id == 3">Bağlantı Bilgileri</h3>
+        <div v-if="form.hardware_type_id == 3" class="form-section full-width">
           <el-form-item
             prop="username"
             class="sentinel-input device-form-item"
@@ -130,50 +133,121 @@
             <el-input type="number" v-model="form.port"></el-input>
           </el-form-item>
         </div>
-
-        <h3>Kanal Listesi</h3>
-
-        <div
-          class="form-section no-margin"
-          v-for="(channel, index) in form.channels"
-          :key="index"
-        >
-          <el-form-item
-            class="sentinel-input device-form-item"
-            :label="index === 0 ? 'KANAL ADI' : null"
+        <div v-if="form.hardware_type_id == 4">
+          <h3>Sensör Bilgileri</h3>
+          <div
+            v-for="(sensor, index) in form.sensors"
+            :key="index"
+            class="form-section full-width"
           >
-            <el-input disabled v-model="channel.channel_name"></el-input>
-          </el-form-item>
+            <el-form-item
+              prop="sensor_id"
+              class="sentinel-input device-form-item"
+              label="SENSOR ID"
+            >
+              <el-input v-model="sensor.sensor_id"></el-input>
+            </el-form-item>
+            <el-form-item
+              prop="gateway_id"
+              class="sentinel-input device-form-item"
+              label="GATEWAY ID"
+            >
+              <el-input v-model="sensor.gateway_id"></el-input>
+            </el-form-item>
+            <el-form-item
+              prop="type"
+              class="sentinel-input device-form-item"
+              label="GATEWAY TİPİ"
+            >
+              <el-select v-model="sensor.type">
+                <el-option
+                  v-for="item in gateway_types"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
 
-          <el-form-item
-            class="sentinel-input device-form-item"
-            :label="index === 0 ? 'DURUM' : null"
-          >
-            <el-select v-model="channel.status">
-              <el-option
-                v-for="item in channel_statuses"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-          </el-form-item>
+            <el-form-item
+              prop="min_humidity"
+              type="number"
+              class="sentinel-input device-form-item"
+              label="MİN NEM MİKTARI"
+            >
+              <el-input v-model="sensor.min_humidity"></el-input>
+            </el-form-item>
 
-          <el-form-item
-            class="sentinel-input device-form-item"
-            :label="index === 0 ? 'ÖZELLİKLER' : null"
+            <el-form-item
+              prop="max_humidity"
+              class="sentinel-input device-form-item"
+              label="MAX NEM MİKTARI"
+            >
+              <el-input v-model="sensor.max_humidity"></el-input>
+            </el-form-item>
+
+            <el-form-item
+              prop="min_temp"
+              class="sentinel-input device-form-item"
+              label="MİN SICAKLIK MİKTARI"
+            >
+              <el-input type="number" v-model="sensor.min_temp"></el-input>
+            </el-form-item>
+            <el-form-item
+              prop="max_temp"
+              class="sentinel-input device-form-item"
+              label="MAX SICAKLIK MİKTARI"
+            >
+              <el-input type="number" v-model="sensor.max_temp"></el-input>
+            </el-form-item>
+          </div>
+        </div>
+        <div v-if="form.hardware_type_id == 3">
+          <h3>Kanal Listesi</h3>
+
+          <div
+            class="form-section no-margin"
+            v-for="(channel, index) in form.channels"
+            :key="index"
           >
-            <el-select v-model="channel.category">
-              <el-option
-                v-for="item in channel_category"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
-          </el-form-item>
+            <el-form-item
+              class="sentinel-input device-form-item"
+              :label="index === 0 ? 'KANAL ADI' : null"
+            >
+              <el-input disabled v-model="channel.channel_name"></el-input>
+            </el-form-item>
+
+            <el-form-item
+              class="sentinel-input device-form-item"
+              :label="index === 0 ? 'DURUM' : null"
+            >
+              <el-select v-model="channel.status">
+                <el-option
+                  v-for="item in channel_statuses"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item
+              class="sentinel-input device-form-item"
+              :label="index === 0 ? 'ÖZELLİKLER' : null"
+            >
+              <el-select v-model="channel.category">
+                <el-option
+                  v-for="item in channel_category"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </div>
         </div>
       </el-form>
     </div>
@@ -231,24 +305,62 @@ export default {
             status: '',
             category: ''
           }
+        ],
+        sensors: [
+          {
+            name: 'Hatalı Sensör4',
+            type: 'Sebze/Meyve',
+            sensor_id: '0135',
+            gateway_id: 4,
+            min_humidity: 10,
+            max_humidity: 100,
+            min_temp: -40,
+            max_temp: 100
+          },
+          {
+            name: 'Hatalı Sensör5',
+            type: 'Sebze/Meyve',
+            sensor_id: '0135',
+            gateway_id: 4,
+            min_humidity: 1,
+            max_humidity: 10,
+            min_temp: -4,
+            max_temp: 10
+          }
         ]
       },
       hardware_options: [
         {
           label: 'Kayıt Cihazı',
           value: 3
+        },
+        {
+          label: 'IOT',
+          value: 4
         }
       ],
       brand_options: [
         {
           label: 'Vguard',
+          hardware_type_id: 3,
           value: 3
+        },
+        {
+          label: 'Termolog',
+          hardware_type_id: 4,
+          value: 4
         }
       ],
       model_options: [
         {
           label: 'VG-4C1A-LRU',
+          brand_id: 3,
           value: 3
+        },
+        {
+          label: 'GATEWAY',
+          brand_id: 4,
+          value: 4
         }
       ],
       channel_statuses: [
@@ -269,6 +381,12 @@ export default {
         {
           label: 'Tank',
           value: 'tank'
+        }
+      ],
+      gateway_types: [
+        {
+          label: 'Sebze/Meyve',
+          value: 'Sebze/Meyve'
         }
       ],
       rules: {
@@ -358,26 +476,54 @@ export default {
 
       return isValid
     },
+    handleHardwareTypeChange(value) {
+      console.log(value)
+      this.form.device_brand_id = this.brand_options.filter(
+        (item) => item.hardware_type_id === value
+      )[0].value
+      this.form.device_model_id = this.model_options.filter(
+        (item) => item.brand_id === this.form.device_brand_id
+      )[0].value
+    },
     createPayload() {
-      return {
-        vguard_device: {
-          ...this.form,
-          port: parseInt(this.form.port),
-          premise_id: parseInt(this.$route.params.premise_id),
-          disk_count: 1,
-          streams: []
+      if (this.form.hardware_type_id == 3)
+        return {
+          vguard_device: {
+            ...this.form,
+            port: parseInt(this.form.port),
+            premise_id: parseInt(this.$route.params.premise_id),
+            disk_count: 1,
+            streams: []
+          }
         }
-      }
+      else if (this.form.hardware_type_id == 4)
+        return {
+          termolog_gateway: {
+            name: this.form.name,
+            gateway_id: this.form.serial_number,
+            premise_id: parseInt(this.$route.params.premise_id),
+            sensors: this.form.sensors
+          }
+        }
     },
     onSubmit() {
-      if (this.validate()) {
+      //   if (this.validate()) {
+      if (this.form.hardware_type_id == 3) {
         this.$api
           .post('/vguard/devices', this.createPayload())
           .then((res) => {
             this.$router.push({ name: 'Premises' })
           })
           .catch((err) => console.log(err))
+      } else if (this.form.hardware_type_id == 4) {
+        this.$api
+          .post('/termolog/gateway/sensor', this.createPayload())
+          .then((res) => {
+            this.$router.push({ name: 'Premises' })
+          })
+          .catch((err) => console.log(err))
       }
+      //   }
     },
     onUpdate() {
       if (this.validate()) {
@@ -408,6 +554,7 @@ export default {
     },
     async getDevice(device_id) {
       try {
+        //   if (this.form.hardware_type_id == 3) {
         const { data } = await this.$api('/vguard/devices/' + device_id)
         return data.data.vguard_device
       } catch (err) {
@@ -468,6 +615,9 @@ export default {
           break
       }
     })
+  },
+  destroyed() {
+    bus.$off('buttonGroupClick')
   }
 }
 </script>
