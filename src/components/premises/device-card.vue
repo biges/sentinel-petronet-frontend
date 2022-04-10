@@ -7,16 +7,16 @@
     @click="handleCardClick(data.id)"
   >
     <div class="right">
-      <span> Kayıt Cihazı </span>
+      <span>{{ data.hardware_type ? 'Kayıt' : 'IOT' }} Cihazı </span>
     </div>
     <div class="left">
       <span
         >Marka:
-        <p>Vguard</p></span
+        <p>{{ data.hardware_type ? 'Vguard' : 'Gateway' }}</p></span
       >
       <span>
         Model:
-        <p>VG-4C1A-LRU</p>
+        <p>{{ data.device_model ? 'VG-4C1A-LRU' : 'Termolog' }}</p>
       </span>
       <span
         >Envanter No:

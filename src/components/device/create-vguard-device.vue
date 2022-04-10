@@ -11,7 +11,13 @@
     </div>
     <div class="device-create-body">
       <h2>
-        {{ is_update ? 'Vguard/VG-4C1A-LRU' : 'Yeni Cihaz' }}
+        {{
+          is_update
+            ? form.hardware_type_id == 3
+              ? 'Vguard/VG-4C1A-LRU'
+              : 'Termolog / Gateway'
+            : 'Yeni Cihaz'
+        }}
       </h2>
 
       <el-form
@@ -85,7 +91,9 @@
           <el-form-item
             prop="serial_number"
             class="sentinel-input device-form-item"
-            label="SERI NUMARASI"
+            :label="
+              this.form.hardware_type_id == 3 ? 'SERI NUMARASI' : 'GATEWAAY NO'
+            "
           >
             <el-input v-model="form.serial_number"></el-input>
           </el-form-item>
@@ -94,6 +102,7 @@
             prop="inventory_number"
             class="sentinel-input device-form-item"
             label="ENVANTER NUMARASI"
+            v-if="form.hardware_type_id == 3"
           >
             <el-input v-model="form.inventory_number"></el-input>
           </el-form-item>
@@ -136,7 +145,7 @@
         <div v-if="form.hardware_type_id == 4">
           <h3>Sensör Bilgileri</h3>
           <div
-            v-for="(sensor, index) in form.sensors"
+            v-for="(sensor, index) in form.sensor"
             :key="index"
             class="form-section full-width"
           >
@@ -306,27 +315,27 @@ export default {
             category: ''
           }
         ],
-        sensors: [
-          {
-            name: 'Hatalı Sensör4',
-            type: 'Sebze/Meyve',
-            sensor_id: '0135',
-            gateway_id: 4,
-            min_humidity: 10,
-            max_humidity: 100,
-            min_temp: -40,
-            max_temp: 100
-          },
-          {
-            name: 'Hatalı Sensör5',
-            type: 'Sebze/Meyve',
-            sensor_id: '0135',
-            gateway_id: 4,
-            min_humidity: 1,
-            max_humidity: 10,
-            min_temp: -4,
-            max_temp: 10
-          }
+        sensor: [
+          //   {
+          //     name: 'Hatalı Sensör4',
+          //     type: 'Sebze/Meyve',
+          //     sensor_id: '0135',
+          //     gateway_id: 4,
+          //     min_humidity: 10,
+          //     max_humidity: 100,
+          //     min_temp: -40,
+          //     max_temp: 100
+          //   },
+          //   {
+          //     name: 'Hatalı Sensör5',
+          //     type: 'Sebze/Meyve',
+          //     sensor_id: '0135',
+          //     gateway_id: 4,
+          //     min_humidity: 1,
+          //     max_humidity: 10,
+          //     min_temp: -4,
+          //     max_temp: 10
+          //   }
         ]
       },
       hardware_options: [
@@ -385,43 +394,51 @@ export default {
       ],
       gateway_types: [
         {
+          label: 'Donuk',
+          value: 'Donuk'
+        },
+        {
           label: 'Sebze/Meyve',
           value: 'Sebze/Meyve'
+        },
+        {
+          label: 'Et/Tavuk/Balık ve Şarküteri',
+          value: 'Et/Tavuk/Balık ve Şarküteri'
         }
       ],
       rules: {
         name: {
-          required: true,
+          required: this.$route.params.iot ? false : true,
           message: 'Bu alan zorunlu',
           trigger: 'blur'
         },
         hardware_type_id: {
-          required: true,
+          required: this.$route.params.iot ? false : true,
           message: 'Bu alan zorunlu',
           trigger: 'blur'
         },
         device_brand_id: {
-          required: true,
+          required: this.$route.params.iot ? false : true,
           message: 'Bu alan zorunlu',
           trigger: 'blur'
         },
         device_model_id: {
-          required: true,
+          required: this.$route.params.iot ? false : true,
           message: 'Bu alan zorunlu',
           trigger: 'blur'
         },
         serial_number: {
-          required: true,
+          required: this.$route.params.iot ? false : true,
           message: 'Bu alan zorunlu',
           trigger: 'blur'
         },
         inventory_number: {
-          required: true,
+          required: this.$route.params.iot ? false : true,
           message: 'Bu alan zorunlu',
           trigger: 'blur'
         },
         username: {
-          required: true,
+          required: this.$route.params.iot ? false : true,
           message: 'Bu alan zorunlu',
           trigger: 'blur'
         },
@@ -445,7 +462,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      createDevice: 'device/createDevice'
+      createDevice: 'device/createDevice',
+      getGatewayById: 'device/getGatewayById'
     }),
     validate() {
       let isValid = false
@@ -502,7 +520,7 @@ export default {
             name: this.form.name,
             gateway_id: this.form.serial_number,
             premise_id: parseInt(this.$route.params.premise_id),
-            sensors: this.form.sensors
+            sensor: this.form.sensor
           }
         }
     },
@@ -526,12 +544,25 @@ export default {
       //   }
     },
     onUpdate() {
-      if (this.validate()) {
+      //   if (this.validate()) {
+      if (this.form.hardware_type_id == 3) {
         this.$api
           .patch(
             '/vguard/devices/' + this.$route.params.device_id,
             this.createPayload()
           )
+          .then((res) => {
+            this.$router.push({ name: 'Premises' })
+          })
+          .catch((err) => console.log(err))
+      } else {
+        this.$api
+          .patch('/termolog/gateway/sensor/update', {
+            termolog_gateway: {
+              ...this.createPayload().termolog_gateway,
+              id: parseInt(this.$route.params.device_id)
+            }
+          })
           .then((res) => {
             this.$router.push({ name: 'Premises' })
           })
@@ -544,12 +575,21 @@ export default {
         cancelButtonText: 'Vazgeç',
         type: 'error'
       }).then(() => {
-        this.$api
-          .delete('vguard/devices/' + this.$route.params.device_id)
-          .then(() => {
-            this.$router.push({ name: 'Premises' })
-          })
-          .catch((err) => console.log(err))
+        if (this.form.hardware_type_id == 3) {
+          this.$api
+            .delete('vguard/devices/' + this.$route.params.device_id)
+            .then(() => {
+              this.$router.push({ name: 'Premises' })
+            })
+            .catch((err) => console.log(err))
+        } else {
+          this.$api
+            .delete('termolog/gateway/' + this.$route.params.device_id)
+            .then(() => {
+              this.$router.push({ name: 'Premises' })
+            })
+            .catch((err) => console.log(err))
+        }
       })
     },
     async getDevice(device_id) {
@@ -581,22 +621,49 @@ export default {
 
     if (this.is_update) {
       const device_id = this.$route.params.device_id
+      const isIot = this.$route.params.iot == 1
+      if (!isIot) {
+        this.getDevice(device_id).then((device) => {
+          Object.keys(this.form).forEach((field) => {
+            if (field !== 'channels') {
+              this.form[field] = device[field]
+            }
+          })
 
-      this.getDevice(device_id).then((device) => {
-        Object.keys(this.form).forEach((field) => {
-          if (field !== 'channels') {
-            this.form[field] = device[field]
+          if (device.channels) {
+            device.channels.forEach((c, index) => {
+              Object.keys(this.form.channels[0]).forEach((field) => {
+                this.form.channels[index][field] = c[field]
+              })
+            })
           }
         })
-
-        if (device.channels) {
-          device.channels.forEach((c, index) => {
-            Object.keys(this.form.channels[0]).forEach((field) => {
-              this.form.channels[index][field] = c[field]
+      } else {
+        let gateway = this.getGatewayById(device_id)
+        gateway.then((r) => {
+          console.log('R Sensor', r.sensor)
+          this.form.hardware_type_id = 4
+          this.form.device_brand_id = 4
+          this.form.device_model_id = 4
+          this.form.name = r.name
+          this.form.serial_number = r.gateway_id
+          r.sensor.forEach((item) => {
+            this.form.sensor.push({
+              id: item.id,
+              sensor_id: item.sensor_id,
+              gateway_id: item.gateway_id,
+              name: item.name,
+              type: item.type,
+              min_humidity: item.min_humidity,
+              max_humidity: item.max_humidity,
+              min_temp: item.min_temp,
+              max_temp: item.max_temp
             })
           })
-        }
-      })
+          this.form.sensors.forEach()
+          console.log(r)
+        })
+      }
     }
   },
   mounted() {

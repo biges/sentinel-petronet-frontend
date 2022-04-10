@@ -13,19 +13,32 @@
               <SvgIconCommunication
                 :status="gateway.status"
               ></SvgIconCommunication>
-              <span class="value"> Normal </span>
+              <span :class="gateway.status ? 'value-success' : 'value-errorr'"
+                >{{ gateway.status ? ' Normal' : 'İletişim Yok' }}
+              </span>
             </div>
             <div class="status">
               <span class="name"> Enerji </span>
               <SvgIconEnergy
                 :status="gateway.electric_connection"
               ></SvgIconEnergy>
-              <span class="value"> Normal </span>
+              <span
+                :class="
+                  gateway.electric_connection ? 'value-success' : 'value-errorr'
+                "
+              >
+                Normal
+              </span>
             </div>
             <div class="status">
               <span class="name"> Batarya </span>
               <SvgIconBattery :status="gateway.battery"></SvgIconBattery>
-              <span class="value"> {{ '%' + gateway.battery }} </span>
+              <span
+                class="value"
+                :style="{ color: battery_color(gateway.battery) }"
+              >
+                {{ '%' + gateway.battery }}
+              </span>
             </div>
             <div class="status">
               <span class="name"> Bağlantı </span>
@@ -78,10 +91,19 @@ export default {
   data() {
     return {}
   },
+  computed: {},
   props: {
     gatewayArrays: { type: Array, default: () => [] }
   },
-  methods: {}
+  methods: {
+    battery_color(value) {
+      if (value < 100 && value >= 26) {
+        return '#6FCF97'
+      } else if (value < 26 && value >= 10) {
+        return '#F2994A'
+      } else if (value < 10 && value >= 0) return '#E04141'
+    }
+  }
 }
 </script>
 
@@ -159,8 +181,15 @@ export default {
           text-align: center;
 
           /* Green */
+          &-success {
+            @extend .value;
+            color: #6fcf97;
+          }
+          &-errorr {
+            @extend .value;
+            color: #e04141;
+          }
 
-          color: #6fcf97;
           &-count {
             font-weight: 500;
             font-size: 16px;

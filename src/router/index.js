@@ -216,7 +216,7 @@ const routes = [
     component: CreateDevice
   },
   {
-    path: '/premises/update-device/:premise_id/:device_id',
+    path: '/premises/update-device/:premise_id/:device_id/:iot',
     name: 'UpdateDevice',
     beforeEnter: MiddlewareAuth,
     meta: {

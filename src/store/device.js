@@ -314,12 +314,12 @@ export default {
         return r.data.data.paginated.records
       })
     },
-    getGatewayById({ commit }, id) {
+    async getGatewayById({ commit }, id) {
       const device = Vue.prototype.$api({
         ...endpoints.getListGateway,
         url: endpoints.getListGateway.url + '/' + id
       })
-      return device.then((r) => {
+      return await device.then((r) => {
         console.log(r)
         commit('SET_DEVICE', r.data.data.termolog_gateway)
         return r.data.data.termolog_gateway

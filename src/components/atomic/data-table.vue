@@ -554,7 +554,19 @@
                 line-height: 12px;
                 color: #6fcf97;
               "
-              >Normal</span
+              :style="
+                scope.row.temp > scope.row.min_temp &&
+                scope.row.temp < scope.row.max_temp
+                  ? { color: '#6fcf97' }
+                  : { color: '#e04141' }
+              "
+              >{{
+                handleRangeCheck(
+                  scope.row.max_temp,
+                  scope.row.min_temp,
+                  scope.row.temp
+                )
+              }}</span
             >
           </div>
           <span
@@ -563,6 +575,12 @@
               font-weight: 500;
               font-size: 20px;
               line-height: 23px;
+            "
+            :style="
+              scope.row.temp > scope.row.min_temp &&
+              scope.row.temp < scope.row.max_temp
+                ? { color: '#6fcf97' }
+                : { color: '#e04141' }
             "
             >{{ scope.row.temp }}°C</span
           >
@@ -621,7 +639,7 @@
                 color: #444444;
               "
               class="value"
-              >{{ scope.row.min_temp }}°C</span
+              >{{ scope.row.max_temp }}°C</span
             >
           </div>
         </div>
@@ -655,7 +673,19 @@
                 line-height: 12px;
                 color: #6fcf97;
               "
-              >Normal</span
+              :style="
+                scope.row.humidity > scope.row.min_humidity &&
+                scope.row.humidity < scope.row.max_humidity
+                  ? { color: '#6fcf97' }
+                  : { color: '#e04141' }
+              "
+              >{{
+                handleRangeCheck(
+                  scope.row.max_humidity,
+                  scope.row.min_humidity,
+                  scope.row.humidity
+                )
+              }}</span
             >
           </div>
           <span
@@ -665,7 +695,13 @@
               font-size: 20px;
               line-height: 23px;
             "
-            >{{ scope.row.temp }}%</span
+            :style="
+              scope.row.humidity > scope.row.min_humidity &&
+              scope.row.humidity < scope.row.max_humidity
+                ? { color: '#6fcf97' }
+                : { color: '#e04141' }
+            "
+            >{{ scope.row.humidity }}%</span
           >
           <div
             style="
@@ -693,7 +729,7 @@
                 color: #444444;
               "
               class="value"
-              >{{ scope.row.min_temp }}%</span
+              >{{ scope.row.min_humidity }}%</span
             >
           </div>
           <div
@@ -722,7 +758,7 @@
                 color: #444444;
               "
               class="value"
-              >{{ scope.row.min_temp }}%</span
+              >{{ scope.row.max_humidity }}%</span
             >
           </div>
         </div>
@@ -756,7 +792,10 @@
                 line-height: 12px;
                 color: #6fcf97;
               "
-              >Normal</span
+              :style="{
+                color: handleRangeBatteryCheck(scope.row.battery, 'color')
+              }"
+              >{{ handleRangeBatteryCheck(scope.row.battery, 'text') }}</span
             >
           </div>
           <span
@@ -766,6 +805,9 @@
               font-size: 20px;
               line-height: 23px;
             "
+            :style="{
+              color: handleRangeBatteryCheck(scope.row.battery, 'color')
+            }"
             >{{ scope.row.battery }}%</span
           >
         </div>
@@ -793,7 +835,7 @@
                 line-height: 12px;
                 color: #6fcf97;
               "
-              >Normal</span
+              >{{ scope.row.tamper ? 'Normal' : 'Alarm' }}</span
             >
           </div>
         </div>
@@ -804,7 +846,7 @@
   <el-table
     v-loading="loading"
     v-else-if="['Premises'].includes(this.$route.name)"
-    ref="singleTable"
+    ref="cameraTable"
     :data="data"
     :header-cell-style="{ color: '#444444' }"
     style="width: 97%; max-height: calc(100vh - 75px);  margin-left 20px; overflow: scroll;"
@@ -1245,6 +1287,25 @@ export default {
     },
     downloadEventRecord(val) {
       this.$emit('onDownloadEventRecord', val)
+    },
+    handleRangeCheck(max, min, val) {
+      if (val < max && val > min) return 'Normal'
+      else return 'Alarm'
+    },
+    handleRangeBatteryCheck(val, type) {
+      if (type == 'text') {
+        if (val < 100 && val >= 26) {
+          return 'Normal'
+        } else if (val < 26 && val >= 10) {
+          return 'Zayıf'
+        } else if (val < 10 && val >= 0) return 'Alarm'
+      } else if (type == 'color') {
+        if (val < 100 && val >= 26) {
+          return '#6FCF97'
+        } else if (val < 26 && val >= 10) {
+          return '#F2994A'
+        } else if (val < 10 && val >= 0) return '#E04141'
+      }
     }
   },
   created() {

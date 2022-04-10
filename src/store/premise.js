@@ -141,6 +141,18 @@ export default {
         return r.data.data.paginated.records
       })
     },
+    getPremiseDevices({ commit }, premise_id) {
+      let premise_devices = Vue.prototype.$api({
+        ...endpoints.getPremiseDevice,
+        url: 'premises/' + premise_id + '/device/list'
+      })
+      return premise_devices.then((r) => {
+        if (r.data.data.users.length > 0)
+          commit('SET_PREMISE_USERS', r.data.data.users)
+
+        return r.data.data.paginated.records
+      })
+    },
     getTrackedPremises(_, payload) {
       const tracked_premise = Vue.prototype.$api({
         ...endpoints.getTrackedPremises,

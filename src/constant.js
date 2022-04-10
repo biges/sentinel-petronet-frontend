@@ -337,50 +337,114 @@ export const LIST_FILTER = [
   }
 ]
 
-export const DEVICE_STATUS = [
-  //   { label: 'Sistem Kuruldu', value: '1' },
-  //   { label: 'Sistem Çözüldü', value: '2' }
-  {
-    label: 'Tüm Durumlar',
-    value: 'all_state'
-  },
-  {
-    label: 'Video Kaybı',
-    value: 'has_video_loss'
-  },
-  {
-    label: 'Sahne Değişimi',
-    value: 'has_scene_change'
-  },
-  {
-    label: 'Hareket Algılama',
-    value: 'motion_detect'
-  },
-  {
-    label: 'Video Sabotaj',
-    value: 'has_sabotage'
-  },
-  {
-    label: 'Normal',
-    value: 'normal'
-  },
-  {
-    label: 'Disk Hatası',
-    value: 'disk_error'
-  },
-  {
-    label: 'Ağ Hatası',
-    value: 'network_error'
-  },
-  {
-    label: 'Kayıt Hatası',
-    value: 'record_error'
-  },
-  {
-    label: 'Zaman Hatası',
-    value: 'datetime_error'
-  }
-]
+export const DEVICE_STATUS = {
+  camera: [
+    //   { label: 'Sistem Kuruldu', value: '1' },
+    //   { label: 'Sistem Çözüldü', value: '2' }
+    {
+      label: 'Tüm Durumlar',
+      value: 'all_state'
+    },
+    {
+      label: 'Video Kaybı',
+      value: 'has_video_loss'
+    },
+    {
+      label: 'Sahne Değişimi',
+      value: 'has_scene_change'
+    },
+    {
+      label: 'Hareket Algılama',
+      value: 'motion_detect'
+    },
+    {
+      label: 'Video Sabotaj',
+      value: 'has_sabotage'
+    },
+    {
+      label: 'Normal',
+      value: 'normal'
+    },
+    {
+      label: 'Disk Hatası',
+      value: 'disk_error'
+    },
+    {
+      label: 'Ağ Hatası',
+      value: 'network_error'
+    },
+    {
+      label: 'Kayıt Hatası',
+      value: 'record_error'
+    },
+    {
+      label: 'Zaman Hatası',
+      value: 'datetime_error'
+    }
+  ],
+  gateway: [
+    {
+      label: 'Bağlantı Var',
+      key: 'status',
+      value: 0
+    },
+    {
+      label: 'Bağlantı Yok',
+      key: 'status',
+      value: 1
+    },
+    {
+      label: 'Wi-Fi',
+      key: 'connection',
+      value: 'wifi'
+    },
+    {
+      label: 'Eth',
+      key: 'connection',
+      value: 'eth'
+    },
+    {
+      label: 'M2M',
+      key: 'connection',
+      value: 'm2m'
+    },
+    {
+      label: 'Batarya Alarm',
+      key: 'battery',
+      value: 'm2m'
+    },
+    {
+      label: 'Batarya Normal',
+      key: 'connection',
+      value: 'm2m'
+    },
+    {
+      label: 'M2M',
+      key: 'connection',
+      value: 'm2m'
+    },
+    {
+      label: 'n2n',
+      key: 'connection',
+      value: ''
+    },
+    {
+      label: 'n2n',
+      key: 'connection',
+      value: ''
+    },
+    {
+      label: 'Prize Takılı',
+      key: 'electric_connection',
+      value: true
+    },
+    {
+      label: 'Batarya Aktif',
+      key: 'electric_connection',
+      value: false
+    }
+  ]
+}
 export const PREMISE_DEVICES = [
   {
     id: 1,

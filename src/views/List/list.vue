@@ -5,6 +5,7 @@
       class="top"
       @onActionClick="handleActionClick"
       @onFilteredData="handleFilteredData"
+      :status_option="status_options"
     ></ListFilter>
     <DataTable
       v-if="this.$route.fullPath.indexOf('iot') < 0"
@@ -32,6 +33,7 @@ import DataTablePagination from '@/components/atomic/data-table-pagination.vue'
 import ListFilter from '@/components/list/list-filter'
 import SentinelModal from '@/components/modal/sentinel-modal.vue'
 import DashboardNav from '@/components/dashboard/dashboard-nav'
+import { DEVICE_STATUS } from '@/constant'
 
 import { bus } from '@/main.js'
 import { mapActions, mapGetters } from 'vuex'
@@ -50,7 +52,8 @@ export default {
       modal_type: null,
       selectedAction: '',
       modal_visible: false,
-      table_data: []
+      table_data: [],
+      status_options: []
     }
   },
   computed: {
@@ -145,6 +148,9 @@ export default {
     bus.$on('onServiceSorting', (val) => this.fillDataTable(val))
   },
   destroyed() {
+    this.status_options = [...DEVICE_STATUS['camera']]
+    console.log('STATUS OPTIONS', this.status_options)
+
     bus.$off('onSelectedDevicesRefresh')
     bus.$off('onServiceSorting')
   }

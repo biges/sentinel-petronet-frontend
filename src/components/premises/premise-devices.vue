@@ -57,7 +57,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      getPremiseDevice: 'premise/getPremiseDevice'
+      getPremiseDevice: 'premise/getPremiseDevice',
+      getPremiseDevices: 'premise/getPremiseDevices'
     }),
     handleContainerClick(e) {
       if (
@@ -84,7 +85,8 @@ export default {
         name: 'UpdateDevice',
         params: {
           device_id: this.selectedDevice,
-          premise_id: this.getSelectedRow.id
+          premise_id: this.getSelectedRow.id,
+          iot: 1
         }
       })
     },
@@ -94,17 +96,30 @@ export default {
     async handleCurrentChangeRowPremise(val) {
       console.log(this.counter++)
       this.devices = []
-      const { data } = await this.$api.get(`vguard/devices`, {
+      //   const { data } = await this.$api.get(`vguard/devices`, {
+      //     params: {
+      //       premise_id: val,
+      //       page: 1,
+      //       limit: 20
+      //     }
+      //   })
+      const { data } = await this.$api.get(`premises/${val}/device/list`, {
         params: {
-          premise_id: val,
-          page: 1,
-          limit: 20
+          //   premise_id: val,
+          //   page: 1,
+          //   limit: 20
         }
       })
 
-      console.log('****', data, '*****')
+      console.log('****', data.data, '*****')
+      data.data.vguard?.forEach((item) => {
+        this.devices.push(item)
+      })
+      data.data.gateway?.forEach((item) => {
+        this.devices.push(item)
+      })
 
-      this.devices = data.data.paginated.records
+      console.log('this.devices', this.devices)
       this.selectedDevice = this.devices[0].id
     },
     refreshCounter() {
