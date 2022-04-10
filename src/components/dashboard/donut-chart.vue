@@ -180,7 +180,54 @@ export default {
             case 'scene_change':
               array.push('Sahne Değişimi')
               break
-
+            case 'wifi':
+              array.push('Wi-Fi')
+              break
+            case 'eth':
+              array.push('Ethernet')
+              break
+            case 'm2m':
+              array.push('M2M')
+              break
+            case 'temp_alarm':
+              array.push('Sıcaklık Alarm')
+              break
+            case 'temp_normal':
+              array.push('Sıcaklık Normal')
+              break
+            case 'sensor_normal':
+              array.push('Pil Normal')
+              break
+            case 'sensor_alarm':
+              array.push('Pil Zayıf')
+              break
+            case 'sensor_low':
+              array.push('Pil Alarm')
+              break
+            case 'humidity_normal':
+              array.push('Normal')
+              break
+            case 'humidity_alarm':
+              array.push('Nem Alarm')
+              break
+            case 'tamper_normal':
+              array.push('Normal')
+              break
+            case 'tamper_alarm':
+              array.push('Tamper Alarm')
+              break
+            case 'energy_fault':
+              array.push('Enerji Yok')
+              break
+            case 'battery_normal':
+              array.push('Batarya Normal')
+              break
+            case 'battery_low':
+              array.push('Batarya Zayıf')
+              break
+            case 'battery_alarm':
+              array.push('Batarya Alarm')
+              break
             default:
               break
           }

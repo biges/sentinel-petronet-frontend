@@ -218,9 +218,9 @@ export const DASHBOARD_VARIABLES = {
       title: 'Sensör Pil Durumu',
       state: {
         series: {
-          normal: { label: 'Pil Normal', value: 4 },
-          low: { label: 'Pil Zayıf', value: 10 },
-          alarm: { label: 'Pil Alarmı', value: 10 }
+          sensor_normal: { label: 'Pil Normal', value: 4 },
+          sensor_low: { label: 'Pil Zayıf', value: 10 },
+          sensor_alarm: { label: 'Pil Alarmı', value: 10 }
         },
         colors: ['#007DB7', '#E04141', 'rgba(255,87,93,.77)']
       }
@@ -240,8 +240,8 @@ export const DASHBOARD_VARIABLES = {
       title: 'Sıcaklık Alarmı',
       state: {
         series: {
-          normal: { label: 'Normal', value: 10 },
-          alarm: { label: 'Sıcaklık Alarmı', value: 10 }
+          temp_normal: { label: 'Normal', value: 10 },
+          temp_alarm: { label: 'Sıcaklık Alarmı', value: 10 }
         },
         colors: [
           '#444444',
@@ -256,8 +256,8 @@ export const DASHBOARD_VARIABLES = {
       title: 'Nem Alarmı',
       state: {
         series: {
-          normal: { label: 'Normal', value: 10 },
-          alarm: { label: 'Nem Alarmı', value: 10 }
+          humidity_normal: { label: 'Normal', value: 10 },
+          humidity_alarm: { label: 'Nem Alarmı', value: 10 }
         },
         colors: ['#A0A0A0', '#F2994A', 'rgba(255,87,93,.77)']
       }
@@ -266,8 +266,8 @@ export const DASHBOARD_VARIABLES = {
       title: 'Tamper',
       state: {
         series: {
-          normal: { label: 'Normal', value: 10 },
-          alarm: { label: 'Tamper Alarmı', value: 10 }
+          tamper_normal: { label: 'Normal', value: 10 },
+          tamper_alarm: { label: 'Tamper Alarmı', value: 10 }
         },
         colors: ['#A0A0A0', '#E04141', '#9B51E0', 'rgba(255,87,93,.77)']
       }
@@ -288,7 +288,7 @@ export const DASHBOARD_VARIABLES = {
       state: {
         series: {
           normal: { label: 'Normal', value: 10 },
-          fault: { label: 'Enerji Yok', value: 10 }
+          energy_fault: { label: 'Enerji Yok', value: 10 }
         },
         colors: ['#A0A0A0', '#E04141', '#9B51E0', 'rgba(255,87,93,.77)']
       }
@@ -297,9 +297,9 @@ export const DASHBOARD_VARIABLES = {
       title: 'Gateway Batarya Durumu',
       state: {
         series: {
-          normal: { label: 'Batarya Normal', value: 10 },
-          low: { label: 'Batarya Zayıf', value: 10 },
-          alarm: { label: 'Batarya Alarm', value: 10 }
+          battery_normal: { label: 'Batarya Normal', value: 10 },
+          battery_low: { label: 'Batarya Zayıf', value: 10 },
+          battery_alarm: { label: 'Batarya Alarm', value: 10 }
         },
         colors: ['#A0A0A0', '#E04141', '#9B51E0', 'rgba(255,87,93,.77)']
       }

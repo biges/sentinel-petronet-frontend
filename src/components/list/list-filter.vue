@@ -149,8 +149,14 @@ export default {
         search: '',
         state: []
       },
-      status_options: [],
+      //   status_options: [],
       hardware_options: []
+    }
+  },
+  props: {
+    status_options: {
+      type: Array,
+      default: () => []
     }
   },
   methods: {
@@ -190,7 +196,6 @@ export default {
     this.hardware_options = [...DEVICE_TYPES].filter((item) => {
       return item.valid == true
     })
-    this.status_options = [...DEVICE_STATUS]
   }
 }
 </script>

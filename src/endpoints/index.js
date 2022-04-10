@@ -221,6 +221,11 @@ export default {
     method: 'GET',
     params: {}
   },
+  getTermologDashboard: {
+    url: '/termolog/dashboard',
+    method: 'GET',
+    params: {}
+  },
   /**
    * LOGS ENDPOINTS
    */
