@@ -42,29 +42,49 @@ export default {
         }
       })
     },
-    getPremises(_, payload) {
-      const premise = Vue.prototype.$api({
-        ...endpoints.getPremises,
-        params: { page: 1, limit: 20, ...payload }
-      })
-      return premise.then((r) => {
-        if (r.status == 200) {
-          this.dispatch(
-            'pagination/setCurrentPage',
-            r.data.data.pagination.to / r.data.data.pagination.per_page
-          )
-          this.dispatch(
-            'pagination/setCurrentLimit',
-            r.data.data.pagination.per_page
-          )
-          this.dispatch(
-            'pagination/setTotalRecord',
-            r.data.data.pagination.total_record
-          )
-          return r.data.data.pagination.records //Pagination keyleri device ile farklı
+    async getPremises(_, payload) {
+      const { skip, take, params } = payload
+
+      return await Vue.prototype.$api.post('/queries', {
+        microservice: 'CUDIO',
+        type: 'DATA',
+        model: 'PREMISE',
+        skip,
+        take,
+        where: params,
+        include: {
+          address: {
+            include: {
+              country: true
+            }
+          }
+          // contacts: true,
         }
       })
     },
+    // getPremises(_, payload) {
+    // 	const premise = Vue.prototype.$api({
+    // 	  ...endpoints.getPremises,
+    // 	  params: { page: 1, limit: 20, ...payload }
+    // 	})
+    // 	return premise.then((r) => {
+    // 	  if (r.status == 200) {
+    // 		this.dispatch(
+    // 		  'pagination/setCurrentPage',
+    // 		  r.data.data.pagination.to / r.data.data.pagination.per_page
+    // 		)
+    // 		this.dispatch(
+    // 		  'pagination/setCurrentLimit',
+    // 		  r.data.data.pagination.per_page
+    // 		)
+    // 		this.dispatch(
+    // 		  'pagination/setTotalRecord',
+    // 		  r.data.data.pagination.total_record
+    // 		)
+    // 		return r.data.data.pagination.records //Pagination keyleri device ile farklı
+    // 	  }
+    // 	})
+    //   },
     getPremisesForMap() {
       const premise = Vue.prototype.$api({
         ...endpoints.getPremises

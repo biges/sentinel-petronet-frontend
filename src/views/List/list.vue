@@ -24,6 +24,7 @@ import DataTable from '@/components/atomic/data-table.vue'
 import DataTablePagination from '@/components/atomic/data-table-pagination.vue'
 import ListFilter from '@/components/list/list-filter'
 import SentinelModal from '@/components/modal/sentinel-modal.vue'
+import store from '@/store'
 
 import { bus } from '@/main.js'
 import { mapActions, mapGetters } from 'vuex'
@@ -55,7 +56,7 @@ export default {
   methods: {
     ...mapActions({
       refreshVguardDeviceData: 'device/refreshVguardDeviceData',
-      getVguardDevices: 'device/getVguardDevices'
+      getDevices: 'device/getDevices'
     }),
     handleChangePagination() {
       this.fillDataTable({
@@ -86,9 +87,9 @@ export default {
     },
     async fillDataTable(params) {
       console.log('Gelen Datalar', params)
-      let devices = this.getVguardDevices({ page: 1, limit: 20, ...params })
+      let devices = this.getDevices({ skip: 1, take: 20, params: params })
       devices.then((r) => {
-        this.table_data = r
+        this.table_data = r.data.data.result[0].data
       })
     },
     async refreshVguardDeviceAndData() {
@@ -119,7 +120,7 @@ export default {
     }
   },
   created() {
-    this.fillDataTable()
+    this.fillDataTable({})
   },
   mounted() {
     bus.$on('onSelectedDevicesRefresh', this.refreshVguardDeviceAndData)

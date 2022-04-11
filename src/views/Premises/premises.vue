@@ -22,6 +22,7 @@ import PremiseFilter from '@/components/premises/premise-filter.vue'
 import DataTablePagination from '@/components/atomic/data-table-pagination.vue'
 import { mapActions, mapGetters } from 'vuex'
 import { bus } from '@/main.js'
+import store from '@/store'
 
 export default {
   name: 'Premises',
@@ -67,13 +68,13 @@ export default {
         ...params
       })
       await listPremises.then((r) => {
-        this.table_data = r
+        this.table_data = r.data.data.result[0].data
         console.log(this.table_data)
       })
     }
   },
   created() {
-    this.fillDataTable()
+    this.fillDataTable({ customerId: store.state.auth.user.customerId })
   },
   mounted() {
     bus.$on('onDeletePremise', this.handlePremiseFilteredData)

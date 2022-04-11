@@ -42,7 +42,7 @@ export default {
       }
       this.dispatch('locale/setLang', payload.language)
       commit('SET_AUTH_USER', payload)
-      commit('SET_TOKEN', payload.data.token)
+      //   commit('SET_TOKEN', payload.data.token)
     },
     async getUsers(_, payload) {
       let users = Vue.prototype.$api({

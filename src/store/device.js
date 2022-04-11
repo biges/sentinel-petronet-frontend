@@ -17,29 +17,50 @@ export default {
     }
   },
   actions: {
-    getDevices({ commit }, params) {
-      const device = Vue.prototype.$api({
-        ...endpoints.getVguardDevices,
-        params: { page: 1, limit: 10, ...params }
-      })
-      return device.then((r) => {
-        commit('SET_DEVICES', r.data.data.paginated)
-
-        this.dispatch(
-          'pagination/setCurrentPage',
-          r.data.data.paginated.to / r.data.data.paginated.per_page
-        )
-        this.dispatch(
-          'pagination/setCurrentLimit',
-          r.data.data.paginated.per_page
-        )
-        this.dispatch(
-          'pagination/setTotalRecord',
-          r.data.data.paginated.total_record
-        )
-        return r.data.data.paginated.records
+    async getDevices(_, query) {
+      const { skip, take, params } = query
+      console.log('Get Devices', query)
+      return await Vue.$api.post('/queries', {
+        microservice: 'CUDIO',
+        type: 'DATA',
+        model: 'DEVICE',
+        relations: [
+          {
+            model: 'PREMISE'
+          }
+        ],
+        skip,
+        take,
+        where: { ...params, type: { equals: 'NVR' } },
+        orderBy: [{ createdAt: 'desc' }],
+        include: {
+          premise: { include: { areas: true, address: true } }
+        }
       })
     },
+    // getDevices({ commit }, params) {
+    // 	const device = Vue.prototype.$api({
+    // 	  ...endpoints.getVguardDevices,
+    // 	  params: { page: 1, limit: 10, ...params }
+    // 	})
+    // 	return device.then((r) => {
+    // 	  commit('SET_DEVICES', r.data.data.paginated)
+
+    // 	  this.dispatch(
+    // 		'pagination/setCurrentPage',
+    // 		r.data.data.paginated.to / r.data.data.paginated.per_page
+    // 	  )
+    // 	  this.dispatch(
+    // 		'pagination/setCurrentLimit',
+    // 		r.data.data.paginated.per_page
+    // 	  )
+    // 	  this.dispatch(
+    // 		'pagination/setTotalRecord',
+    // 		r.data.data.paginated.total_record
+    // 	  )
+    // 	  return r.data.data.paginated.records
+    // 	})
+    //   },
     getDevicesExcelExport({ commit }, params) {
       const device = Vue.prototype.$api({
         ...endpoints.getProsecDevices,

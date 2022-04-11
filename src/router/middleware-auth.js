@@ -6,7 +6,8 @@ export default function (to, from, next) {
   //Route Değiştikçe 0 lanacak olan Store değişkenleri
   store.state.dataTable.selectedRows = []
   store.state.dataTable.selectedRow = {}
-  console.log(auth)
+  console.log('Middleware Auth', auth)
+  console.log('Auth', store.getters['auth/isLoggedIn'])
   const isLoggedIn = store.getters['auth/isLoggedIn']
   let isUndefined = typeof to.name === 'undefined'
   console.log(isLoggedIn)

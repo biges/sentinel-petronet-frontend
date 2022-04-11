@@ -86,6 +86,7 @@ export default {
   },
   methods: {
     ...mapActions({
+      setToken: 'auth/setToken',
       setAuthUser: 'auth/setAuthUser'
     }),
     submitForm(formName) {
@@ -96,21 +97,31 @@ export default {
           const getToken = this.$api({
             ...endpoints.token,
             data: {
-              username: this.ruleForm.email,
+              email: this.ruleForm.email,
               password: this.ruleForm.password
             }
           })
           getToken
             .then((r) => {
-              if ([200].includes(r.status)) {
-                this.setAuthUser(r.data)
+              console.log('Get Token', r)
+              if ([201].includes(r.status)) {
+                this.setToken(r.data.data.token)
+                const me = this.$api({ ...endpoints.me })
+                me.then((res) => {
+                  console.log('Me', res)
+                  this.setAuthUser({
+                    ...res.data.data.result[0],
+                    token: r.data.data.token
+                  })
+                })
                 if (redirect) {
                   this.$router.push({ name: redirect })
                 } else {
+                  console.log('r.data', r.data.data.token)
                   this.$router.push({ name: 'Dashboard' })
                 }
               } else if ([202].includes(r.status)) {
-                this.setAuthUser(r.data)
+                this.setToken(r.data.data.token)
                 this.$router.push({
                   name: 'Settings',
                   query: { is_random_password: true }

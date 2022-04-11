@@ -22,24 +22,24 @@
 
     <el-table-column
       header-align="left"
-      prop="premise.custom_premise_id"
+      prop="premiseId"
       label="İSTASYON KODU"
       width="180"
     >
       <template slot-scope="scope">
         <SvgIconWarning v-if="scope.row.show_warning"></SvgIconWarning>
-        {{ scope.row.premise.custom_premise_id }}
+        {{ scope.row.premise.id }}
       </template>
     </el-table-column>
     <el-table-column
       header-align="left"
-      prop="premise.custom_premise_name"
+      prop="premise.name"
       label="İSTASYON ADI"
     >
     </el-table-column>
     <el-table-column
       header-align="left"
-      prop="premise.location.city.name"
+      prop="premise.address.city"
       label="LOKASYON"
       width="180"
     >
@@ -58,7 +58,7 @@
     </el-table-column> -->
     <el-table-column
       header-align="left"
-      prop="device_brand.name"
+      prop="vendor"
       label="CİHAZ"
       width="180"
     >
@@ -194,13 +194,7 @@
       width="180"
     >
       <template slot-scope="scope">
-        {{
-          scope.row.last_signal.event_date == null ||
-          scope.row.last_signal.event_date == '0001-01-01T00:00:00Z' ||
-          scope.row.last_signal.event_date == '0001-01-01T01:55:52+01:55'
-            ? 'Bilgi Alınamadı'
-            : formattedDatetime(scope.row.last_signal.event_date)
-        }}
+        {{ formattedDatetime(scope.row.updatedAt) }}
       </template>
     </el-table-column>
     <!-- <el-table-column header-align="center" prop="last_state" label="Sorgu">
@@ -223,19 +217,19 @@
     :row-class-name="rowClassName"
   >
     <el-table-column
-      property="custom_premise_id"
+      property="id"
       label="İSTASYON KODU"
       min-width="50"
     ></el-table-column>
     <el-table-column
-      property="location.city.name"
+      property="address.city"
       label="LOKASYON"
       min-width="100"
       align="center"
     ></el-table-column>
 
     <el-table-column
-      property="created_at"
+      property="createdAt"
       label="OLUŞTURULMA ZAMANI"
       min-width="100"
       align="right"

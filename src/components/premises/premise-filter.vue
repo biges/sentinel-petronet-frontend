@@ -17,10 +17,8 @@
     </div>
     <div class="component">
       <span>YENİ</span>
-      <router-link
-        :disabled="!this.getPermissions['location_create']"
-        :to="{ name: 'CreatePremise' }"
-      >
+      <!-- :disabled="!this.getPermissions['location_create']" -->
+      <router-link :to="{ name: 'CreatePremise' }">
         <el-button class="sentinel-button">
           <SvgIconAdd></SvgIconAdd>
         </el-button>
@@ -46,7 +44,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getPermissions: 'auth/getPermissions'
+      //   getPermissions: 'auth/getPermissions'
     })
   },
   methods: {

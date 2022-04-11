@@ -14,12 +14,16 @@ export default {
     data: {}
   },
   token: {
-    url: '/user/login',
+    url: '/users/login',
     method: 'POST',
     data: {
-      username: '',
+      email: '',
       password: ''
     }
+  },
+  me: {
+    url: '/users/me',
+    method: 'GET'
   },
   deleteUser: {
     method: 'DELETE',
