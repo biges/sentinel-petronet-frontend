@@ -471,9 +471,9 @@
     "
     @selection-change="handleSelectionChange"
     @sort-change="handleServiceSorting"
-    height="100%"
     border="false"
   >
+    <!-- height="100%" -->
     <!-- :row-class-name="rowClassName" -->
     <el-table-column type="selection" width="55"> </el-table-column>
 

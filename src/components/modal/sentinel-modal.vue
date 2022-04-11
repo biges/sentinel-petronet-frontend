@@ -44,6 +44,7 @@
       <div class="title">
         <span>{{ title }}</span>
       </div>
+      <!-- Temp -->
       <el-table
         v-if="type === 'temp'"
         :data="data"
@@ -99,13 +100,176 @@
           </template>
         </el-table-column>
       </el-table>
+      <!-- Humidty" -->
+      <el-table
+        v-else-if="type === 'humidty'"
+        :data="data"
+        stripe
+        style="max-width: 400px"
+        :header-cell-style="{ color: '#444444' }"
+        cell-class-name="myCell"
+      >
+        <el-table-column
+          prop="type"
+          header-align="left"
+          label="Sensör Adı"
+          width="130"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="sensor_id"
+          header-align="left"
+          label="Sensör Id"
+          width="80"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          header-align="left"
+          label="Değer"
+          width="75"
+        >
+          <template slot-scope="scope">
+            <div style="display: flex; justify-content: center">
+              {{ ('℃ ', scope.row.humidity) }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          header-align="left"
+          label="Durum"
+          width="85"
+        >
+          <template slot-scope="scope">
+            <div style="display: flex; justify-content: center">
+              <SvgIconHumidty
+                :status="
+                  scope.row.humidity > 0
+                    ? scope.row.humidity
+                      ? true
+                      : false
+                    : null
+                "
+              ></SvgIconHumidty>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-table
+        v-else-if="type === 'tamper'"
+        :data="data"
+        stripe
+        style="max-width: 400px"
+        :header-cell-style="{ color: '#444444' }"
+        cell-class-name="myCell"
+      >
+        <el-table-column
+          prop="type"
+          header-align="left"
+          label="Sensör Adı"
+          width="130"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="sensor_id"
+          header-align="left"
+          label="Sensör Id"
+          width="80"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          header-align="left"
+          label="Değer"
+          width="75"
+        >
+          <template slot-scope="scope">
+            <div style="display: flex; justify-content: center">
+              {{ scope.row.tamper ? 'Normal' : 'Alarm' }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          header-align="left"
+          label="Durum"
+          width="85"
+        >
+          <template slot-scope="scope">
+            <div style="display: flex; justify-content: center">
+              <SvgIconTamper
+                :status="
+                  scope.row.tamper != null
+                    ? scope.row.tamper
+                      ? true
+                      : false
+                    : null
+                "
+              ></SvgIconTamper>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-table
+        v-else-if="type === 'battery'"
+        :data="data"
+        stripe
+        style="max-width: 400px"
+        :header-cell-style="{ color: '#444444' }"
+        cell-class-name="myCell"
+      >
+        <el-table-column
+          prop="type"
+          header-align="left"
+          label="Sensör Adı"
+          width="130"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="sensor_id"
+          header-align="left"
+          label="Sensör Id"
+          width="80"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          header-align="left"
+          label="Değer"
+          width="75"
+        >
+          <template slot-scope="scope">
+            <div style="display: flex; justify-content: center">
+              {{ ('% ', scope.row.battery) }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          header-align="left"
+          label="Durum"
+          width="85"
+        >
+          <template slot-scope="scope">
+            <div style="display: flex; justify-content: center">
+              <SvgIconBattery
+                :value="scope.row.battery > 0 ? scope.row.battery : null"
+              ></SvgIconBattery>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
   </el-drawer>
 </template>
 
 <script>
 import SvgClose from '@/assets/icons/list/svg-icon-close.vue'
+import SvgIconHumidty from '@/assets/icons/device-details/termolog/svg-icon-humudity'
 import SvgIconTemprature from '@/assets/icons/device-details/termolog/svg-icon-temprature'
+import SvgIconTamper from '@/assets/icons/device-details/termolog/svg-icon-tamper'
+import SvgIconBattery from '@/assets/icons/device-details/termolog/svg-icon-battery'
 import DeviceActions from '@/components/list/device-actions'
 import DeviceReport from '@/components/list/device-report'
 import DeviceService from '@/components/list/device-service'
@@ -118,7 +282,10 @@ export default {
     DeviceActions,
     DeviceReport,
     DeviceService,
-    SvgIconTemprature
+    SvgIconTemprature,
+    SvgIconHumidty,
+    SvgIconTamper,
+    SvgIconBattery
   },
   data() {
     return {
@@ -150,8 +317,18 @@ export default {
         case 'temp':
           this.title = 'Sıcaklık Durumları'
           break
+        case 'humidty':
+          this.title = 'Nem Durumları'
+          break
+        case 'tamper':
+          this.title = 'Tamper Durumları'
+          break
+        case 'battery':
+          this.title = 'Batarya Durumları'
+          break
       }
       this.fillDataTable({ premise_id: this.getSelectedRows[0].premise_id })
+      this.$forceUpdate()
     }
   },
   props: {

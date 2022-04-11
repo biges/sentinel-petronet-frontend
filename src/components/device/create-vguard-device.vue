@@ -92,7 +92,7 @@
             prop="serial_number"
             class="sentinel-input device-form-item"
             :label="
-              this.form.hardware_type_id == 3 ? 'SERI NUMARASI' : 'GATEWAAY NO'
+              this.form.hardware_type_id == 3 ? 'SERI NUMARASI' : 'GATEWAY NO'
             "
           >
             <el-input v-model="form.serial_number"></el-input>
@@ -105,6 +105,21 @@
             v-if="form.hardware_type_id == 3"
           >
             <el-input v-model="form.inventory_number"></el-input>
+          </el-form-item>
+          <el-form-item
+            prop="device_model_id"
+            class="sentinel-input device-form-item"
+            label="KANAL SAYISI"
+          >
+            <el-select v-model="channels_count" @change="handleChannelsCount">
+              <el-option
+                v-for="item in channel_options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
           </el-form-item>
         </div>
 
@@ -129,7 +144,7 @@
           <el-form-item
             prop="host"
             class="sentinel-input device-form-item"
-            label="IP ADRESI"
+            label="ID"
           >
             <el-input v-model="form.host"></el-input>
           </el-form-item>
@@ -278,6 +293,7 @@ export default {
     return {
       premise_name: '',
       premise_id: '',
+      channels_count: 4,
       form: {
         name: '',
         hardware_type_id: 3,
@@ -370,6 +386,24 @@ export default {
           label: 'GATEWAY',
           brand_id: 4,
           value: 4
+        }
+      ],
+      channel_options: [
+        {
+          label: '4 Kanal',
+          value: 4
+        },
+        {
+          label: '8 Kanal',
+          value: 8
+        },
+        {
+          label: '16 Kanal',
+          value: 16
+        },
+        {
+          label: '32 Kanal',
+          value: 32
         }
       ],
       channel_statuses: [
@@ -465,6 +499,19 @@ export default {
       createDevice: 'device/createDevice',
       getGatewayById: 'device/getGatewayById'
     }),
+    handleChannelsCount(val) {
+      console.log(val)
+      for (let index = this.form.channels.length; index < val; index++) {
+        this.form.channels.push({
+          channel_name: 'Kanal ' + parseInt(index + 1),
+          channel_id: parseInt(index + 1),
+          status: '',
+          category: ''
+        })
+      }
+      this.$forceUpdate()
+      console.log(this.form.channels)
+    },
     validate() {
       let isValid = false
 

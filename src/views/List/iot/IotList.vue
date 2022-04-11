@@ -128,6 +128,10 @@ export default {
       //       this.getDeviceDetails(this.$route.params.device_id)
       //     }
       //   })
+    },
+    handleSvgIconClick(val) {
+      this.modal_type = val
+      this.modal_visible = true
     }
   },
   created() {
@@ -136,6 +140,7 @@ export default {
   mounted() {
     bus.$on('onSelectedDevicesRefresh', this.refreshVguardDeviceAndData)
     bus.$on('onServiceSorting', (val) => this.fillDataTable(val))
+    bus.$on('onSvgIconClick', (val) => this.handleSvgIconClick(val))
   },
   destroyed() {
     bus.$off('onSelectedDevicesRefresh')

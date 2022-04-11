@@ -9,7 +9,7 @@ export const NAVIGATON = [
     disabled: true
   },
   { label: 'Servisler', route: '/services', disabled: true },
-  { label: 'İstasyonlar', route: '/premises', disabled: true },
+  { label: 'Depolar', route: '/premises', disabled: true },
   { label: 'Ayarlar', route: '/settings', disabled: true }
   // { label: "Çıkış", route: "/logout" },
 ]

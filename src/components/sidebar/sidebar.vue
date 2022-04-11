@@ -27,9 +27,7 @@
           <SvgIconServices
             v-else-if="nav.label == 'Servisler'"
           ></SvgIconServices>
-          <SvgIconStation
-            v-else-if="nav.label == 'İstasyonlar'"
-          ></SvgIconStation>
+          <SvgIconDepo v-else-if="nav.label == 'Depolar'"></SvgIconDepo>
           <SvgIconSettings v-else-if="nav.label == 'Ayarlar'"></SvgIconSettings>
 
           <span v-if="nav.label != 'Çıkış'">{{ nav.label }}</span></router-link
@@ -59,6 +57,7 @@
 <script>
 import { NAVIGATON } from '@/constant'
 import SvgIconTracked from '@/assets/icons/navigation/tracked.vue'
+import SvgIconDepo from '@/assets/icons/navigation/svg-icon-depo.vue'
 import Dashboard from '@/assets/icons/navigation/dashboard.vue'
 import SvgIconList from '@/assets/icons/navigation/svg-icon-list.vue'
 import SvgIconServices from '@/assets/icons/navigation/svg-icon-services.vue'
@@ -67,6 +66,7 @@ import SvgIconSettings from '@/assets/icons/navigation/svg-icon-settings.vue'
 import SvgIconLogout from '@/assets/icons/navigation/svg-icon-logout.vue'
 // import SvgIconPremise from '@/assets/icons/navigation/svg-icon-premise.vue'
 import SvgIconStation from '@/assets/icons/navigation/svg-icon-station.vue'
+
 import { mapActions, mapGetters } from 'vuex'
 // import auth from '../../store/auth'
 export default {
@@ -79,7 +79,8 @@ export default {
     SvgIconMaps,
     SvgIconSettings,
     SvgIconLogout,
-    SvgIconStation
+    // SvgIconStation,
+    SvgIconDepo
     // SvgIconPremise
   },
   data() {

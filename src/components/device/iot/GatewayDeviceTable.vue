@@ -86,8 +86,12 @@
         label="Sıcaklık"
       >
         <template slot-scope="scope">
-          <div style="display: flex; justify-content: center">
+          <div
+            @click="handleSvgIconClick('temp')"
+            style="display: flex; justify-content: center"
+          >
             <SvgIconTemprature
+              @click="handleSvgIconClick('temp')"
               :status="
                 scope.row.sensor.length > 0
                   ? scope.row.sensor[0].temp
@@ -101,7 +105,10 @@
       </el-table-column>
       <el-table-column header-align="center" prop="device_state" label="Nem">
         <template slot-scope="scope">
-          <div style="display: flex; justify-content: center">
+          <div
+            @click="handleSvgIconClick('humidty')"
+            style="display: flex; justify-content: center"
+          >
             <SvgIconHumidty
               :status="
                 scope.row.sensor.length > 0
@@ -116,8 +123,12 @@
       </el-table-column>
       <el-table-column header-align="center" prop="device_state" label="Tamper">
         <template slot-scope="scope">
-          <div style="display: flex; justify-content: center">
+          <div
+            @click="handleSvgIconClick('tamper')"
+            style="display: flex; justify-content: center"
+          >
             <SvgIconTamper
+              @click="handleSvgIconClick('tamper')"
               :status="
                 scope.row.sensor.length > 0
                   ? scope.row.sensor[0].tamper
@@ -131,7 +142,10 @@
       </el-table-column>
       <el-table-column header-align="center" prop="device_state" label="Pil">
         <template slot-scope="scope">
-          <div style="display: flex; justify-content: center">
+          <div
+            @click="handleSvgIconClick('battery')"
+            style="display: flex; justify-content: center"
+          >
             <SvgIconBattery
               :value="
                 scope.row.sensor.length > 0 ? scope.row.sensor[0].battery : null
@@ -433,6 +447,9 @@ export default {
     },
     downloadEventRecord(val) {
       this.$emit('onDownloadEventRecord', val)
+    },
+    handleSvgIconClick(val) {
+      bus.$emit('onSvgIconClick', val)
     }
   },
   created() {
