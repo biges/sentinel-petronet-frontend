@@ -30,6 +30,6 @@ export default {
 <style lang="scss" scoped>
 .container {
   max-height: 100%;
-  margin: 27px 38px 12px 32px;
+  margin: 20px 38px 12px 32px;
 }
 </style>
