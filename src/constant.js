@@ -411,7 +411,7 @@ export const DEVICE_STATUS = {
     {
       label: 'Batarya Alarm',
       key: 'battery',
-      value: true
+      value: 9
     },
     {
       label: 'Prize Takılı',
