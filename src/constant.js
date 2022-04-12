@@ -411,27 +411,7 @@ export const DEVICE_STATUS = {
     {
       label: 'Batarya Alarm',
       key: 'battery',
-      value: 'm2m'
-    },
-    {
-      label: 'Batarya Normal',
-      key: 'connection',
-      value: 'm2m'
-    },
-    {
-      label: 'M2M',
-      key: 'connection',
-      value: 'm2m'
-    },
-    {
-      label: 'n2n',
-      key: 'connection',
-      value: ''
-    },
-    {
-      label: 'n2n',
-      key: 'connection',
-      value: ''
+      value: true
     },
     {
       label: 'Prize Takılı',

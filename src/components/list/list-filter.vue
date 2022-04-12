@@ -64,7 +64,7 @@
         >
       </div>
     </div>
-    <div v-if="currentRouteName !== 'Maps'" class="actions">
+    <div v-if="this.$route.fullPath.indexOf('iot') < 0" class="actions">
       <div class="component">
         <span>YENİLE</span>
         <el-button
@@ -192,10 +192,12 @@ export default {
     this.hardware_type = this.$route.path.split('/')[2].toUpperCase()
   },
   mounted() {
-    console.log('Permissiion', this.getPermissions)
+    console.log('Permission', this.getPermissions)
     this.hardware_options = [...DEVICE_TYPES].filter((item) => {
       return item.valid == true
     })
+    console.log('Device Status', DEVICE_STATUS['gateway'])
+    this.status_options = [...DEVICE_STATUS['gateway']]
   }
 }
 </script>

@@ -107,6 +107,7 @@
             <el-input v-model="form.inventory_number"></el-input>
           </el-form-item>
           <el-form-item
+            v-if="form.hardware_type_id == 3"
             prop="device_model_id"
             class="sentinel-input device-form-item"
             label="KANAL SAYISI"
@@ -436,8 +437,12 @@ export default {
           value: 'Sebze/Meyve'
         },
         {
-          label: 'Et/Tavuk/Balık ve Şarküteri',
-          value: 'Et/Tavuk/Balık ve Şarküteri'
+          label: 'Et/Tavuk/Balık',
+          value: 'Et/Tavuk/Balık'
+        },
+        {
+          label: 'Şarküteri',
+          value: 'Şarküteri'
         }
       ],
       rules: {
@@ -500,14 +505,20 @@ export default {
       getGatewayById: 'device/getGatewayById'
     }),
     handleChannelsCount(val) {
-      console.log(val)
-      for (let index = this.form.channels.length; index < val; index++) {
-        this.form.channels.push({
-          channel_name: 'Kanal ' + parseInt(index + 1),
-          channel_id: parseInt(index + 1),
-          status: '',
-          category: ''
-        })
+      if (this.form.channels.length < val)
+        for (let index = this.form.channels.length; index < val; index++) {
+          this.form.channels.push({
+            channel_name: 'Kanal ' + parseInt(index + 1),
+            channel_id: parseInt(index + 1),
+            status: '',
+            category: ''
+          })
+        }
+      else {
+        let distance = this.form.channels.length - val
+        for (let index = 0; index < distance; index++) {
+          this.form.channels.pop()
+        }
       }
       this.$forceUpdate()
       console.log(this.form.channels)
@@ -551,17 +562,17 @@ export default {
       )[0].value
     },
     createPayload() {
-      if (this.form.hardware_type_id == 3)
-        return {
-          vguard_device: {
-            ...this.form,
-            port: parseInt(this.form.port),
-            premise_id: parseInt(this.$route.params.premise_id),
-            disk_count: 1,
-            streams: []
-          }
+      if (this.form.hardware_type_id == 3) {
+        let vguard_device = {
+          ...this.form,
+          port: parseInt(this.form.port),
+          premise_id: parseInt(this.$route.params.premise_id),
+          disk_count: 1,
+          streams: []
         }
-      else if (this.form.hardware_type_id == 4)
+        delete vguard_device.sensor
+        return { vguard_device: vguard_device }
+      } else if (this.form.hardware_type_id == 4)
         return {
           termolog_gateway: {
             name: this.form.name,
