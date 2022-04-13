@@ -1,6 +1,6 @@
 <template>
   <svg
-    v-if="value < 100 && value >= 76"
+    v-if="value <= 100 && value >= 76"
     width="29"
     height="29"
     viewBox="0 0 29 29"
