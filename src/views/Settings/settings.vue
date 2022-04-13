@@ -284,7 +284,7 @@
         >
           <el-table-column prop="row" label="Sıra" width="60px">
           </el-table-column>
-          <el-table-column prop="id" label="İstasyon ID" width="80px">
+          <el-table-column prop="id" label="DEPO ID" width="80px">
           </el-table-column>
           <el-table-column prop="description" label="Açıklama" width="auto">
           </el-table-column>

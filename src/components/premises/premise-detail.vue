@@ -54,7 +54,7 @@ export default {
     }),
     deleteClick() {
       if (this.getPermissions['location_delete'])
-        this.$confirm('İstasyonu silmek istediğinize emin misiniz?', {
+        this.$confirm('Depuu silmek istediğinize emin misiniz?', {
           confirmButtonText: 'Sil',
           cancelButtonText: 'Vazgeç',
           type: 'error'

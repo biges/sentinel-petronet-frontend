@@ -5,7 +5,7 @@
         <BackArrow></BackArrow>
       </router-link>
       <span class="title">{{
-        title ? 'Yeni İstasyon Ekle' : 'İstasyon Güncelle'
+        title ? 'Yeni Depo Ekle' : 'Depo Güncelle'
       }}</span>
     </div>
     <div class="header-element"></div>

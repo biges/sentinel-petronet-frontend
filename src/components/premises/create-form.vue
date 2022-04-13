@@ -3,7 +3,7 @@
     <el-form :model="premiseForm" :rules="premiseRules" ref="createPremise">
       <div class="form-row">
         <div class="premise-form-content">
-          <span class="premise-form-content-label">İSTASYON KODU </span>
+          <span class="premise-form-content-label">DEPO KODU </span>
           <el-form-item prop="custom_premise_id">
             <el-input
               style="width: 330px"
@@ -14,7 +14,7 @@
           </el-form-item>
         </div>
         <div class="premise-form-content">
-          <span class="premise-form-content-label">İSTASYON ADI</span>
+          <span class="premise-form-content-label">DEPO ADI</span>
           <el-form-item prop="custom_premise_name">
             <el-input
               style="width: 330px"
@@ -214,7 +214,7 @@ export default {
         custom_premise_id: [
           {
             required: true,
-            message: 'Lütfen İSTASYON KODU giriniz!',
+            message: 'Lütfen DEPO KODU giriniz!',
             trigger: 'blur'
           }
         ],

@@ -69,6 +69,7 @@ export default {
       await listPremises.then((r) => {
         this.table_data = r
         console.log(this.table_data)
+        this.setSelectedRow(this.table_data[0])
       })
     }
   },

@@ -1,11 +1,11 @@
 <template>
   <div class="container">
     <DashboardNav></DashboardNav>
-    <ListFilter
+    <IotListFilter
       class="top"
       @onActionClick="handleActionClick"
       @onFilteredData="handleFilteredData"
-    ></ListFilter>
+    ></IotListFilter>
     <GatewayDeviceTable :data="table_data"></GatewayDeviceTable>
     <DataTablePagination
       class="bottom"
@@ -23,7 +23,7 @@
 <script>
 import GatewayDeviceTable from '@/components/device/iot/GatewayDeviceTable.vue'
 import DataTablePagination from '@/components/atomic/data-table-pagination.vue'
-import ListFilter from '@/components/list/list-filter'
+import IotListFilter from '@/components/list/iot/iot-list-filter'
 import SentinelModal from '@/components/modal/sentinel-modal.vue'
 import DashboardNav from '@/components/dashboard/dashboard-nav'
 
@@ -33,7 +33,7 @@ export default {
   name: 'IotList',
   components: {
     DashboardNav,
-    ListFilter,
+    IotListFilter,
     DataTablePagination,
     SentinelModal,
     GatewayDeviceTable

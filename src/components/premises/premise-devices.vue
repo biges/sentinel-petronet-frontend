@@ -9,9 +9,7 @@
         :selected_device_id="selectedDevice"
       ></DeviceCard>
     </div>
-    <span v-else
-      >İlgili İstasyonda herhangi bir cihaz kaydı bulunmamaktadır.</span
-    >
+    <span v-else>İlgili depoda herhangi bir cihaz kaydı bulunmamaktadır.</span>
     <!-- <div class="sentinel-location-bottom"> -->
     <div class="devices-bottom">
       <el-button
@@ -86,7 +84,7 @@ export default {
         params: {
           device_id: this.selectedDevice,
           premise_id: this.getSelectedRow.id,
-          iot: 1
+          iot: this.selectedDevice.hardware_type ? 1 : 0
         }
       })
     },

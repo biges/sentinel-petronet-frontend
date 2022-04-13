@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="location">
-      <span class="label">İSTASYON KODU</span>
+      <span class="label">DEPO KODU</span>
       <el-input
         class="sentinel-input"
         type="search"
@@ -138,7 +138,7 @@
         >
           <el-table-column prop="row" label="Sıra" width="200">
           </el-table-column>
-          <el-table-column prop="id" label="İstasyon ID" width="300">
+          <el-table-column prop="id" label="DEPO ID" width="300">
           </el-table-column>
           <el-table-column prop="description" label="Açıklama" width="150">
           </el-table-column>

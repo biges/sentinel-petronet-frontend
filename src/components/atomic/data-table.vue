@@ -13,7 +13,7 @@
     @row-dblclick="handleDBClick"
     :header-cell-style="
       this.$route.name == 'List'
-        ? { background: '#f5f5f5', color: '#444444' }
+        ? { background: '#f5f5f5', color: '#444444', wordWrap: 'break-word' }
         : { color: '#444444' }
     "
     @selection-change="handleSelectionChange"
@@ -26,7 +26,7 @@
     <el-table-column
       header-align="left"
       prop="premise.custom_premise_id"
-      label="İSTASYON KODU"
+      label="DEPO KODU"
       width="180"
     >
       <template slot-scope="scope">
@@ -37,14 +37,14 @@
     <el-table-column
       header-align="left"
       prop="premise.custom_premise_name"
-      label="İSTASYON ADI"
+      label="DEPO ADI"
     >
     </el-table-column>
     <el-table-column
       header-align="left"
       prop="premise.location.city.name"
       label="LOKASYON"
-      width="180"
+      width="140"
     >
       <!-- <template slot-scope="scope">
         {{ scope.row.premise.location }}
@@ -80,93 +80,241 @@
     <el-table-column
       header-align="left"
       prop="device_state"
-      label="CİHAZ DURUMLARI"
+      label="Bağlantı Durumu"
+      width="80px"
     >
       <template slot-scope="scope">
         <ul>
-          <li class="device-channel-icon">
-            <SvgIconFirstChannels
+          <li class="device-state-icon">
+            <SvgIconCameraConnection
               :status="
-                scope.row.is_active == true
-                  ? scope.row.channels[0] &&
-                    scope.row.channels[0].status == true
-                    ? !scope.row.channels[0].show_warning
-                    : null
-                  : false
+                scope.row.is_active == true ? !scope.row.network_error : false
               "
-            ></SvgIconFirstChannels>
-          </li>
-          <li class="device-channel-icon">
-            <SvgIconSecondChannel
-              :status="
-                scope.row.is_active == true
-                  ? scope.row.channels[1] &&
-                    scope.row.channels[1].status == true
-                    ? !scope.row.channels[1].show_warning
-                    : null
-                  : false
-              "
-            ></SvgIconSecondChannel>
-          </li>
-          <li class="device-channel-icon">
-            <SvgIconThirdChannel
-              :status="
-                scope.row.is_active == true
-                  ? scope.row.channels[2] &&
-                    scope.row.channels[2].status == true
-                    ? !scope.row.channels[2].show_warning
-                    : null
-                  : false
-              "
-            ></SvgIconThirdChannel>
-          </li>
-          <li class="device-channel-icon">
-            <SvgIconFourthChannel
-              :status="
-                scope.row.is_active == true
-                  ? scope.row.channels[3] &&
-                    scope.row.channels[3].status == true
-                    ? !scope.row.channels[3].show_warning
-                    : null
-                  : false
-              "
-            ></SvgIconFourthChannel>
+            ></SvgIconCameraConnection>
           </li>
         </ul>
       </template>
     </el-table-column>
-    <el-table-column header-align="left" prop="state" label="">
+    <el-table-column
+      header-align="left"
+      prop="state"
+      label="Disk Durumu"
+      width="70px"
+    >
       <template slot-scope="scope">
         <ul>
           <li class="device-state-icon">
-            <SvgIconCommunication
-              :status="
-                scope.row.is_active == true ? !scope.row.network_error : false
-              "
-            ></SvgIconCommunication>
-          </li>
-          <li class="device-state-icon">
-            <SvgIconDisk
+            <SvgIconCameraDisk
               :status="
                 scope.row.is_active == true ? !scope.row.disk_error : false
               "
-            ></SvgIconDisk>
+            ></SvgIconCameraDisk>
           </li>
+        </ul>
+      </template>
+    </el-table-column>
+    <el-table-column
+      header-align="left"
+      prop="state"
+      label="Kayıt Durumu"
+      width="80px"
+    >
+      <template slot-scope="scope">
+        <ul>
           <li class="device-state-icon">
-            <SvgIconRecord
+            <SvgIconCameraRecord
               :status="
                 scope.row.is_active == true
                   ? !scope.row.record_error && !scope.row.disk_error
                   : false
               "
-            ></SvgIconRecord>
+            ></SvgIconCameraRecord>
           </li>
+        </ul>
+      </template>
+    </el-table-column>
+    <el-table-column
+      header-align="left"
+      prop="state"
+      label="Tarih Durumu"
+      width="80px"
+    >
+      <template slot-scope="scope">
+        <ul>
           <li class="device-state-icon">
-            <SvgIconDateTime
+            <SvgIconCameraTime
               :status="
                 scope.row.is_active == true ? !scope.row.datetime_error : false
               "
-            ></SvgIconDateTime>
+            ></SvgIconCameraTime>
+          </li>
+        </ul>
+      </template>
+    </el-table-column>
+    <el-table-column
+      header-align="left"
+      prop="state"
+      label="Video Kaybı"
+      width="80px"
+    >
+      <template slot-scope="scope">
+        <ul>
+          <li class="device-state-icon">
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :visible-arrow="false"
+              popper-class="white-background"
+              placement="bottom"
+            >
+              <div
+                class="circle"
+                v-for="channel in scope.row.channelsVideoLoss"
+                :key="channel.channel_id"
+                slot="content"
+              >
+                <span>{{ channel }}</span>
+              </div>
+              <!-- <div slot="content">
+                <div>{{ scope.row.channelsVideoLoss[0] }}</div>
+              </div> -->
+              <el-badge
+                :hidden="scope.row.channelsVideoLoss.length == 0"
+                :value="scope.row.channelsVideoLoss.length"
+                class="item"
+              >
+                <SvgIconCameraVideoLoss
+                  :status="
+                    scope.row.is_active == true
+                      ? !scope.row.has_video_loss
+                      : false
+                  "
+                ></SvgIconCameraVideoLoss>
+              </el-badge>
+            </el-tooltip>
+          </li>
+        </ul>
+      </template>
+    </el-table-column>
+    <el-table-column
+      header-align="left"
+      prop="state"
+      label="Hareket Algılama"
+      width="80px"
+    >
+      <template slot-scope="scope">
+        <ul>
+          <li class="device-state-icon">
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :visible-arrow="false"
+              popper-class="white-background"
+              placement="bottom"
+            >
+              <div
+                class="circle"
+                v-for="channel in scope.row.channelsVideoLoss"
+                :key="channel.channel_id"
+                slot="content"
+              >
+                <span>{{ channel }}</span>
+              </div>
+              <el-badge
+                :hidden="scope.row.channelsMotionDetect.length == 0"
+                :value="scope.row.channelsMotionDetect.length"
+                class="item"
+              >
+                <SvgIconCameraMotionDetect
+                  :status="
+                    scope.row.is_active == true
+                      ? !scope.row.motion_detect
+                      : false
+                  "
+                ></SvgIconCameraMotionDetect> </el-badge
+            ></el-tooltip>
+          </li>
+        </ul>
+      </template>
+    </el-table-column>
+    <el-table-column
+      header-align="left"
+      prop="state"
+      label="Video Sabotaj"
+      width="80px"
+    >
+      <template slot-scope="scope">
+        <ul>
+          <li class="device-state-icon">
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :visible-arrow="false"
+              popper-class="white-background"
+              placement="bottom"
+            >
+              <div
+                class="circle"
+                v-for="channel in scope.row.channelsVideoLoss"
+                :key="channel.channel_id"
+                slot="content"
+              >
+                <span>{{ channel }}</span>
+              </div>
+              <el-badge
+                :hidden="scope.row.channelsVideoSabotage.length == 0"
+                :value="scope.row.channelsVideoSabotage.length"
+                class="item"
+              >
+                <SvgIconCameraVideoSabotaj
+                  :status="
+                    scope.row.is_active == true
+                      ? !scope.row.has_video_sabotage
+                      : false
+                  "
+                ></SvgIconCameraVideoSabotaj> </el-badge
+            ></el-tooltip>
+          </li>
+        </ul>
+      </template>
+    </el-table-column>
+    <el-table-column
+      header-align="left"
+      prop="state"
+      label="Sahne Değişimi"
+      width="80px"
+    >
+      <template slot-scope="scope">
+        <ul>
+          <li class="device-state-icon">
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :visible-arrow="false"
+              popper-class="white-background"
+              placement="bottom"
+            >
+              <div
+                class="circle"
+                v-for="channel in scope.row.channelsVideoLoss"
+                :key="channel.channel_id"
+                slot="content"
+              >
+                <span>{{ channel }}</span>
+              </div>
+              <el-badge
+                :hidden="scope.row.channelsSceneChange.length == 0"
+                :value="scope.row.channelsSceneChange.length"
+                class="item"
+              >
+                <SvgIconCameraSceneChange
+                  :status="
+                    scope.row.is_active == true
+                      ? !scope.row.has_scene_change
+                      : false
+                  "
+                ></SvgIconCameraSceneChange> </el-badge
+            ></el-tooltip>
           </li>
         </ul>
       </template>
@@ -261,7 +409,7 @@
     <!-- <el-table-column
       header-align="left"
       prop="premise.custom_premise_name"
-      label="İSTASYON ADI"
+      label="DEPO ADI"
     >
     </el-table-column> -->
     <el-table-column
@@ -842,7 +990,7 @@
       </template>
     </el-table-column>
   </el-table>
-  <!-- İstasyonlar -->
+  <!-- Depolar -->
   <el-table
     v-loading="loading"
     v-else-if="['Premises'].includes(this.$route.name)"
@@ -857,7 +1005,7 @@
   >
     <el-table-column
       property="custom_premise_id"
-      label="İSTASYON KODU"
+      label="DEPO KODU"
       min-width="50"
     ></el-table-column>
     <el-table-column
@@ -897,14 +1045,10 @@
     height="100%"
   >
     <el-table-column type="selection" width="55"> </el-table-column>
-    <el-table-column property="premise_id" label="İSTASYON KODU" min-width="55">
+    <el-table-column property="premise_id" label="DEPO KODU" min-width="55">
     </el-table-column>
 
-    <el-table-column
-      property="premise_name"
-      label="İSTASYON ADI"
-      min-width="80"
-    >
+    <el-table-column property="premise_name" label="DEPO ADI" min-width="80">
       <!-- <template slot-scope="scope">
         {{ scope.custom_premise_id }}
       </template> -->
@@ -1086,6 +1230,15 @@
 </template>
 
 <script>
+import SvgIconCameraConnection from '@/assets/icons/device-details/camera/svg-icon-camera-connection.vue'
+import SvgIconCameraDisk from '@/assets/icons/device-details/camera/svg-icon-camera-disk.vue'
+import SvgIconCameraVideoLoss from '@/assets/icons/device-details/camera/svg-icon-camera-video-loss.vue'
+import SvgIconCameraRecord from '@/assets/icons/device-details/camera/svg-icon-camera-record.vue'
+import SvgIconCameraTime from '@/assets/icons/device-details/camera/svg-icon-camera-time.vue'
+import SvgIconCameraSceneChange from '@/assets/icons/device-details/camera/svg-icon-camera-scene-change.vue'
+import SvgIconCameraVideoSabotaj from '@/assets/icons/device-details/camera/svg-icon-camera-video-sabotaj.vue'
+import SvgIconCameraMotionDetect from '@/assets/icons/device-details/camera/svg-icon-camera-motion-detect.vue'
+
 import SvgIconDownload from '@/assets/icons/device-details/svg-icon-download.vue'
 // import SvgIconArmed from '@/components/atomic/device/hap/svg-icon-armed.vue'
 import SvgIconHumidty from '@/assets/icons/device-details/termolog/svg-icon-humudity'
@@ -1125,6 +1278,14 @@ export default {
     }
   },
   components: {
+    SvgIconCameraConnection,
+    SvgIconCameraDisk,
+    SvgIconCameraVideoLoss,
+    SvgIconCameraRecord,
+    SvgIconCameraTime,
+    SvgIconCameraSceneChange,
+    SvgIconCameraVideoSabotaj,
+    SvgIconCameraMotionDetect,
     SvgIconDownload,
     SvgIconWarning,
     SvgIconFirstChannel,
@@ -1137,17 +1298,17 @@ export default {
     // SvgIconConnection,
     SvgIconEnergy,
     // SvgIconAlarm,
-    SvgIconSecondChannel,
-    SvgIconThirdChannel,
-    SvgIconFourthChannel,
+    // SvgIconSecondChannel,
+    // SvgIconThirdChannel,
+    // SvgIconFourthChannel,
     // SvgIconSabotage,
     // SvgIconFault,
-    SvgIconCommunication,
+    SvgIconCommunication
     // SvgIconEnergy,
     // SvgIconBattery,
-    SvgIconDisk,
-    SvgIconRecord,
-    SvgIconDateTime
+    // SvgIconDisk,
+    // SvgIconRecord,
+    // SvgIconDateTime
     // SvgIconServiceRequest,
     // SvgIconQuery,
   },
@@ -1383,5 +1544,32 @@ export default {
 .mycell2 {
   border: none !important;
   padding: 0 !important;
+}
+.item {
+  margin-top: 10px;
+  margin-right: 40px;
+}
+.white-background {
+  display: flex;
+  flex-direction: row;
+  max-width: 100%;
+  max-height: 100%;
+  background: $hybrone_background_color !important;
+  color: $hybrone_error_red !important;
+  .circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin: 5px;
+    background: $hybrone_background_color !important;
+
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    border: 1px solid #e04141;
+    box-shadow: 0px 4px 6px rgba(91, 134, 245, 0.05);
+    box-sizing: border-box;
+  }
 }
 </style>

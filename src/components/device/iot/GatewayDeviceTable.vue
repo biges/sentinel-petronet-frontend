@@ -44,7 +44,7 @@
     <!-- <el-table-column
       header-align="left"
       prop="premise.custom_premise_name"
-      label="İSTASYON ADI"
+      label="DEPO ADI"
     >
     </el-table-column> -->
     <el-table-column
@@ -86,58 +86,121 @@
         label="Sıcaklık"
       >
         <template slot-scope="scope">
-          <div
-            @click="handleSvgIconClick('temp')"
-            style="display: flex; justify-content: center"
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :visible-arrow="false"
+            :content="
+              scope.row.sensor.length > 0
+                ? scope.row.sensor[0].temp
+                  ? 'Normal'
+                  : 'Alarm'
+                : 'Bilgi Yok'
+            "
+            :popper-class="
+              scope.row.sensor.length > 0
+                ? scope.row.sensor[0].temp
+                  ? 'success'
+                  : 'error'
+                : 'no-name'
+            "
+            placement="bottom"
           >
-            <SvgIconTemprature
+            <div
               @click="handleSvgIconClick('temp')"
-              :status="
-                scope.row.sensor.length > 0
-                  ? scope.row.sensor[0].temp
-                    ? true
-                    : false
-                  : null
-              "
-            ></SvgIconTemprature>
-          </div>
+              style="display: flex; justify-content: center"
+            >
+              <SvgIconTemprature
+                @click="handleSvgIconClick('temp')"
+                :status="
+                  scope.row.sensor.length > 0
+                    ? scope.row.sensor[0].temp
+                      ? true
+                      : false
+                    : null
+                "
+              ></SvgIconTemprature>
+            </div>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column header-align="center" prop="device_state" label="Nem">
         <template slot-scope="scope">
-          <div
-            @click="handleSvgIconClick('humidty')"
-            style="display: flex; justify-content: center"
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :visible-arrow="false"
+            :content="
+              scope.row.sensor.length > 0
+                ? scope.row.sensor[0].humidity
+                  ? 'Normal'
+                  : 'Alarm'
+                : 'Bilgi Yok'
+            "
+            :popper-class="
+              scope.row.sensor.length > 0
+                ? scope.row.sensor[0].humidity
+                  ? 'success'
+                  : 'error'
+                : 'no-name'
+            "
+            placement="bottom"
           >
-            <SvgIconHumidty
-              :status="
-                scope.row.sensor.length > 0
-                  ? scope.row.sensor[0].humidity
-                    ? true
-                    : false
-                  : null
-              "
-            ></SvgIconHumidty>
-          </div>
+            <div
+              @click="handleSvgIconClick('humidty')"
+              style="display: flex; justify-content: center"
+            >
+              <SvgIconHumidty
+                :status="
+                  scope.row.sensor.length > 0
+                    ? scope.row.sensor[0].humidity
+                      ? true
+                      : false
+                    : null
+                "
+              ></SvgIconHumidty>
+            </div>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column header-align="center" prop="device_state" label="Tamper">
         <template slot-scope="scope">
-          <div
-            @click="handleSvgIconClick('tamper')"
-            style="display: flex; justify-content: center"
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :visible-arrow="false"
+            :content="
+              scope.row.sensor.length > 0
+                ? scope.row.sensor[0].tamper
+                  ? 'Normal'
+                  : 'Alarm'
+                : 'Bilgi Yok'
+            "
+            :popper-class="
+              scope.row.sensor.length > 0
+                ? scope.row.sensor[0].tamper
+                  ? 'success'
+                  : 'error'
+                : 'no-name'
+            "
+            placement="bottom"
           >
-            <SvgIconTamper
+            <div
               @click="handleSvgIconClick('tamper')"
-              :status="
-                scope.row.sensor.length > 0
-                  ? scope.row.sensor[0].tamper
-                    ? true
-                    : false
-                  : null
-              "
-            ></SvgIconTamper>
-          </div>
+              style="display: flex; justify-content: center"
+            >
+              <SvgIconTamper
+                @click="handleSvgIconClick('tamper')"
+                :status="
+                  scope.row.sensor.length > 0
+                    ? scope.row.sensor[0].tamper
+                      ? true
+                      : false
+                    : null
+                "
+              ></SvgIconTamper>
+            </div>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column header-align="center" prop="device_state" label="Pil">
@@ -527,5 +590,14 @@ export default {
 .mycell2 {
   border: none !important;
   padding: 0 !important;
+}
+.success {
+  background: #6fcf97 !important;
+}
+.error {
+  background: #e04141 !important;
+}
+.no-name {
+  background: #a0a0a0 !important;
 }
 </style>

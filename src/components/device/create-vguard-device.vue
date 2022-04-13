@@ -122,6 +122,22 @@
               </el-option>
             </el-select>
           </el-form-item>
+          <el-form-item
+            v-if="form.hardware_type_id == 4"
+            prop="sensor_count"
+            class="sentinel-input device-form-item"
+            label="SENSÖR SAYISI"
+          >
+            <el-select v-model="sensor_count" @change="handleChangeSensorCount">
+              <el-option
+                v-for="item in sensors_count_options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
         </div>
 
         <h3 v-if="form.hardware_type_id == 3">Bağlantı Bilgileri</h3>
@@ -143,11 +159,11 @@
           </el-form-item>
 
           <el-form-item
-            prop="host"
+            prop="cloud_id"
             class="sentinel-input device-form-item"
             label="ID"
           >
-            <el-input v-model="form.host"></el-input>
+            <el-input v-model="form.cloud_id"></el-input>
           </el-form-item>
 
           <el-form-item
@@ -262,15 +278,7 @@
               class="sentinel-input device-form-item"
               :label="index === 0 ? 'ÖZELLİKLER' : null"
             >
-              <el-select v-model="channel.category">
-                <el-option
-                  v-for="item in channel_category"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
+              <el-input v-model="channel.category"> </el-input>
             </el-form-item>
           </div>
         </div>
@@ -295,6 +303,8 @@ export default {
       premise_name: '',
       premise_id: '',
       channels_count: 4,
+      selected_channels_count: 4,
+      sensor_count: 1,
       form: {
         name: '',
         hardware_type_id: 3,
@@ -304,7 +314,7 @@ export default {
         inventory_number: '',
         username: '',
         password: '',
-        host: '',
+        cloud_id: '',
         port: '',
         channels: [
           {
@@ -333,18 +343,18 @@ export default {
           }
         ],
         sensor: [
+          {
+            name: '',
+            type: '',
+            sensor_id: '',
+            gateway_id: null,
+            min_humidity: null,
+            max_humidity: null,
+            min_temp: null,
+            max_temp: null
+          }
           //   {
-          //     name: 'Hatalı Sensör4',
-          //     type: 'Sebze/Meyve',
-          //     sensor_id: '0135',
-          //     gateway_id: 4,
-          //     min_humidity: 10,
-          //     max_humidity: 100,
-          //     min_temp: -40,
-          //     max_temp: 100
-          //   },
-          //   {
-          //     name: 'Hatalı Sensör5',
+          //   name: 'Hatalı Sensör5',
           //     type: 'Sebze/Meyve',
           //     sensor_id: '0135',
           //     gateway_id: 4,
@@ -445,6 +455,7 @@ export default {
           value: 'Şarküteri'
         }
       ],
+      sensors_count_options: [],
       rules: {
         name: {
           required: this.$route.params.iot ? false : true,
@@ -504,6 +515,29 @@ export default {
       createDevice: 'device/createDevice',
       getGatewayById: 'device/getGatewayById'
     }),
+    handleChangeSensorCount(val) {
+      console.log(this.form.sensor.length)
+      console.log(val)
+      if (this.form.sensor.length + 1 <= val) {
+        for (let index = this.form.sensor.length; index < val; index++) {
+          this.form.sensor.push({
+            name: '',
+            type: '',
+            sensor_id: '',
+            gateway_id: null,
+            min_humidity: null,
+            max_humidity: null,
+            min_temp: null,
+            max_temp: null
+          })
+        }
+      } else {
+        for (let index = val; index <= this.form.sensor.length; index++) {
+          this.form.sensor.pop()
+        }
+      }
+      console.log(this.form.sensor)
+    },
     handleChannelsCount(val) {
       if (this.form.channels.length < val)
         for (let index = this.form.channels.length; index < val; index++) {
@@ -571,6 +605,7 @@ export default {
           streams: []
         }
         delete vguard_device.sensor
+        delete vguard_device.host
         return { vguard_device: vguard_device }
       } else if (this.form.hardware_type_id == 4)
         return {
@@ -676,7 +711,12 @@ export default {
         this.premise_id = custom_premise_id
       })
       .catch((err) => console.log(err))
-
+    for (let index = 1; index < 33; index++) {
+      this.sensors_count_options.push({
+        value: index,
+        label: index
+      })
+    }
     if (this.is_update) {
       const device_id = this.$route.params.device_id
       const isIot = this.$route.params.iot == 1

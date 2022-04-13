@@ -93,18 +93,52 @@ export default {
       }
     },
     async handleFilteredData(val) {
-      console.log('LİSt', val)
       await this.fillDataTable(val)
     },
     handleModalClose(val) {
       this.modal_visible = val
     },
     async fillDataTable(params) {
-      console.log('Gelen Paramlar', params)
       if (this.$route.fullPath.indexOf('iot') < 0) {
+        this.table_data = []
         let devices = this.getVguardDevices({ page: 1, limit: 20, ...params })
         devices.then((r) => {
-          this.table_data = r
+          r.forEach((device) => {
+            let generalVideoLoss = false
+            let generalVideoSabotage = false
+            let generalSceneChange = false
+            let channelsVideoLoss = []
+            let channelsVideoSabotage = []
+            let channelsSceneChange = []
+            let channelsMotionDetect = []
+            device.channels.forEach((channel) => {
+              channel.has_scene_change
+                ? channelsSceneChange.push(channel.channel_id)
+                : null
+              channel.has_video_loss
+                ? channelsVideoLoss.push(channel.channel_id)
+                : null
+              channel.has_video_sabotage
+                ? channelsVideoSabotage.push(channel.channel_id)
+                : null
+              channel.motion_detect
+                ? channelsMotionDetect.push(channel.channel_id)
+                : null
+              generalVideoLoss |= channel.has_video_loss
+              generalVideoSabotage |= channel.has_video_sabotage
+              generalSceneChange |= channel.has_scene_change
+            })
+            this.table_data.push({
+              ...device,
+              has_video_loss: generalVideoLoss,
+              has_video_sabotage: generalVideoSabotage,
+              has_scene_change: generalSceneChange,
+              channelsSceneChange,
+              channelsVideoLoss,
+              channelsVideoSabotage,
+              channelsMotionDetect
+            })
+          })
         })
       } else {
         let devices = this.getGatewayDevices({ page: 1, limit: 20, ...params })
@@ -122,7 +156,6 @@ export default {
         })
       } else {
         this.getSelectedRows.forEach((row) => {
-          console.log(row)
           selected_devices_integer.push(row.id)
           //   selected_devices_integer.push(parseInt(row.id))
         })
@@ -149,7 +182,6 @@ export default {
   },
   destroyed() {
     this.status_options = [...DEVICE_STATUS['camera']]
-    console.log('STATUS OPTIONS', this.status_options)
 
     bus.$off('onSelectedDevicesRefresh')
     bus.$off('onServiceSorting')

@@ -97,14 +97,14 @@ export default {
       if (val) this.map.flyTo([val.data.lat, val.data.long], 10)
       else
         this.$notify({
-          text: 'Aradığınız ilde İstasyon bulunmamaktadır.',
+          text: 'Aradığınız ilde depo bulunmamaktadır.',
           type: 'error'
         })
     },
     async createPopup(status) {
       let popup = {
         popupContent:
-          "<div><span>İstasyon ID</span></div><div class='column-2'><div class='first-row'>Kanal Durumları</div><div class='second-row'><div class='first-channel-success'></div></div><div class='third-row'>Sağlık Durumları</div><div class='fourht-row'></div></div>",
+          "<div><span>DEPO ID</span></div><div class='column-2'><div class='first-row'>Kanal Durumları</div><div class='second-row'><div class='first-channel-success'></div></div><div class='third-row'>Sağlık Durumları</div><div class='fourht-row'></div></div>",
         popupOptions: {
           maxWidth: '500',
           className: 'another-popup' // classname for another popup
@@ -212,7 +212,7 @@ export default {
           })
           var popupContent =
             `<div class='column-1'>
-         <div class="atm_id_label">İstasyon ID</div>
+         <div class="atm_id_label">DEPO ID</div>
           <span class="atm_id_text">` +
             item[4] +
             `</span>

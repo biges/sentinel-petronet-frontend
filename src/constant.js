@@ -385,44 +385,36 @@ export const DEVICE_STATUS = {
   gateway: [
     {
       label: 'Bağlantı Var',
-      key: 'status',
-      value: 0
+      value: 'status_true'
     },
     {
       label: 'Bağlantı Yok',
-      key: 'status',
-      value: 1
+      value: 'status_error'
     },
     {
       label: 'Wi-Fi',
-      key: 'connection',
       value: 'wifi'
     },
     {
       label: 'Eth',
-      key: 'connection',
       value: 'eth'
     },
     {
       label: 'M2M',
-      key: 'connection',
       value: 'm2m'
     },
     {
       label: 'Batarya Alarm',
-      key: 'battery',
-      value: 9
+      value: 'battery_alarm'
     },
     {
       label: 'Prize Takılı',
-      key: 'electric_connection',
-      value: true
-    },
-    {
-      label: 'Batarya Aktif',
-      key: 'electric_connection',
-      value: false
+      value: 'plug_in'
     }
+    // {
+    //   label: 'Batarya Aktif',
+    //   value: 'battery_active'
+    // }
   ]
 }
 export const PREMISE_DEVICES = [

@@ -1,6 +1,6 @@
 <template>
   <div class="information">
-    <span class="id">İSTASYON KODU</span>
+    <span class="id">DEPO KODU</span>
     <span class="number">{{ data.premise.custom_premise_id }}</span>
     <hr />
     <span class="province">{{ data.premise.location.province.name }}</span>
