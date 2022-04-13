@@ -214,7 +214,7 @@
             >
               <div
                 class="circle"
-                v-for="channel in scope.row.channelsVideoLoss"
+                v-for="channel in scope.row.channelsMotionDetect"
                 :key="channel.channel_id"
                 slot="content"
               >
@@ -255,7 +255,7 @@
             >
               <div
                 class="circle"
-                v-for="channel in scope.row.channelsVideoLoss"
+                v-for="channel in scope.row.channelsVideoSabotage"
                 :key="channel.channel_id"
                 slot="content"
               >
@@ -296,7 +296,7 @@
             >
               <div
                 class="circle"
-                v-for="channel in scope.row.channelsVideoLoss"
+                v-for="channel in scope.row.channelsSceneChange"
                 :key="channel.channel_id"
                 slot="content"
               >
@@ -1148,10 +1148,11 @@
     <el-table-column type="selection" width="55"> </el-table-column>
     <el-table-column header-align="left" prop="channel_id" label="KANAL">
       <template slot-scope="scope">
-        <SvgIconFirstChannel
+        {{ scope.row.channel_id }}
+        <!-- <SvgIconFirstChannel
           :status="true"
           :device_id="scope.row.channel_id"
-        ></SvgIconFirstChannel>
+        ></SvgIconFirstChannel> -->
       </template>
     </el-table-column>
     <el-table-column header-align="left" prop="state" label="DURUM" width="450">
@@ -1160,10 +1161,9 @@
     </el-table-column> -->
     <el-table-column header-align="left" prop="channel_id" label="OLAY KAYDI">
       <template slot-scope="scope">
-        <SvgIconDownload
-          @click.native.prevent="downloadEventRecord(scope.row)"
-          :status="scope.row.is_active"
-        ></SvgIconDownload>
+        <!-- @click.native.prevent="downloadEventRecord(scope.row)" -->
+        <span v-if="false">{{ scope.row.is_active }}</span>
+        <SvgIconDownload :disabled="true" :status="null"></SvgIconDownload>
       </template>
     </el-table-column>
 
@@ -1288,7 +1288,7 @@ export default {
     SvgIconCameraMotionDetect,
     SvgIconDownload,
     SvgIconWarning,
-    SvgIconFirstChannel,
+    // SvgIconFirstChannel,
     SvgIconHumidty,
     SvgIconTemprature,
     SvgIconTamper,

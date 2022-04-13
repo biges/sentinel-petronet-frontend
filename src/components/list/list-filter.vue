@@ -196,8 +196,8 @@ export default {
     this.hardware_options = [...DEVICE_TYPES].filter((item) => {
       return item.valid == true
     })
-    console.log('Device Status', DEVICE_STATUS['gateway'])
-    this.status_options = [...DEVICE_STATUS['gateway']]
+    console.log('Device Status', DEVICE_STATUS['camera'])
+    this.status_options = [...DEVICE_STATUS['camera']]
   }
 }
 </script>

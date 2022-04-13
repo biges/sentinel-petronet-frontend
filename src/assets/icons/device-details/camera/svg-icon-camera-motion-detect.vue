@@ -29,7 +29,7 @@
       />
       <path
         d="M11.2402 19.7958L14.2607 16.7754L15.7709 18.2856L19.2948 14.7617L22.6509 18.1178"
-        stroke="#6FCF97"
+        :stroke="changeColor"
         stroke-width="1.34243"
       />
       <path

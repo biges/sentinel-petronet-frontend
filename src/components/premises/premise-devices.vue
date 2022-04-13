@@ -79,12 +79,18 @@ export default {
       })
     },
     handleUpdate() {
+      console.log('HANDLE UPDATE', this.getSelectedRow)
       this.$router.push({
         name: 'UpdateDevice',
         params: {
           device_id: this.selectedDevice,
           premise_id: this.getSelectedRow.id,
-          iot: this.selectedDevice.hardware_type ? 1 : 0
+          iot: !this.devices.filter((device) => {
+            return this.selectedDevice == device.id
+          })[0].hardware_type
+            ? 1
+            : 0
+          //   iot: this.selectedDevice.hardware_type ? 1 : 0
         }
       })
     },

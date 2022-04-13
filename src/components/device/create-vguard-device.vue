@@ -112,7 +112,11 @@
             class="sentinel-input device-form-item"
             label="KANAL SAYISI"
           >
-            <el-select v-model="channels_count" @change="handleChannelsCount">
+            <el-select
+              :disabled="is_update"
+              v-model="channels_count"
+              @change="handleChannelsCount"
+            >
               <el-option
                 v-for="item in channel_options"
                 :key="item.value"
@@ -740,6 +744,8 @@ export default {
         let gateway = this.getGatewayById(device_id)
         gateway.then((r) => {
           console.log('R Sensor', r.sensor)
+          this.sensor_count = 0
+          this.form.sensor.pop()
           this.form.hardware_type_id = 4
           this.form.device_brand_id = 4
           this.form.device_model_id = 4
@@ -758,6 +764,7 @@ export default {
               max_temp: item.max_temp
             })
           })
+          this.sensor_count = this.form.sensor.length
           this.form.sensors.forEach()
           console.log(r)
         })

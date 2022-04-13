@@ -64,7 +64,7 @@
         >
       </div>
     </div>
-    <div v-if="this.$route.fullPath.indexOf('iot') < 0" class="actions">
+    <div class="actions">
       <div class="component">
         <span>YENİLE</span>
         <el-button

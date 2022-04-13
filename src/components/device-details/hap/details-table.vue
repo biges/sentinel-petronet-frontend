@@ -12,15 +12,16 @@
     <!-- <el-table-column type="selection" width="55"> </el-table-column> -->
 
     <el-table-column property="id" label="KANAL" min-width="35" align="center">
-      <template slot-scope="scope"
-        ><SvgIconFirstChannel
+      <template slot-scope="scope">
+        <!-- <SvgIconFirstChannel
           :status="
             scope.row.status
               ? scope.row.is_active && !scope.row.show_warning
               : null
           "
-          :device_id="scope.row.channel_id"
-        ></SvgIconFirstChannel>
+        ></SvgIconFirstChannel> -->
+
+        {{ scope.row.channel_id }}
       </template>
     </el-table-column>
     <el-table-column
@@ -148,19 +149,15 @@
 
       <template slot-scope="scope">
         <el-button
-          :disabled="
-            !scope.row.status ||
-            !scope.row.is_active ||
-            !getPermissions['download_record']
-          "
+          :disabled="true"
           class="button"
           @click="downloadRecord(scope.row.channel_id)"
         >
           <!-- scope.row.status &&
               getPermissions['download_records'] && -->
-          <SvgIconDownload
-            :status="scope.row.status && scope.row.is_active"
-          ></SvgIconDownload>
+          <!-- :status="scope.row.status && scope.row.is_active" -->
+
+          <SvgIconDownload :status="null"></SvgIconDownload>
         </el-button>
       </template>
     </el-table-column>
@@ -183,7 +180,7 @@ export default {
   name: 'DetailsTable',
   components: {
     SvgIconChannelStatus,
-    SvgIconFirstChannel,
+    // SvgIconFirstChannel,
     SvgIconSnapshot,
     SvgIconDownload
     // SvgIconAlarm,

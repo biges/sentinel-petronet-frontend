@@ -74,8 +74,7 @@ export default {
           this.modal_type = 'action'
           break
         case 'report':
-          //   this.modal_type = 'report'
-          this.modal_type = 'temp'
+          this.modal_type = 'report'
           break
         case 'service':
           this.modal_type = 'service'

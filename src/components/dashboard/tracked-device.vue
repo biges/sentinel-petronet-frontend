@@ -38,8 +38,43 @@ export default {
         is_tracked: true
       })
       tracked_premises.then((r) => {
-        console.log('Response Data', r)
-        this.table_data = r
+        this.table_data = []
+        r.forEach((device) => {
+          let generalVideoLoss = false
+          let generalVideoSabotage = false
+          let generalSceneChange = false
+          let channelsVideoLoss = []
+          let channelsVideoSabotage = []
+          let channelsSceneChange = []
+          let channelsMotionDetect = []
+          device.channels.forEach((channel) => {
+            channel.has_scene_change
+              ? channelsSceneChange.push(channel.channel_id)
+              : null
+            channel.has_video_loss
+              ? channelsVideoLoss.push(channel.channel_id)
+              : null
+            channel.has_video_sabotage
+              ? channelsVideoSabotage.push(channel.channel_id)
+              : null
+            channel.motion_detect
+              ? channelsMotionDetect.push(channel.channel_id)
+              : null
+            generalVideoLoss |= channel.has_video_loss
+            generalVideoSabotage |= channel.has_video_sabotage
+            generalSceneChange |= channel.has_scene_change
+          })
+          this.table_data.push({
+            ...device,
+            has_video_loss: generalVideoLoss,
+            has_video_sabotage: generalVideoSabotage,
+            has_scene_change: generalSceneChange,
+            channelsSceneChange,
+            channelsVideoLoss,
+            channelsVideoSabotage,
+            channelsMotionDetect
+          })
+        })
       })
     }
   },

@@ -10,7 +10,10 @@
     <span class="close-icon" @click="handleClose">
       <SvgClose />
     </span>
-    <div v-if="this.$route.fullPath.indexOf('iot') < 0" class="form-content">
+    <div
+      v-if="['action', 'report', 'service'].includes(type)"
+      class="form-content"
+    >
       <div class="title">
         <span>{{ title }}</span>
       </div>

@@ -99,7 +99,7 @@
 import { ACTIONS_FIELDS } from '@/constant'
 import endpoints from '@/endpoints'
 import { bus } from '@/main.js'
-
+import { mapActions } from 'vuex'
 export default {
   name: 'DeviceReport',
   data() {
@@ -162,6 +162,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      getGatewayDevices: 'device/getGatewayDevices'
+    }),
     handleReportSubmit() {
       this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
@@ -177,50 +180,92 @@ export default {
           if (this.list_val != 'all')
             devicesPremiseID = this.getSelectedRowsPremiseId
           else devicesPremiseID = []
-          this.$api({
-            ...endpoints.getDeviceVguardReport,
-            params: {
-              response_type: this.ruleForm.response_type,
-              report_type: this.ruleForm.type,
-              start_time: this.ruleForm.start_time,
-              finish_time: this.ruleForm.finish_time,
-              device_id: devicesPremiseID.join(),
-              page: 1,
-              limit: 20
-            }
-          }).then((r) => {
-            if (r.status == 200) {
-              console.log(r)
-              const url = window.URL.createObjectURL(new Blob([r.data]))
-              const link = document.createElement('a')
-              link.href = url
-              link.setAttribute(
-                'download',
-                'Cihaz-raporlari-' +
-                  currentDate.getFullYear() +
-                  ('0' + (currentDate.getMonth() + 1)).slice(-2) +
-                  ('0' + currentDate.getDate()).slice(-2) +
-                  ('0' + currentDate.getHours()).slice(-2) +
-                  ('0' + currentDate.getMinutes()).slice(-2) +
-                  ('0' + currentDate.getSeconds()).slice(-2) +
-                  '.' +
-                  (this.ruleForm.response_type == 'excel'
-                    ? 'xlsx'
-                    : this.ruleForm.response_type)
-              )
-              // link.setAttribute('download', 'file.xlsx')
-              document.body.appendChild(link)
-              link.click()
-              if (r.status) {
-                this.$emit('onClose')
-                this.list_val = ''
-                this.start_time = ''
-                this.finish_time = ''
-                this.type = ''
-                this.response_type = ''
+          if (this.$route.fullPath.indexOf('iot') < 0) {
+            this.$api({
+              ...endpoints.getDeviceVguardReport,
+              params: {
+                response_type: this.ruleForm.response_type,
+                report_type: this.ruleForm.type,
+                start_time: this.ruleForm.start_time,
+                finish_time: this.ruleForm.finish_time,
+                device_id: devicesPremiseID.join(),
+                page: 1,
+                limit: 20
               }
-            }
-          })
+            }).then((r) => {
+              if (r.status == 200) {
+                console.log(r)
+                const url = window.URL.createObjectURL(new Blob([r.data]))
+                const link = document.createElement('a')
+                link.href = url
+                link.setAttribute(
+                  'download',
+                  'Cihaz-raporlari-' +
+                    currentDate.getFullYear() +
+                    ('0' + (currentDate.getMonth() + 1)).slice(-2) +
+                    ('0' + currentDate.getDate()).slice(-2) +
+                    ('0' + currentDate.getHours()).slice(-2) +
+                    ('0' + currentDate.getMinutes()).slice(-2) +
+                    ('0' + currentDate.getSeconds()).slice(-2) +
+                    '.' +
+                    (this.ruleForm.response_type == 'excel'
+                      ? 'xlsx'
+                      : this.ruleForm.response_type)
+                )
+                // link.setAttribute('download', 'file.xlsx')
+                document.body.appendChild(link)
+                link.click()
+                if (r.status) {
+                  this.$emit('onClose')
+                  this.list_val = ''
+                  this.start_time = ''
+                  this.finish_time = ''
+                  this.type = ''
+                  this.response_type = ''
+                }
+              }
+            })
+          } else
+            this.$api({
+              ...endpoints.getDeviceIotReport,
+              params: {
+                response_type: this.ruleForm.response_type,
+                page: 1,
+                limit: 20
+              }
+            }).then((r) => {
+              if (r.status == 200) {
+                console.log(r)
+                const url = window.URL.createObjectURL(new Blob([r.data]))
+                const link = document.createElement('a')
+                link.href = url
+                link.setAttribute(
+                  'download',
+                  'Cihaz-Raporlari-Iot' +
+                    currentDate.getFullYear() +
+                    ('0' + (currentDate.getMonth() + 1)).slice(-2) +
+                    ('0' + currentDate.getDate()).slice(-2) +
+                    ('0' + currentDate.getHours()).slice(-2) +
+                    ('0' + currentDate.getMinutes()).slice(-2) +
+                    ('0' + currentDate.getSeconds()).slice(-2) +
+                    '.' +
+                    (this.ruleForm.response_type == 'excel'
+                      ? 'xlsx'
+                      : this.ruleForm.response_type)
+                )
+                // link.setAttribute('download', 'file.xlsx')
+                document.body.appendChild(link)
+                link.click()
+                if (r.status) {
+                  this.$emit('onClose')
+                  this.list_val = ''
+                  this.start_time = ''
+                  this.finish_time = ''
+                  this.type = ''
+                  this.response_type = ''
+                }
+              }
+            })
         }
       })
     }

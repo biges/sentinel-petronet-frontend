@@ -298,5 +298,11 @@ export default {
     method: 'GET',
     url: '/termolog/sensor',
     params: {}
+  },
+  getDeviceIotReport: {
+    method: 'GET',
+    url: 'vguard/devices',
+    responseType: 'blob',
+    params: {}
   }
 }
