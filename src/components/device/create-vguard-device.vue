@@ -529,10 +529,10 @@ export default {
             type: '',
             sensor_id: '',
             gateway_id: null,
-            min_humidity: null,
-            max_humidity: null,
-            min_temp: null,
-            max_temp: null
+            min_humidity: 0,
+            max_humidity: 0,
+            min_temp: 0,
+            max_temp: 0
           })
         }
       } else {
@@ -611,15 +611,28 @@ export default {
         delete vguard_device.sensor
         delete vguard_device.host
         return { vguard_device: vguard_device }
-      } else if (this.form.hardware_type_id == 4)
+      } else if (this.form.hardware_type_id == 4) {
+        let sensorArray = []
+        this.form.sensor.forEach((sensor) => {
+          sensorArray.push({
+            ...sensor,
+            min_humidity: parseInt(sensor.min_humidity),
+            max_humidity: parseInt(sensor.max_humidity),
+            min_temp: parseInt(sensor.min_temp),
+            max_temp: parseInt(sensor.max_temp),
+            gateway_id: parseInt(sensor.gateway_id)
+          })
+        })
+
         return {
           termolog_gateway: {
             name: this.form.name,
             gateway_id: this.form.serial_number,
             premise_id: parseInt(this.$route.params.premise_id),
-            sensor: this.form.sensor
+            sensor: sensorArray
           }
         }
+      }
     },
     onSubmit() {
       //   if (this.validate()) {

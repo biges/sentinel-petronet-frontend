@@ -204,7 +204,7 @@
               <SvgIconTamper
                 :status="
                   scope.row.tamper != null
-                    ? scope.row.tamper
+                    ? !scope.row.tamper
                       ? true
                       : false
                     : null

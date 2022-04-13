@@ -171,14 +171,14 @@
             :visible-arrow="false"
             :content="
               scope.row.sensor.length > 0
-                ? scope.row.sensor[0].tamper
+                ? !scope.row.sensor[0].tamper
                   ? 'Normal'
                   : 'Alarm'
                 : 'Bilgi Yok'
             "
             :popper-class="
               scope.row.sensor.length > 0
-                ? scope.row.sensor[0].tamper
+                ? !scope.row.sensor[0].tamper
                   ? 'success'
                   : 'error'
                 : 'no-name'
@@ -193,7 +193,7 @@
                 @click="handleSvgIconClick('tamper')"
                 :status="
                   scope.row.sensor.length > 0
-                    ? scope.row.sensor[0].tamper
+                    ? !scope.row.sensor[0].tamper
                       ? true
                       : false
                     : null
