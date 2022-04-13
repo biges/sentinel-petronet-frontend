@@ -94,12 +94,15 @@ export default {
     async handleCurrentChangeRowPremise(val) {
       console.log(this.counter++)
       this.devices = []
-      const { data } = await this.$api.get(`vguard/devices`, {
-        params: {
-          premise_id: val,
-          page: 1,
-          limit: 20
-        }
+      const { data } = await this.$api.post(`queries`, {
+        microservice: 'CUDIO',
+        type: 'DATA',
+        model: 'DEVICE',
+        skip: 1,
+        take: 10,
+        relations: ['CUSTOMER', 'PREMISE'],
+        preprocess: [{}, { id: val }],
+        include: { premise: { include: { customer: true } } }
       })
 
       console.log('****', data, '*****')

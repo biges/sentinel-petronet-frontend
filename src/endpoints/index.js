@@ -109,9 +109,9 @@ export default {
     params: { city_id: null }
   },
   getPremiseDevice: {
-    url: 'vguard/devices/',
-    method: 'GET',
-    params: { premise_id: null }
+    url: 'queries',
+    method: 'POST',
+    data: {}
   },
   createMultipleVguardDevice: {
     method: 'POST',

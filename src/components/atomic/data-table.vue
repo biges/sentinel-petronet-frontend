@@ -610,8 +610,8 @@ export default {
         this.setCurrentPremise(row)
         this.setSelectedRow(row)
         let location = {
-          lat: row.location.lat,
-          long: row.location.long
+          lat: row.address.latitude,
+          long: row.address.longitude
         }
         this.$store.dispatch('setLocation', {
           location: { ...location }

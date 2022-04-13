@@ -65,6 +65,7 @@ export default {
       let listPremises = this.getPremises({
         page: this.getCurrentPage,
         limit: this.getCurrentLimit,
+        customerId: store.state.auth.user.customerId,
         ...params
       })
       await listPremises.then((r) => {

@@ -152,7 +152,16 @@ export default {
     getPremiseDevice({ commit }, premise_id) {
       let premise_devices = Vue.prototype.$api({
         ...endpoints.getPremiseDevice,
-        params: { page: 1, limit: 20, premise_id: premise_id }
+        data: {
+          microservice: 'CUDIO',
+          type: 'DATA',
+          model: 'DEVICE',
+          skip: 1,
+          take: 10,
+          relations: ['CUSTOMER', 'PREMISE'],
+          preprocess: [{}, { id: premise_id }],
+          include: { premise: { include: { customer: true } } }
+        }
       })
       return premise_devices.then((r) => {
         if (r.data.data.users.length > 0)
