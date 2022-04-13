@@ -67,10 +67,7 @@
     <div class="actions">
       <div class="component">
         <span>YENİLE</span>
-        <el-button
-          :disabled="isSelected"
-          @click="handleClickSelectedDevicesRefresh"
-        >
+        <el-button :disabled="false" @click="handleClickSelectedDevicesRefresh">
           <SvgIconRefresh></SvgIconRefresh>
         </el-button>
       </div>
@@ -80,7 +77,7 @@
           <SvgIconAction></SvgIconAction>
         </el-button>
       </div>
-      <div class="component">
+      <div v-if="false" class="component">
         <span>SERVİS</span>
         <el-button
           :disabled="isSelected || !this.getPermissions['service_create']"
@@ -91,15 +88,7 @@
       </div>
       <div class="component">
         <span>RAPOR</span>
-        <el-button
-          :disabled="
-            isSelected ||
-            !this.getPermissions['device_list_status_report_create']
-              ? true
-              : false
-          "
-          @click="handleActionsClick('report')"
-        >
+        <el-button :disabled="false" @click="handleReportClick">
           <SvgIconReport></SvgIconReport>
         </el-button>
       </div>
@@ -116,6 +105,7 @@ import SvgIconReport from '@/assets/icons/list/svg-icon-report.vue'
 import { DEVICE_TYPES, DEVICE_STATUS } from '@/constant'
 import { mapGetters } from 'vuex'
 import { bus } from '@/main.js'
+import endpoints from '@/endpoints'
 
 export default {
   name: 'IotListFilter',
@@ -160,6 +150,40 @@ export default {
     }
   },
   methods: {
+    handleReportClick() {
+      let currentDate = new Date()
+
+      this.$api({
+        ...endpoints.getDeviceIotReport,
+        params: {
+          ...this.filtered_data,
+          page: 1,
+          limit: 10,
+          response_type: 'excel'
+        }
+      }).then((r) => {
+        if (r.status == 200) {
+          console.log(r)
+          const url = window.URL.createObjectURL(new Blob([r.data]))
+          const link = document.createElement('a')
+          link.href = url
+          link.setAttribute(
+            'download',
+            'Iot-Gateway-Rapor' +
+              currentDate.getFullYear() +
+              ('0' + (currentDate.getMonth() + 1)).slice(-2) +
+              ('0' + currentDate.getDate()).slice(-2) +
+              ('0' + currentDate.getHours()).slice(-2) +
+              ('0' + currentDate.getMinutes()).slice(-2) +
+              ('0' + currentDate.getSeconds()).slice(-2) +
+              '.xlsx'
+          )
+          // link.setAttribute('download', 'file.xlsx')
+          document.body.appendChild(link)
+          link.click()
+        }
+      })
+    },
     handleClickSelectedDevicesRefresh() {
       bus.$emit('onSelectedDevicesRefresh')
     },

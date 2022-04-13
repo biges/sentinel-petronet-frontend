@@ -301,7 +301,7 @@ export default {
   },
   getDeviceIotReport: {
     method: 'GET',
-    url: 'vguard/devices',
+    url: '/termolog/gateway',
     responseType: 'blob',
     params: {}
   }

@@ -1367,13 +1367,15 @@ export default {
       else return 'Bilgi Alınamadı'
     },
     interfaceClickHandle(val) {
-      console.log('https://' + val.row.host + ':' + val.row.port)
+      console.log(
+        'https://' + val.row.cloud_id + '.hopto.org' + ':' + val.row.port
+      )
       if (process.env.IS_ELECTRON)
         require('electron').shell.openExternal(
-          'http://' + val.row.host + ':' + val.row.port
+          'http://' + val.row.cloud_id + ':' + val.row.port
         )
       else {
-        let href = 'http://' + val.row.host + ':' + val.row.port
+        let href = 'http://' + val.row.host + '.hopto.org' + ':' + val.row.port
         window.open(href, '_blank')
       }
     },

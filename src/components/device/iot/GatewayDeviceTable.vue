@@ -22,13 +22,13 @@
         ? { background: '#f5f5f5', color: '#444444' }
         : { color: '#444444' }
     "
-    @selection-change="handleSelectionChange"
     @sort-change="handleServiceSorting"
     :row-class-name="rowClassName"
     height="100%"
     border="false"
   >
-    <el-table-column type="selection" width="55"> </el-table-column>
+    <!-- @selection-change="handleSelectionChange" -->
+    <!-- <el-table-column type="selection" width="55"> </el-table-column> -->
 
     <el-table-column
       header-align="left"

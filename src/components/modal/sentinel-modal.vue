@@ -368,15 +368,17 @@ export default {
       }
     },
     fillDataTable(params) {
+      console.log('GetSelectedRow', this.getSelectedRows)
       let sensors = this.getSensorsGateway({ page: 1, limit: 20, ...params })
       sensors.then((r) => {
+        console.log('Sensors', r)
         this.data = r
       })
     }
   },
   created() {
-    console.log('Created')
     if (this.$route.fullPath.indexOf('iot') > 0) {
+      console.log('Created')
       this.fillDataTable()
     }
   }
