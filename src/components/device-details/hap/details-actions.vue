@@ -14,20 +14,15 @@
     </div>
     <div class="component">
       <span>Servis</span>
-      <el-button
-        :disabled="!this.getPermissions['service_create']"
-        class="sentinel-button"
-        @click="openServiceModal"
+      <!-- :disabled="!this.getPermissions['service_create']" -->
+      <el-button class="sentinel-button" @click="openServiceModal"
         ><SvgIconService></SvgIconService
       ></el-button>
     </div>
     <div class="component">
       <span>Arayüz</span>
-      <el-button
-        :disabled="!this.getPermissions['device_access_web_ui']"
-        class="sentinel-button"
-        @click="clickHandleInterface"
-      >
+      <!-- :disabled="!this.getPermissions['device_access_web_ui']" -->
+      <el-button class="sentinel-button" @click="clickHandleInterface">
         <SvgIconInterface></SvgIconInterface>
       </el-button>
     </div>
@@ -40,10 +35,8 @@
     <div v-if="false" class="component">
       <!-- <div v-if="!isLastSignals" class="component"> -->
       <span>Rapor</span>
-      <el-button
-        class="sentinel-button"
-        :disabled="!this.getPermissions['device_show_event']"
-        @click="downloadSignalsHistory"
+      <!-- :disabled="!this.getPermissions['device_show_event']" -->
+      <el-button class="sentinel-button" @click="downloadSignalsHistory"
         ><SvgIconListRaport></SvgIconListRaport
       ></el-button>
     </div>

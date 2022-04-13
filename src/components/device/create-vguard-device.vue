@@ -371,6 +371,119 @@ export default {
     },
     onSubmit() {
       if (this.validate()) {
+        let payload = {
+          //   id: 'ba4f5f7d-67e7-4377-909c-89ab0976c25c',
+          name: 'Vguard Test',
+          vendor: 'VGUARD',
+          type: 'NVR',
+          model: 'VG-4C1A-LRU',
+          serial: 'tdks82fvaf9r',
+          inventoryNumber: 'BY-001',
+          lastStatus: null,
+          lastSignalDate: null,
+          status: 'ACTIVE',
+          config: {
+            deviceID: 'tdks82fvaf9r',
+            ip: '5.26.119.67',
+            port: '7099',
+            username: 'admin',
+            password: 'vguard',
+            network_error: false,
+            disks: {
+              1: {
+                id: 1,
+                disk_name: 'Disk 1',
+                is_active: true,
+                status: 'disc_error',
+                capacity: 0,
+                empty: 0,
+                used: 0
+              },
+              2: {
+                id: 2,
+                disk_name: 'Disk 2',
+                is_active: false,
+                status: 'nodisk',
+                capacity: 0,
+                empty: 0,
+                used: 0
+              }
+            },
+            disk_error: false,
+            channels: {
+              1: {
+                id: 1,
+                area_id: '11f9aacb-97b6-4490-8d73-38d0d74dda36',
+                area_name: 'Lobi',
+                category: '',
+                channel_name: 'Kanal 1',
+                is_active: true,
+                status: true
+                // has_scene_change: false,
+                // has_video_loss: false,
+                // has_sabatoge: true
+              },
+              2: {
+                id: 2,
+                area_id: '11f9aacb-97b6-4490-8d73-38d0d74dda36',
+                area_name: 'Lobi',
+                // has_video_loss: true,
+                // has_sabatoge: false,
+                category: '',
+                channel_name: 'Kanal 2',
+                is_active: true,
+                status: true
+                // has_scene_change: false
+              },
+              3: {
+                id: 3,
+                area_id: '11f9aacb-97b6-4490-8d73-38d0d74dda36',
+                area_name: 'Lobi',
+                category: '',
+                channel_name: 'Kanal 3',
+                is_active: true,
+                status: true
+                // has_scene_change: false,
+                // has_video_loss: true,
+                // has_sabatoge: false
+              },
+              4: {
+                id: 4,
+                area_id: '11f9aacb-97b6-4490-8d73-38d0d74dda36',
+                area_name: 'Lobi',
+                category: '',
+                channel_name: 'Kanal 4',
+                is_active: true,
+                status: true
+                // has_scene_change: false,
+                // has_video_loss: true,
+                // has_sabatoge: false
+              }
+            },
+            datetime_error: false,
+            device_date: '2022-04-06T11:28:54Z',
+            hddMax: '2'
+          },
+          premiseId: '4212e82d-9577-458e-ba07-384013292dc6',
+          deleted: false,
+          createdAt: '2022-04-13T11:25:06.021Z',
+          updatedAt: '2022-04-13T11:25:06.022Z',
+          premise: {
+            id: '4212e82d-9577-458e-ba07-384013292dc6',
+            name: 'Ev 1',
+            type: 'HOME',
+            securityType: 'POLICE',
+            code: null,
+            description: null,
+            customerId: 'd1ceb6f8-094a-45f0-98cf-4748da269808',
+            status: 'ACTIVE',
+            addressId: '301b6e42-9005-46fb-8744-1a46cf676097',
+            deleted: false,
+            createdAt: '2022-04-13T11:25:05.950Z',
+            updatedAt: '2022-04-13T11:25:05.950Z'
+          },
+          accessories: []
+        }
         this.$api
           .post('/vguard/devices', this.createPayload())
           .then((res) => {

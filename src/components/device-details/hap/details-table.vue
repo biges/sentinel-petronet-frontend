@@ -123,13 +123,10 @@
       align="center"
     >
       <template slot-scope="scope">
+        <!-- !getPermissions['take_snapshot'] -->
         <el-button
           @click="snapshotClick(scope.row.channel_id)"
-          :disabled="
-            !scope.row.status ||
-            !scope.row.is_active ||
-            !getPermissions['take_snapshot']
-          "
+          :disabled="!scope.row.status || !scope.row.is_active"
           class="button"
         >
           <SvgIconSnapshot
@@ -147,12 +144,9 @@
       <!-- :disabled="!scope.row.status && !this.getPermissions['download_records']" -->
 
       <template slot-scope="scope">
+        <!-- !getPermissions['download_record'] -->
         <el-button
-          :disabled="
-            !scope.row.status ||
-            !scope.row.is_active ||
-            !getPermissions['download_record']
-          "
+          :disabled="!scope.row.status || !scope.row.is_active"
           class="button"
           @click="downloadRecord(scope.row.channel_id)"
         >

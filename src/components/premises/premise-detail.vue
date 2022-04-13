@@ -7,16 +7,10 @@
       <PremiseInformation :premise="getSelectedRow"></PremiseInformation>
     </div>
     <div class="location-bottom">
-      <el-button
-        :disabled="!this.getPermissions['location_delete']"
-        @click="deleteClick"
-        >SİL</el-button
-      >
-      <el-button
-        :disabled="!this.getPermissions['location_edit']"
-        @click="handleUpdate"
-        >DÜZENLE</el-button
-      >
+      <!-- :disabled="!this.getPermissions['location_delete']" -->
+      <el-button @click="deleteClick">SİL</el-button>
+      <!-- :disabled="!this.getPermissions['location_edit']" -->
+      <el-button @click="handleUpdate">DÜZENLE</el-button>
     </div>
   </div>
 </template>
@@ -53,22 +47,22 @@ export default {
       deletePremise: 'premise/deletePremise'
     }),
     deleteClick() {
-      if (this.getPermissions['location_delete'])
-        this.$confirm('İstasyonu silmek istediğinize emin misiniz?', {
-          confirmButtonText: 'Sil',
-          cancelButtonText: 'Vazgeç',
-          type: 'error'
-        }).then(async () => {
-          let delete_premise = await this.deletePremise(this.getSelectedRow)
-          if (delete_premise.status == 200) bus.$emit('onDeletePremise', true)
-        })
+      //   if (this.getPermissions['location_delete'])
+      this.$confirm('İstasyonu silmek istediğinize emin misiniz?', {
+        confirmButtonText: 'Sil',
+        cancelButtonText: 'Vazgeç',
+        type: 'error'
+      }).then(async () => {
+        let delete_premise = await this.deletePremise(this.getSelectedRow)
+        if (delete_premise.status == 200) bus.$emit('onDeletePremise', true)
+      })
     },
     handleUpdate() {
-      if (this.getPermissions['location_edit'])
-        this.$router.push({
-          name: 'UpdatePremise',
-          params: { id: this.getSelectedRow.id }
-        })
+      //   if (this.getPermissions['location_edit'])
+      this.$router.push({
+        name: 'UpdatePremise',
+        params: { id: this.getSelectedRow.id }
+      })
     }
   },
   mounted() {

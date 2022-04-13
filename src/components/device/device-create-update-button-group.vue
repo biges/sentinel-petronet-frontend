@@ -4,9 +4,9 @@
     v-if="['CreateDevice', 'UpdateDevice'].includes(this.$route.name)"
   >
     <div :class="is_update ? 'footer-bottom-update' : 'footer-bottom-create'">
+      <!-- :disabled="!this.getPermissions['device_edit']" -->
       <el-button
         v-if="is_update"
-        :disabled="!this.getPermissions['device_edit']"
         class="footer-bottom-update__dangerous"
         @click="onDelete"
         >SİL</el-button

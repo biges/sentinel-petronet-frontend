@@ -82,8 +82,9 @@
       </div>
       <div class="component">
         <span>SERVİS</span>
+        <!-- || !this.getPermissions['service_create'] -->
         <el-button
-          :disabled="isSelected || !this.getPermissions['service_create']"
+          :disabled="isSelected"
           @click="handleActionsClick('service')"
         >
           <SvgIconService></SvgIconService>
@@ -91,15 +92,11 @@
       </div>
       <div class="component">
         <span>RAPOR</span>
-        <el-button
-          :disabled="
-            isSelected ||
+        <!-- ||
             !this.getPermissions['device_list_status_report_create']
               ? true
-              : false
-          "
-          @click="handleActionsClick('report')"
-        >
+              : false -->
+        <el-button :disabled="isSelected" @click="handleActionsClick('report')">
           <SvgIconReport></SvgIconReport>
         </el-button>
       </div>
