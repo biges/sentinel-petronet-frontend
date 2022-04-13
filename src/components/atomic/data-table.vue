@@ -730,7 +730,7 @@
                 ? { color: '#6fcf97' }
                 : { color: '#e04141' }
             "
-            >{{ scope.row.temp }}°C</span
+            >{{ scope.row.temp.toFixed(2) }}°C</span
           >
           <div
             style="
@@ -849,7 +849,7 @@
                 ? { color: '#6fcf97' }
                 : { color: '#e04141' }
             "
-            >{{ scope.row.humidity }}%</span
+            >{{ scope.row.humidity.toFixed(2) }}%</span
           >
           <div
             style="
@@ -982,6 +982,9 @@
                 font-size: 10px;
                 line-height: 12px;
                 color: #6fcf97;
+              "
+              :style="
+                scope.row.tamper ? { color: '#6fcf97' } : { color: '#e04141' }
               "
               >{{ scope.row.tamper ? 'Normal' : 'Alarm' }}</span
             >
@@ -1457,13 +1460,13 @@ export default {
     },
     handleRangeBatteryCheck(val, type) {
       if (type == 'text') {
-        if (val < 100 && val >= 26) {
+        if (val <= 100 && val >= 26) {
           return 'Normal'
         } else if (val < 26 && val >= 10) {
           return 'Zayıf'
         } else if (val < 10 && val >= 0) return 'Alarm'
       } else if (type == 'color') {
-        if (val < 100 && val >= 26) {
+        if (val <= 100 && val >= 26) {
           return '#6FCF97'
         } else if (val < 26 && val >= 10) {
           return '#F2994A'
