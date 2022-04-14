@@ -145,11 +145,12 @@
       min-width="35"
       align="center"
     >
-      <!-- :disabled="!scope.row.status && !this.getPermissions['download_records']" -->
-
+      <!-- :disabled="true" -->
       <template slot-scope="scope">
         <el-button
-          :disabled="true"
+          :disabled="
+            !scope.row.status && !this.getPermissions['download_records']
+          "
           class="button"
           @click="downloadRecord(scope.row.channel_id)"
         >

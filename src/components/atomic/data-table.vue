@@ -1164,9 +1164,11 @@
     </el-table-column> -->
     <el-table-column header-align="left" prop="channel_id" label="OLAY KAYDI">
       <template slot-scope="scope">
-        <!-- @click.native.prevent="downloadEventRecord(scope.row)" -->
         <span v-if="false">{{ scope.row.is_active }}</span>
-        <SvgIconDownload :disabled="true" :status="null"></SvgIconDownload>
+        <SvgIconDownload
+          @click.native.prevent="downloadEventRecord(scope.row)"
+          :status="null"
+        ></SvgIconDownload>
       </template>
     </el-table-column>
 

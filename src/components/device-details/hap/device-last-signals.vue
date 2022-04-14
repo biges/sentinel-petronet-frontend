@@ -99,10 +99,10 @@ export default {
       this.downloadEventRecordConfirmDialog = true
     },
     handleClose() {
-      if (this.record_download_request) {
-        this.downloadEventRecordConfirmDialog = false
-        this.record_download_request = false
-      }
+      this.downloadEventRecordConfirmDialog = false
+      this.record_download_request = false
+      //   if (this.record_download_request) {
+      //   }
     },
     downloadEventRecord() {
       /**
