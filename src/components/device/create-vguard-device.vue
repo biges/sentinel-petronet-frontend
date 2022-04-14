@@ -386,7 +386,7 @@ export default {
           value: 3
         },
         {
-          label: 'Termolog',
+          label: 'Biges365',
           hardware_type_id: 4,
           value: 4
         }
@@ -398,7 +398,7 @@ export default {
           value: 3
         },
         {
-          label: 'GATEWAY',
+          label: 'GTW-BGS',
           brand_id: 4,
           value: 4
         }
