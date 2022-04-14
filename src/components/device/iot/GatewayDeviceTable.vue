@@ -193,7 +193,7 @@
                 @click="handleSvgIconClick('tamper')"
                 :status="
                   scope.row.sensor.length > 0
-                    ? !scope.row.sensor[0].tamper
+                    ? scope.row.sensor[0].tamper
                       ? true
                       : false
                     : null

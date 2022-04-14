@@ -973,7 +973,7 @@
             "
           >
             <SvgIconTamper
-              :status="!scope.row.tamper ? true : false"
+              :status="scope.row.tamper ? true : false"
             ></SvgIconTamper>
 
             <span
@@ -984,9 +984,9 @@
                 color: #6fcf97;
               "
               :style="
-                !scope.row.tamper ? { color: '#6fcf97' } : { color: '#e04141' }
+                scope.row.tamper ? { color: '#6fcf97' } : { color: '#e04141' }
               "
-              >{{ !scope.row.tamper ? 'Normal' : 'Alarm' }}</span
+              >{{ scope.row.tamper ? 'Normal' : 'Alarm' }}</span
             >
           </div>
         </div>
