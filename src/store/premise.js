@@ -43,7 +43,8 @@ export default {
       })
     },
     async getPremises(_, payload) {
-      const { skip, take, params } = payload
+      console.log('getPremises', payload)
+      const { skip, take, customerId } = payload
 
       return await Vue.prototype.$api.post('/queries', {
         microservice: 'CUDIO',
@@ -51,7 +52,12 @@ export default {
         model: 'PREMISE',
         skip,
         take,
-        where: params,
+        relations: [
+          {
+            model: 'CUSTOMER'
+          }
+        ],
+        where: { customer: { id: customerId || '' } },
         include: {
           address: {
             include: {

@@ -98,11 +98,12 @@ export default {
         microservice: 'CUDIO',
         type: 'DATA',
         model: 'DEVICE',
-        skip: 1,
-        take: 10,
-        relations: ['CUSTOMER', 'PREMISE'],
-        preprocess: [{}, { id: val }],
-        include: { premise: { include: { customer: true } } }
+        relations: [
+          {
+            model: 'PREMISE'
+          }
+        ],
+        where: { premise: { id: val }, vendor: 'VGUARD' }
       })
 
       console.log('****', data, '*****')
