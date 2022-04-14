@@ -1380,7 +1380,8 @@ export default {
           'http://' + val.row.cloud_id + ':' + val.row.port
         )
       else {
-        let href = 'http://' + val.row.host + '.hopto.org' + ':' + val.row.port
+        let href =
+          'http://' + val.row.cloud_id + '.hopto.org' + ':' + val.row.port
         window.open(href, '_blank')
       }
     },
