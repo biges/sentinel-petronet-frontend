@@ -10,7 +10,8 @@ export default {
   },
   getters: {
     isLoggedIn: (state) => !!state.user.token,
-    getPermissions: (state) => state.user.data.user.permission
+    getPermissions: (state) => ''
+    // || state.user.data.user.permission
   },
   mutations: {
     SET_TOKEN(state, data) {

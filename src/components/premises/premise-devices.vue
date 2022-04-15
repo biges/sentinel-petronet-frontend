@@ -14,16 +14,10 @@
     >
     <!-- <div class="sentinel-location-bottom"> -->
     <div class="devices-bottom">
-      <el-button
-        :disabled="!selectedDevice || !this.getPermissions['device_edit']"
-        @click="handleUpdate()"
-        >DÜZENLE</el-button
-      >
-      <el-button
-        :disabled="!!selectedDevice || !this.getPermissions['device_create']"
-        @click="handleCreateDevice()"
-        >YENİ EKLE</el-button
-      >
+      <!-- :disabled="!selectedDevice || !this.getPermissions['device_edit']" -->
+      <el-button @click="handleUpdate()">DÜZENLE</el-button>
+      <!-- :disabled="!!selectedDevice || !this.getPermissions['device_create']" -->
+      <el-button @click="handleCreateDevice()">YENİ EKLE</el-button>
     </div>
   </div>
 </template>

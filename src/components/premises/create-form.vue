@@ -29,42 +29,27 @@
         <div class="premise-form-content">
           <span class="premise-form-content-label">İL</span>
           <el-form-item prop="location.city_id">
-            <el-select
+            <el-input
               style="width: 330px"
               class="sentinel-input"
               type="text"
-              filterable
               v-model="premiseForm.location.city_id"
-              placeholder="Seçiniz"
-              @change="getProvince"
+              placeholder="İl"
             >
-              <el-option
-                v-for="item in cities"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              ></el-option>
-            </el-select>
+            </el-input>
           </el-form-item>
         </div>
         <div class="premise-form-content">
           <span class="premise-form-content-label">İLÇE</span>
           <el-form-item prop="location.province_id">
-            <el-select
+            <el-input
               style="width: 330px"
               class="sentinel-input"
               type="text"
-              filterable
-              placeholder="Seçiniz"
+              placeholder="İlçe"
               v-model="premiseForm.location.province_id"
             >
-              <el-option
-                v-for="item in provinces"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              ></el-option>
-            </el-select>
+            </el-input>
           </el-form-item>
         </div>
       </div>
@@ -189,6 +174,7 @@ import { bus } from '@/main'
 
 import endpoints from '@/endpoints'
 import { mapActions, mapGetters } from 'vuex'
+import store from '@/store'
 export default {
   name: 'CreateForm',
   data() {
@@ -197,6 +183,7 @@ export default {
       formName: 'createPremise',
       cities: [],
       provinces: [],
+      countryId: '',
       premiseForm: {
         custom_premise_id: '',
         area_id: 1,
@@ -274,8 +261,45 @@ export default {
       createPremise: 'premise/createPremise',
       updatePremise: 'premise/updatePremise',
       setLocation: 'map/setLocation',
-      getPremiseById: 'premise/getPremiseById'
+      getPremiseById: 'premise/getPremiseById',
+      createAddress: 'premise/createAddress'
     }),
+    async getCountries() {
+      let payload = {
+        microservice: 'CUDIO',
+        type: 'DATA',
+        model: 'COUNTRY',
+        where: { name: 'Türkiye' },
+        include: { _count: true }
+      }
+      return await this.$api.post('/queries', payload)
+    },
+    async createAddressForPremise() {
+      const address = await this.createAddress({
+        name: this.premiseForm.custom_premise_name,
+        type: 'LOCATION',
+        city: this.premiseForm.location.city_id,
+        district: this.premiseForm.location.province_id,
+        zipCode: '38090',
+        taxOffice: 'İstanbul Mecidiyeköy',
+        taxNumber: '21312312313',
+        latitude: this.premiseForm.location.lat,
+        longitude: this.premiseForm.location.long,
+        detail: this.premiseForm.location.address,
+        country: {
+          connect: {
+            //Burası ilişkisel olduğu için öncelikle country ismine göre id gelmesi gerek
+            id: this.countryId
+          }
+        },
+        customer: {
+          connect: {
+            id: store.state.auth.user.customerId
+          }
+        }
+      })
+      return address
+    },
     getCities() {
       const cities = this.$api({
         ...endpoints.getCities
@@ -301,6 +325,9 @@ export default {
       })
     },
     async submitCreateForm(val) {
+      const createAddress = await this.createAddressForPremise()
+      console.log('submitCreateForm', createAddress)
+
       this.premiseForm.location.lat = this.getSelectedLocation.lat
       this.premiseForm.location.long = this.getSelectedLocation.long
       if (val) {
@@ -390,7 +417,10 @@ export default {
       this.getPremiseById(this.$route.params.id)
       this.fillPremiseForm()
     }
-    this.cities = this.getCities()
+    // this.cities = this.getCities()
+    const country = this.getCountries()
+    this.countryId = country.data.result[0].data[0].id
+    console.log('CountryId', this.countryId)
   },
   mounted() {
     bus.$on('onClickSave', (val) => this.submitCreateForm(val))

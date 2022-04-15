@@ -21,6 +21,7 @@ import ServiceHeader from '@/components/service/service-header.vue'
 import DataTable from '@/components/atomic/data-table.vue'
 import DataTablePagination from '@/components/atomic/data-table-pagination.vue'
 import { mapActions, mapGetters } from 'vuex'
+import store from '@/store/index.js'
 export default {
   name: 'Service',
   components: {
@@ -36,7 +37,8 @@ export default {
         limit: 10,
         page: 1
       },
-      data: []
+      data: [],
+      user: store.state.auth.user
     }
   },
   computed: {
@@ -112,6 +114,7 @@ export default {
     },
 
     getTicketsPagination(payload) {
+      console.log('getTicketsPagination', payload)
       let services = this.getServices(payload)
       services.then((r) => {
         this.mapingTableData(r)
@@ -131,8 +134,9 @@ export default {
       //     this.mapingTableData(r);
       //   });
       this.getTicketsPagination({
-        limit: this.getCurrentLimit,
-        page: this.getCurrentPage
+        take: this.getCurrentLimit,
+        skip: this.getCurrentPage,
+        id: this.user.customerId
       })
     }
   }

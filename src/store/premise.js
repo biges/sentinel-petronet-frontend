@@ -125,6 +125,7 @@ export default {
       })
     },
     async createPremise(_, payload) {
+      console.log('createPremise', payload)
       const newPremise = Vue.prototype.$api({
         ...endpoints.createPremise,
         data: {
@@ -199,6 +200,9 @@ export default {
           return r.data.data.paginated.records
         }
       })
+    },
+    async createAddress(_, payload) {
+      return await Vue.prototype.$api.post('/addresses', payload)
     }
   }
 }

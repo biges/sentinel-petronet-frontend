@@ -23,9 +23,30 @@ export default {
   },
   actions: {
     getServices({ commit }, params) {
+      let requestObj = {
+        microservice: 'TICKET',
+        type: 'DATA',
+        model: 'TICKET',
+        where: {
+          //   createdAt: {
+          //     gte: params.date.startDate,
+          //     lt: params.date.endDate
+          //   },
+          customer: {
+            path: ['id'],
+            equals: params.id
+          }
+        },
+        orderBy: [
+          {
+            createdAt: 'desc'
+          }
+        ]
+      }
+      //   delete requestObj.where.createdAt
       let services = Vue.prototype.$api({
         ...endpoints.getServices,
-        params: { ...params }
+        data: { ...requestObj }
       })
       return services.then((r) => {
         console.log('Store', r)

@@ -344,7 +344,7 @@ export const ACTIONS_FIELDS = {
           //   { label: 'İletişim Hatası', value: 'communication_fault' }
           {
             label: 'Kamera Arızası',
-            value: 'Kamera Arızası'
+            value: 'CAMERA_FAULT'
           },
           {
             label: 'İletişim Arızası',

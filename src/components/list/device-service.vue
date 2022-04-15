@@ -144,6 +144,27 @@ export default {
             ? device_id.push(this.getSelectedRowPremiseId)
             : (device_id = this.getSelectedRowsDeviceIds)
 
+          let createPayload = {
+            status: 'NEW',
+            category: 'FAULT',
+            subCategory: this.form.ticket_type,
+            description: this.ruleForm.description,
+            created: {
+              at: this.ruleForm.start_time
+            },
+            planned: {
+              at: this.ruleForm.finish_time
+            },
+            device: {
+              id: device_id
+              //   name: 'qweqweqw',
+              //   serialNumber: 'stqweqwering',
+              //   hardwareType: 'NVR',
+              //   hardwareVendor: 'VGUARD',
+              //   hardwareModel: 'qqq'
+            }
+            // ticketId: ''
+          }
           let service = this.createService({
             ...this.ruleForm,
             // device_id: this.getSelectedRowsDeviceIds.join(),
