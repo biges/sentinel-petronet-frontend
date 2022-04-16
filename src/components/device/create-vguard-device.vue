@@ -427,7 +427,7 @@ export default {
     },
     async getDevice(device_id) {
       try {
-        const { data } = await this.$api('/vguard/devices/' + device_id)
+        const { data } = await this.$api('/devices/' + device_id)
         return data.data.vguard_device
       } catch (err) {
         console.log(err)

@@ -102,7 +102,7 @@ export default {
 
       console.log('****', data, '*****')
 
-      this.devices = data.data.paginated.records
+      this.devices = data.data.result[0].data
       this.selectedDevice = this.devices[0].id
     },
     refreshCounter() {
@@ -128,13 +128,13 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 708px;
+  max-height: calc(100vh - 257px);
   border: 1px solid black;
   border-top: 1px solid transparent;
   border-radius: 0px 0px 0px 10px;
   background-color: $hybrone_background_color;
   .card {
-    overflow: auto;
+    overflow: hidden auto;
     background-color: $hybrone_background_color;
   }
   span {

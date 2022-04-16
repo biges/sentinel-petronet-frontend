@@ -115,13 +115,9 @@ export default {
   },
   computed: {
     getSelectedRowsDeviceIds() {
-      let selected_device_ids = []
-      this.$store.state.dataTable.selectedRows.forEach((item) => {
-        console.log('Foeach', item)
-        selected_device_ids.push(parseInt(item.id))
-      })
-      return selected_device_ids
+      return this.$store.state.dataTable.selectedRows.map((o) => o.id)
     },
+
     getSelectedRowPremiseId() {
       return this.$store.state.dataTable.selectedRow.premise_id
     }
@@ -136,25 +132,23 @@ export default {
       })
     },
     handleServiceSubmit(val) {
+      const t = this
       this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
-          console.log('Valid', valid)
-          console.log('premiseId', this.getSelectedRowPremiseId)
-          let device_id = []
-          this.$route.params.device_id != null // Varsa Detail içi
-            ? (device_id = [this.getSelectedRowPremiseId]) // Tek Cihaz Idsi
-            : (device_id = this.getSelectedRowsDeviceIds) // ÇOk lu İd gelicek
-          debugger
+          const device_id = t.$route.params.device_id
+            ? [t.getSelectedRowPremiseId]
+            : t.getSelectedRowsDeviceIds
+
           let createPayload = {
             status: 'NEW',
             category: 'FAULT',
-            subCategory: this.ruleForm.ticket_type,
-            description: this.ruleForm.description,
+            subCategory: t.ruleForm.ticket_type,
+            description: t.ruleForm.description,
             created: {
-              at: this.ruleForm.start_time
+              at: t.ruleForm.start_time
             },
             planned: {
-              at: this.ruleForm.finish_time
+              at: t.ruleForm.finish_time
             },
             device: {
               id: device_id
@@ -166,16 +160,15 @@ export default {
             }
             // ticketId: ''
           }
-          let service = this.createService({
-            ...this.ruleForm,
-            // device_id: this.getSelectedRowsDeviceIds.join(),
+          let service = t.createService({
+            createPayload,
             device_id: device_id,
             status_code: 2
           })
           console.log('SERVİCE STAUS', service)
           //   if (service.status == 201) {
-          this.formClean()
-          this.$emit('onClose')
+          t.formClean()
+          t.$emit('onClose')
           //   }
         }
       })
