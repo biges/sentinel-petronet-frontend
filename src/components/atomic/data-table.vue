@@ -598,6 +598,7 @@ export default {
         : ''
     },
     handleSelectionChange(val) {
+      console.log('handleSelectionChange', val)
       this.setSelectedRows(val)
     },
     async setCurrent(row) {

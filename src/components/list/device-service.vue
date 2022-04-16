@@ -117,6 +117,7 @@ export default {
     getSelectedRowsDeviceIds() {
       let selected_device_ids = []
       this.$store.state.dataTable.selectedRows.forEach((item) => {
+        console.log('Foeach', item)
         selected_device_ids.push(parseInt(item.id))
       })
       return selected_device_ids
@@ -140,14 +141,14 @@ export default {
           console.log('Valid', valid)
           console.log('premiseId', this.getSelectedRowPremiseId)
           let device_id = []
-          this.$route.params.device_id
-            ? device_id.push(this.getSelectedRowPremiseId)
-            : (device_id = this.getSelectedRowsDeviceIds)
-
+          this.$route.params.device_id != null // Varsa Detail içi
+            ? (device_id = [this.getSelectedRowPremiseId]) // Tek Cihaz Idsi
+            : (device_id = this.getSelectedRowsDeviceIds) // ÇOk lu İd gelicek
+          debugger
           let createPayload = {
             status: 'NEW',
             category: 'FAULT',
-            subCategory: this.form.ticket_type,
+            subCategory: this.ruleForm.ticket_type,
             description: this.ruleForm.description,
             created: {
               at: this.ruleForm.start_time
@@ -181,6 +182,7 @@ export default {
     }
   },
   created() {
+    console.log('Deneme Created', this.$store.state.dataTable.selectedRows)
     this.state_options = [...ACTIONS_FIELDS['SERVICE'][0]['state']['options']]
   },
   mounted() {
