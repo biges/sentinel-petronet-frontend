@@ -147,7 +147,7 @@ export default {
           let createPayload = {
             status: 'NEW',
             category: 'FAULT',
-            subCategory: this.form.ticket_type,
+            subCategory: this.ruleForm.ticket_type,
             description: this.ruleForm.description,
             created: {
               at: this.ruleForm.start_time

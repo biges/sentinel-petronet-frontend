@@ -50,7 +50,7 @@ export default {
       })
       return services.then((r) => {
         console.log('Store', r)
-        commit('SET_SERVICES', r.data.data.pagination.records)
+        /* commit('SET_SERVICES', r.data.data.pagination.records)
         this.dispatch(
           'pagination/setCurrentPage',
           r.data.data.pagination.to / r.data.data.pagination.per_page
@@ -62,8 +62,10 @@ export default {
         this.dispatch(
           'pagination/setTotalRecord',
           r.data.data.pagination.total_record
-        )
-        return r.data.data.pagination.records
+        ) */
+
+        console.log(r.data.data.result[0])
+        return r.data.data.result[0]
       })
     },
     createService(_, payload) {

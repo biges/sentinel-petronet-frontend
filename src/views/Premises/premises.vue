@@ -90,22 +90,27 @@ export default {
 .container {
   display: flex !important;
   flex-direction: column;
-  justify-content: space-between !important;
+  // justify-content: space-between !important;
   margin-left: 15px;
   min-height: 100vh;
   .content {
+    .tab-pane-container {
+      margin: 0 15px;
+    }
     min-width: 100%;
-    max-height: 80%;
+    height: calc(100vh - 200px);
     display: flex;
     flex-direction: row;
     .data-layer {
-      max-width: 70%;
+      border-right: 1px solid #ebeef5;
+      overflow: auto !important;
     }
     // .tab-page {
     //   max-width: 30%;
     // }
   }
   .bottom {
+    margin-top: auto;
     padding: 15px;
     min-height: 50px;
     background: rgba(160, 160, 160, 0.1);
