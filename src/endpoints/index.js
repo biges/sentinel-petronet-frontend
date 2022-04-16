@@ -221,7 +221,7 @@ export default {
     method: 'GET'
   },
   getVguardDashboardData: {
-    url: '/vguard/devices/dashboard/report',
+    url: '/sentinel/dashboard/report',
     method: 'GET',
     params: {}
   },

@@ -71,6 +71,9 @@ export default {
   },
   mounted() {
     console.log('Dashboard Nav', this.$route)
+  },
+  destroyed() {
+    bus.$off('onDashboardDataRefresh')
   }
 }
 </script>
