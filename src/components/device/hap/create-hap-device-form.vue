@@ -59,7 +59,7 @@
       </div>
       <div class="component">
         <span>ENVANTER NUMARASI</span>
-        <el-input v-model="inventory_number" class="input"> </el-input>
+        <el-input v-model="inventoryNumber" class="input"> </el-input>
       </div>
     </div>
     <p v-if="false">Bağlantı Bilgileri</p>
@@ -284,7 +284,7 @@ export default {
   data() {
     return {
       is_update: !!this.$route.params.device_id,
-      inventory_number: null,
+      inventoryNumber: null,
       subscriber: null,
       username: null,
       password: null,
@@ -408,7 +408,7 @@ export default {
         device_model_id: this.model_type,
         hardware_type_id: this.hardware_type,
         subscriber: this.subscriber,
-        inventory_number: this.inventory_number,
+        inventoryNumber: this.inventoryNumber,
         partitions: [...configured_partition]
       }
       if (this.is_update) {
@@ -506,7 +506,7 @@ export default {
       device.then((r) => {
         console.log(r)
         this.handleHardwareTypeChange(r.hardware_type.id)
-        this.inventory_number = r.inventory_number
+        this.inventoryNumber = r.inventoryNumber
         this.subscriber = r.subscriber
         this.hardware_type = r.hardware_type.id
         this.brand_type = r.device_brand_id

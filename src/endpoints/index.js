@@ -184,7 +184,7 @@ export default {
   getProsecDeviceByPremiseId: {
     url: '/prosec/devices',
     method: 'GET',
-    params: { custom_premise_id: null }
+    params: { id: null }
   },
   createDevice: {
     url: '/vguard/devices',

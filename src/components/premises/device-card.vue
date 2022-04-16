@@ -20,11 +20,11 @@
       </span>
       <span
         >Envanter No:
-        <p>{{ data.inventory_number }}</p></span
+        <p>{{ data.inventoryNumber }}</p></span
       >
       <span
         >Seri No:
-        <p>{{ data.serial_number }}</p></span
+        <p>{{ data.serial }}</p></span
       >
     </div>
   </div>

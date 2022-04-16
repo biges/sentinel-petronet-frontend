@@ -45,7 +45,7 @@
     >
       <!-- <template slot-scope="scope">
         {{ scope.row.premise.location }}
-       
+
       </template> -->
     </el-table-column>
 
@@ -71,7 +71,7 @@
     >
       <template slot-scope="scope">
         {{ scope.row.show_warning }}
-       
+
       </template>
     </el-table-column> -->
     <el-table-column

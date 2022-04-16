@@ -50,7 +50,7 @@ export default {
     ...mapActions({
       /*
 		Bu Kısım Prosec Hırsız Alarm Paneli Senaryosuna Uygundur.
-		
+
         getFilterPremises: 'premise/getFilterPremises',
         updateDevice: 'device/updateDevice',
         getProsecDevicesByFilter: 'device/getProsecDevicesByFilter', */

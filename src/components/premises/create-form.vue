@@ -396,10 +396,8 @@ export default {
         this.provinces = this.getProvince(
           this.getCurrentPremise.location.city_id
         )
-        this.premiseForm.custom_premise_id =
-          this.getCurrentPremise.custom_premise_id
-        this.premiseForm.custom_premise_name =
-          this.getCurrentPremise.custom_premise_name
+        this.premiseForm.custom_premise_id = this.getCurrentPremise.id
+        this.premiseForm.custom_premise_name = this.getCurrentPremise.name
         this.premiseForm.description = this.getCurrentPremise.description
         this.premiseForm.location.city_id =
           this.getCurrentPremise.location.city_id

@@ -32,11 +32,11 @@
           </el-form-item>
 
           <el-form-item
-            prop="hardware_type_id"
+            prop="type"
             class="sentinel-input device-form-item"
             label="CİHAZ TİPİ"
           >
-            <el-select v-model="form.hardware_type_id">
+            <el-select v-model="form.type">
               <el-option
                 v-for="item in hardware_options"
                 :key="item.value"
@@ -48,11 +48,11 @@
           </el-form-item>
 
           <el-form-item
-            prop="device_brand_id"
+            prop="vendor"
             class="sentinel-input device-form-item"
             label="MARKA"
           >
-            <el-select v-model="form.device_brand_id">
+            <el-select v-model="form.vendor">
               <el-option
                 v-for="item in brand_options"
                 :key="item.value"
@@ -64,11 +64,11 @@
           </el-form-item>
 
           <el-form-item
-            prop="device_model_id"
+            prop="model"
             class="sentinel-input device-form-item"
             label="MODEL"
           >
-            <el-select v-model="form.device_model_id">
+            <el-select v-model="form.model">
               <el-option
                 v-for="item in model_options"
                 :key="item.value"
@@ -80,19 +80,19 @@
           </el-form-item>
 
           <el-form-item
-            prop="serial_number"
+            prop="serial"
             class="sentinel-input device-form-item"
             label="SERI NUMARASI"
           >
-            <el-input v-model="form.serial_number"></el-input>
+            <el-input v-model="form.serial"></el-input>
           </el-form-item>
 
           <el-form-item
-            prop="inventory_number"
+            prop="inventoryNumber"
             class="sentinel-input device-form-item"
             label="ENVANTER NUMARASI"
           >
-            <el-input v-model="form.inventory_number"></el-input>
+            <el-input v-model="form.inventoryNumber"></el-input>
           </el-form-item>
         </div>
 
@@ -103,7 +103,7 @@
             class="sentinel-input device-form-item"
             label="KULLANICI ADI"
           >
-            <el-input v-model="form.username"></el-input>
+            <el-input v-model="form.config.username"></el-input>
           </el-form-item>
 
           <el-form-item
@@ -111,15 +111,15 @@
             class="sentinel-input device-form-item"
             label="ŞİFRE"
           >
-            <el-input v-model="form.password"></el-input>
+            <el-input v-model="form.config.password"></el-input>
           </el-form-item>
 
           <el-form-item
-            prop="host"
+            prop="ip"
             class="sentinel-input device-form-item"
             label="IP ADRESI"
           >
-            <el-input v-model="form.host"></el-input>
+            <el-input v-model="form.config.ip"></el-input>
           </el-form-item>
 
           <el-form-item
@@ -127,7 +127,7 @@
             class="sentinel-input device-form-item"
             label="PORT"
           >
-            <el-input type="number" v-model="form.port"></el-input>
+            <el-input type="number" v-model="form.config.port"></el-input>
           </el-form-item>
         </div>
 
@@ -135,7 +135,7 @@
 
         <div
           class="form-section no-margin"
-          v-for="(channel, index) in form.channels"
+          v-for="(channel, index) in form.config.channels"
           :key="index"
         >
           <el-form-item
@@ -197,41 +197,43 @@ export default {
       premise_id: '',
       form: {
         name: '',
-        hardware_type_id: 'NVR',
-        device_brand_id: 'VGUARD',
-        device_model_id: 'VG-4C1A-LRU',
-        serial_number: '',
-        inventory_number: '',
-        username: '',
-        password: '',
-        host: '',
-        port: '',
-        channels: [
-          {
-            channel_name: 'Kanal 1',
-            channel_id: 1,
-            status: '',
-            category: ''
-          },
-          {
-            channel_name: 'Kanal 2',
-            channel_id: 2,
-            status: '',
-            category: ''
-          },
-          {
-            channel_name: 'Kanal 3',
-            channel_id: 3,
-            status: '',
-            category: ''
-          },
-          {
-            channel_name: 'Kanal 4',
-            channel_id: 4,
-            status: '',
-            category: ''
-          }
-        ]
+        type: 'NVR',
+        vendor: 'VGUARD',
+        model: 'VG-4C1A-LRU',
+        serial: '',
+        inventoryNumber: '',
+        config: {
+          username: '',
+          password: '',
+          ip: '',
+          port: '',
+          channels: [
+            {
+              channel_name: 'Kanal 1',
+              channel_id: 1,
+              status: '',
+              category: ''
+            },
+            {
+              channel_name: 'Kanal 2',
+              channel_id: 2,
+              status: '',
+              category: ''
+            },
+            {
+              channel_name: 'Kanal 3',
+              channel_id: 3,
+              status: '',
+              category: ''
+            },
+            {
+              channel_name: 'Kanal 4',
+              channel_id: 4,
+              status: '',
+              category: ''
+            }
+          ]
+        }
       },
       hardware_options: [
         {
@@ -277,27 +279,27 @@ export default {
           message: 'Bu alan zorunlu',
           trigger: 'blur'
         },
-        hardware_type_id: {
+        type: {
           required: true,
           message: 'Bu alan zorunlu',
           trigger: 'blur'
         },
-        device_brand_id: {
+        vendor: {
           required: true,
           message: 'Bu alan zorunlu',
           trigger: 'blur'
         },
-        device_model_id: {
+        model: {
           required: true,
           message: 'Bu alan zorunlu',
           trigger: 'blur'
         },
-        serial_number: {
+        serial: {
           required: true,
           message: 'Bu alan zorunlu',
           trigger: 'blur'
         },
-        inventory_number: {
+        inventoryNumber: {
           required: true,
           message: 'Bu alan zorunlu',
           trigger: 'blur'
@@ -312,7 +314,7 @@ export default {
         //   message: 'Bu alan zorunlu',
         //   trigger: 'blur'
         // },
-        host: {
+        ip: {
           required: true,
           message: 'Bu alan zorunlu',
           trigger: 'blur'
@@ -363,14 +365,14 @@ export default {
         name: this.form.name,
         vendor: this.form.brand,
         status: 'ACTIVE',
-        type: this.form.hardware_type_id,
-        model: this.form.device_model_id,
-        serial: this.form.serial_number,
-        inventoryNumber: this.form.inventory_number,
+        type: this.form.type,
+        model: this.form.model,
+        serial: this.form.serial,
+        inventoryNumber: this.form.inventoryNumber,
         config: {
           channels: this.form.channels,
           port: this.form.port,
-          host: this.form.host,
+          ip: this.form.ip,
           password: this.form.password,
           diskCount: 1
         },
@@ -428,7 +430,7 @@ export default {
     async getDevice(device_id) {
       try {
         const { data } = await this.$api('/devices/' + device_id)
-        return data.data.vguard_device
+        return data.data.result[0]
       } catch (err) {
         console.log(err)
       }
@@ -444,10 +446,10 @@ export default {
       }
     })
       .then((res) => {
-        const { custom_premise_name, custom_premise_id } = res.data.data.premise
+        const { name, id } = res.data.data.result[0]
 
-        this.premise_name = custom_premise_name
-        this.premise_id = custom_premise_id
+        this.premise_name = name
+        this.premise_id = id
       })
       .catch((err) => console.log(err))
     // if Update

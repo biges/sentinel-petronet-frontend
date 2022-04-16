@@ -27,14 +27,14 @@ export default {
     if (this.$route.params.device_id) {
       this.is_update = true
     }
-    let brands = this.getDeviceBrands()
+    /* let brands = this.getDeviceBrands()
     brands.then((r) => {
       console.log(r.data.data)
     })
     let models = this.getDeviceModels()
     models.then((r) => {
       console.log(r.data.data)
-    })
+    }) */
   }
 }
 </script>
