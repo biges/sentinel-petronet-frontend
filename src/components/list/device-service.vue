@@ -152,18 +152,14 @@ export default {
             },
             device: {
               id: device_id
-              //   name: 'qweqweqw',
-              //   serialNumber: 'stqweqwering',
-              //   hardwareType: 'NVR',
-              //   hardwareVendor: 'VGUARD',
-              //   hardwareModel: 'qqq'
             }
+
             // ticketId: ''
           }
           let service = t.createService({
-            createPayload,
-            device_id: device_id,
-            status_code: 2
+            ...createPayload
+            // device_id: device_id
+            // status_code: 2
           })
           console.log('SERVİCE STAUS', service)
           //   if (service.status == 201) {

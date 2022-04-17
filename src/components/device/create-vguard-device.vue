@@ -99,7 +99,7 @@
         <h3>Bağlantı Bilgileri</h3>
         <div class="form-section full-width">
           <el-form-item
-            prop="username"
+            prop="config.username"
             class="sentinel-input device-form-item"
             label="KULLANICI ADI"
           >
@@ -115,7 +115,7 @@
           </el-form-item>
 
           <el-form-item
-            prop="ip"
+            prop="config.ip"
             class="sentinel-input device-form-item"
             label="IP ADRESI"
           >
@@ -123,7 +123,7 @@
           </el-form-item>
 
           <el-form-item
-            prop="port"
+            prop="config.port"
             class="sentinel-input device-form-item"
             label="PORT"
           >
@@ -334,7 +334,7 @@ export default {
     validate() {
       let isValid = false
 
-      const isChannelsValid = this.form.channels.every((c) => {
+      const isChannelsValid = this.form.config.channels.every((c) => {
         return c.status !== null && c.status !== false
           ? c.category && c.channel_id && c.channel_name
           : true
@@ -363,22 +363,23 @@ export default {
     createPayload() {
       let payload = {
         name: this.form.name,
-        vendor: this.form.brand,
+        vendor: this.form.vendor,
         status: 'ACTIVE',
         type: this.form.type,
         model: this.form.model,
         serial: this.form.serial,
         inventoryNumber: this.form.inventoryNumber,
         config: {
-          channels: this.form.channels,
-          port: this.form.port,
-          ip: this.form.ip,
-          password: this.form.password,
+          channels: this.form.config.channels,
+          port: this.form.config.port,
+          ip: this.form.config.ip,
+          password: this.form.config.password,
           diskCount: 1
         },
         premise: {
           connect: {
-            id: parseInt(this.$route.params.premise_id)
+            id: this.premise_id
+            // id: parseInt(this.premise_id)
           }
         }
       }
@@ -450,8 +451,10 @@ export default {
 
         this.premise_name = name
         this.premise_id = id
+        console.log(this.premise_id)
       })
       .catch((err) => console.log(err))
+
     // if Update
     if (this.is_update) {
       const device_id = this.$route.params.device_id

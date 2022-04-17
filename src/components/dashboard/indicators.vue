@@ -62,7 +62,7 @@ export default {
     }
   },
   created() {
-    this.getDashboardDataNonFiltred()
+    this.getDashboardData()
   },
   mounted() {
     bus.$on('onDashboardDataRefresh', (val) => this.getDashboardData(val))

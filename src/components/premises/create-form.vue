@@ -283,8 +283,8 @@ export default {
         zipCode: '38090',
         taxOffice: 'İstanbul Mecidiyeköy',
         taxNumber: '21312312313',
-        latitude: this.premiseForm.location.lat,
-        longitude: this.premiseForm.location.long,
+        latitude: this.getSelectedLocation.lat,
+        longitude: this.getSelectedLocation.long,
         detail: this.premiseForm.location.address,
         country: {
           connect: {
@@ -328,15 +328,28 @@ export default {
       const createAddress = await this.createAddressForPremise()
       console.log('submitCreateForm', createAddress)
 
-      this.premiseForm.location.lat = this.getSelectedLocation.lat
-      this.premiseForm.location.long = this.getSelectedLocation.long
+      let premisePayload = {
+        name: this.premiseForm.custom_premise_name,
+        type: 'OFFICE',
+        securityType: 'POLICE',
+        customer: {
+          connect: {
+            id: store.state.auth.user.customerId
+          }
+        },
+        address: {
+          connect: {
+            id: createAddress.data.data.result[0].id
+          }
+        }
+      }
       if (val) {
         this.$refs[this.formName].validate((valid) => {
           if (valid) {
             if (this.is_update_request) {
               this.updateCreateForm(this.premiseForm)
             } else {
-              const res = this.createPremise(this.premiseForm)
+              const res = this.createPremise(premisePayload)
               //   if (res.status == 201) {
               //     this.$router.push('/premises')
               //     this.setLocation({})
@@ -411,14 +424,17 @@ export default {
     }
   },
   created() {
-    if ((this.getCurrentPremise = {} && this.$route.params.id)) {
-      this.getPremiseById(this.$route.params.id)
-      this.fillPremiseForm()
-    }
+    // if ((this.getCurrentPremise = {} && this.$route.params.id)) {
+    //   this.getPremiseById(this.$route.params.id)
+    //   this.fillPremiseForm()
+    // }
     // this.cities = this.getCities()
-    const country = this.getCountries()
-    this.countryId = country.data.result[0].data[0].id
-    console.log('CountryId', this.countryId)
+    this.getCountries().then((r) => {
+      this.countryId = r.data.data.result[0].data[0].id
+      console.log('country', this.countryId)
+      console.log(r)
+    })
+    // console.log('CountryId', country.data.result[0].data[0].id)
   },
   mounted() {
     bus.$on('onClickSave', (val) => this.submitCreateForm(val))

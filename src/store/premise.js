@@ -129,7 +129,7 @@ export default {
       const newPremise = Vue.prototype.$api({
         ...endpoints.createPremise,
         data: {
-          premise: payload
+          ...payload
         }
       })
       let result = null
