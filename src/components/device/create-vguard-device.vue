@@ -107,7 +107,7 @@
           </el-form-item>
 
           <el-form-item
-            prop="password"
+            prop="config.password"
             class="sentinel-input device-form-item"
             label="ŞİFRE"
           >
@@ -304,25 +304,27 @@ export default {
           message: 'Bu alan zorunlu',
           trigger: 'blur'
         },
-        username: {
-          required: true,
-          message: 'Bu alan zorunlu',
-          trigger: 'blur'
-        },
-        // password: {
-        //   required: true,
-        //   message: 'Bu alan zorunlu',
-        //   trigger: 'blur'
-        // },
-        ip: {
-          required: true,
-          message: 'Bu alan zorunlu',
-          trigger: 'blur'
-        },
-        port: {
-          required: true,
-          message: 'Bu alan zorunlu',
-          trigger: 'blur'
+        config: {
+          username: {
+            required: true,
+            message: 'Bu alan zorunlu',
+            trigger: 'blur'
+          },
+          // password: {
+          //   required: true,
+          //   message: 'Bu alan zorunlu',
+          //   trigger: 'blur'
+          // },
+          ip: {
+            required: true,
+            message: 'Bu alan zorunlu',
+            trigger: 'blur'
+          },
+          port: {
+            required: true,
+            message: 'Bu alan zorunlu',
+            trigger: 'blur'
+          }
         }
       }
     }
@@ -334,14 +336,15 @@ export default {
     validate() {
       let isValid = false
 
-      const isChannelsValid = this.form.config.channels.every((c) => {
-        return c.status !== null && c.status !== false
-          ? c.category && c.channel_id && c.channel_name
-          : true
-      })
+      const isChannelsValid = Object.values(this.form.config.channels).every(
+        (c) => {
+          return c.status !== null && c.status !== false
+            ? c.category && c.id && c.channel_name
+            : true
+        }
+      )
 
       if (!isChannelsValid) {
-        console.log('channel valid degil')
         this.$message({
           type: 'error',
           message: 'Tüm kanal bilgileri girilmelidir.'
@@ -353,7 +356,6 @@ export default {
         if (valid) {
           isValid = true
         } else {
-          console.log('validation error')
           isValid = false
         }
       })
@@ -407,7 +409,10 @@ export default {
     onUpdate() {
       if (this.validate()) {
         this.$api
-          .patch('/devices', this.createPayload())
+          .patch(
+            `/devices/${this.$route.params.device_id}`,
+            this.createPayload()
+          )
           .then((res) => {
             this.$router.push({ name: 'Premises' })
           })
@@ -421,7 +426,7 @@ export default {
         type: 'error'
       }).then(() => {
         this.$api
-          .delete('vguard/devices/' + this.$route.params.device_id)
+          .delete('devices/' + this.$route.params.device_id)
           .then(() => {
             this.$router.push({ name: 'Premises' })
           })
@@ -448,10 +453,8 @@ export default {
     })
       .then((res) => {
         const { name, id } = res.data.data.result[0]
-
         this.premise_name = name
         this.premise_id = id
-        console.log(this.premise_id)
       })
       .catch((err) => console.log(err))
 
@@ -460,19 +463,10 @@ export default {
       const device_id = this.$route.params.device_id
 
       this.getDevice(device_id).then((device) => {
+        console.log(this.form)
         Object.keys(this.form).forEach((field) => {
-          if (field !== 'channels') {
-            this.form[field] = device[field]
-          }
+          this.form[field] = device[field]
         })
-
-        if (device.channels) {
-          device.channels.forEach((c, index) => {
-            Object.keys(this.form.channels[0]).forEach((field) => {
-              this.form.channels[index][field] = c[field]
-            })
-          })
-        }
       })
     }
   },

@@ -102,7 +102,7 @@ body {
   margin: 0px !important;
   padding: 0px !important;
   // min-height: 100vh;
-  min-width: 100vw;
+  min-width: 100%;
 }
 .error-template {
   display: flex;

@@ -165,6 +165,9 @@ $high: 1920px;
   div {
     margin-bottom: 10px;
   }
+  .navigation {
+    overflow: hidden auto;
+  }
   span {
     font-family: Roboto, sans-serif;
     font-style: normal;

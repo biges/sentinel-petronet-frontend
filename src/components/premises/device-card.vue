@@ -111,8 +111,7 @@ export default {
   //     border: 0.5px solid $hybrone_light_blue;
   //   }
   .left {
-    margin-left: 23px;
-    margin-top: 36px;
+    padding: 10px;
     span {
       width: 100%;
       height: 23px;
