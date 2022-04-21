@@ -161,9 +161,11 @@ export default {
           let start_time = moment(this.ruleForm.start_time)
             .add(3, 'hours')
             ._d.toISOString()
+            .toLowerCase()
           let finish_time = moment(this.ruleForm.finish_time)
             .add(3, 'hours')
             ._d.toISOString()
+            .toLowerCase()
           this.$refs[form].validate((valid) => {
             if (valid) {
               let video = this.getVguardDeviceChannelRecord({

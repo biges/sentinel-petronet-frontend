@@ -12,7 +12,7 @@ const clientInstance = (baseURL) =>
     headers: {
       'Content-Type': 'application/json'
     },
-    timeout: 40000,
+    timeout: 400000,
     paramsSerializer: (params) =>
       Qs.stringify(params, {
         skipNulls: true,

@@ -148,17 +148,18 @@
       <!-- :disabled="true" -->
       <template slot-scope="scope">
         <el-button
-          :disabled="
-            !scope.row.status && !this.getPermissions['download_records']
-          "
+          :disabled="!scope.row.status && statusCheckRecordDownload"
           class="button"
           @click="downloadRecord(scope.row.channel_id)"
         >
+          <!-- !this.getPermissions['download_record'] -->
           <!-- scope.row.status &&
               getPermissions['download_records'] && -->
           <!-- :status="scope.row.status && scope.row.is_active" -->
 
-          <SvgIconDownload :status="null"></SvgIconDownload>
+          <SvgIconDownload
+            :status="scope.row.status && scope.row.is_active"
+          ></SvgIconDownload>
         </el-button>
       </template>
     </el-table-column>
@@ -238,8 +239,12 @@ export default {
       this.selected_channel_id = val1
     }
   },
-  mounted() {
+
+  created() {
     console.log('Permission Channel', this.getPermissions)
+  },
+  mounted() {
+    // console.log('Permission Channel', this.getPermissions)
   }
 }
 </script>

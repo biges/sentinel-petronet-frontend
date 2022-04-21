@@ -170,13 +170,13 @@
             <el-input v-model="form.cloud_id"></el-input>
           </el-form-item>
 
-          <el-form-item
+          <!-- <el-form-item
             prop="port"
             class="sentinel-input device-form-item"
             label="PORT"
           >
             <el-input type="number" v-model="form.port"></el-input>
-          </el-form-item>
+          </el-form-item> -->
         </div>
         <div v-if="form.hardware_type_id == 4">
           <h3>Sensör Bilgileri</h3>
@@ -319,7 +319,7 @@ export default {
         username: '',
         password: '',
         cloud_id: '',
-        port: '',
+        port: '7000',
         channels: [
           {
             channel_name: 'Kanal 1',
@@ -409,8 +409,16 @@ export default {
           value: 4
         },
         {
+          label: '6 Kanal',
+          value: 6
+        },
+        {
           label: '8 Kanal',
           value: 8
+        },
+        {
+          label: '10 Kanal',
+          value: 10
         },
         {
           label: '16 Kanal',
@@ -749,6 +757,7 @@ export default {
             device.channels.forEach((c, index) => {
               Object.keys(this.form.channels[0]).forEach((field) => {
                 this.form.channels[index][field] = c[field]
+                // debugger
               })
             })
           }

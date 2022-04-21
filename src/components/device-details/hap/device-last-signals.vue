@@ -118,6 +118,7 @@ export default {
             .add(3, 'hours')
             .add(-30, 'seconds')
             ._d.toISOString()
+            .toLowerCase()
           finish_time = moment(this.selected_events.event_date).add(3, 'hours')
         } else if (this.selected_events.state == 'Video Kaybı Düzeldi') {
           start_time = moment(this.selected_events.event_date).add(3, 'hours')
@@ -125,15 +126,18 @@ export default {
             .add(3, 'hours')
             .add(30, 'seconds')
             ._d.toISOString()
+            .toLowerCase()
         } else {
           start_time = moment(this.selected_events.event_date)
             .add(3, 'hours')
             .add(-61, 'seconds')
             ._d.toISOString()
+            .toLowerCase()
           finish_time = moment(this.selected_events.event_date)
             .add(3, 'hours')
             .add(29, 'seconds')
             ._d.toISOString()
+            .toLowerCase()
         }
         console.log('FinishTime', finish_time)
         console.log('StartTime', start_time)
@@ -156,7 +160,7 @@ export default {
               'download',
               this.getDevice.premise.custom_premise_id +
                 '-CH-' +
-                this.selected_channel +
+                this.selected_events.channel_id +
                 '-' +
                 currentDate.getFullYear() +
                 ('0' + (currentDate.getMonth() + 1)).slice(-2) +
