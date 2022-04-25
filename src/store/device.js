@@ -31,7 +31,7 @@ export default {
         ],
         skip,
         take,
-        where: { ...params, vendor: { equals: 'VGUARD' } },
+        where: { ...params, type: 'NVR' },
         orderBy: [{ createdAt: 'desc' }],
         include: {
           premise: { include: { areas: true, address: true } }

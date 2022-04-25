@@ -20,7 +20,7 @@ const clientInstance = (baseURL) =>
       })
   })
 
-const cyclops = clientInstance('https://sandbox-6.hybrone.com/v1')
+const cyclops = clientInstance('https://sandbox-3.hybrone.com/v1')
 // const cyclops = clientInstance('http://34.79.135.127:3000/api/v1/')
 const map = 'http://34.79.135.127:8081/tile/{z}/{x}/{y}.png'
 // const cyclops = clientInstance('http://10.100.0.34:3000/api/v1/')
