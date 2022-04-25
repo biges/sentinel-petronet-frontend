@@ -29,14 +29,22 @@
         <div class="premise-form-content">
           <span class="premise-form-content-label">İL</span>
           <el-form-item prop="location.city_id">
-            <el-input
+            <el-select
               style="width: 330px"
               class="sentinel-input"
               type="text"
+              filterable
               v-model="premiseForm.location.city_id"
-              placeholder="İl"
+              placeholder="Seçiniz"
+              @change="getProvince"
             >
-            </el-input>
+              <el-option
+                v-for="item in cities"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              ></el-option>
+            </el-select>
           </el-form-item>
         </div>
         <div class="premise-form-content">
