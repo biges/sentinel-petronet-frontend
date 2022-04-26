@@ -84,9 +84,9 @@
           <li class="device-channel-icon">
             <SvgIconFirstChannels
               :status="
-                scope.row.is_active == true
-                  ? scope.row.channels[0].status == true
-                    ? !scope.row.channels[0].show_warning
+                scope.row.status == 'ACTIVE'
+                  ? scope.row.config.channels[0].is_active == true
+                    ? !scope.row.config.channels[0].show_warning
                     : null
                   : false
               "
@@ -95,9 +95,9 @@
           <li class="device-channel-icon">
             <SvgIconSecondChannel
               :status="
-                scope.row.is_active == true
-                  ? scope.row.channels[1].status == true
-                    ? !scope.row.channels[1].show_warning
+                scope.row.status == 'ACTIVE'
+                  ? scope.row.config.channels[1].is_active == true
+                    ? !scope.row.config.channels[1].show_warning
                     : null
                   : false
               "
@@ -106,9 +106,9 @@
           <li class="device-channel-icon">
             <SvgIconThirdChannel
               :status="
-                scope.row.is_active == true
-                  ? scope.row.channels[2].status == true
-                    ? !scope.row.channels[2].show_warning
+                scope.row.status == 'ACTIVE'
+                  ? scope.row.config.channels[2].is_active == true
+                    ? !scope.row.config.channels[2].show_warning
                     : null
                   : false
               "
@@ -117,9 +117,9 @@
           <li class="device-channel-icon">
             <SvgIconFourthChannel
               :status="
-                scope.row.is_active == true
-                  ? scope.row.channels[3].status == true
-                    ? !scope.row.channels[3].show_warning
+                scope.row.status == 'ACTIVE'
+                  ? scope.row.config.channels[3].is_active == true
+                    ? !scope.row.config.channels[3].show_warning
                     : null
                   : false
               "
@@ -134,22 +134,27 @@
           <li class="device-state-icon">
             <SvgIconCommunication
               :status="
-                scope.row.is_active == true ? !scope.row.network_error : false
+                scope.row.config.is_active == true
+                  ? !scope.row.config.network_error
+                  : false
               "
             ></SvgIconCommunication>
           </li>
           <li class="device-state-icon">
             <SvgIconDisk
               :status="
-                scope.row.is_active == true ? !scope.row.disk_error : false
+                scope.row.config.is_active == true
+                  ? !scope.row.config.disk_error
+                  : false
               "
             ></SvgIconDisk>
           </li>
           <li class="device-state-icon">
             <SvgIconRecord
               :status="
-                scope.row.is_active == true
-                  ? !scope.row.record_error && !scope.row.disk_error
+                scope.row.config.is_active == true
+                  ? !scope.row.config.record_error &&
+                    !scope.row.config.disk_error
                   : false
               "
             ></SvgIconRecord>
@@ -157,7 +162,9 @@
           <li class="device-state-icon">
             <SvgIconDateTime
               :status="
-                scope.row.is_active == true ? !scope.row.datetime_error : false
+                scope.row.config.is_active == true
+                  ? !scope.row.config.datetime_error
+                  : false
               "
             ></SvgIconDateTime>
           </li>

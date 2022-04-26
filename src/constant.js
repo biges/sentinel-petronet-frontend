@@ -82,7 +82,7 @@ export const cities = [
   { id: 81, name: 'Zonguldak' }
 ]
 
-export const province = [
+export const provinces = [
   {
     city_id: '1',
     province: 'Aladağ'

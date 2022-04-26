@@ -95,6 +95,10 @@ export default {
           let { redirect } = this.$route.query
 
           const getToken = this.$api({
+            headers: {
+              //   ...this,
+              'User-Type': 'CUSTOMER'
+            },
             ...endpoints.token,
             data: {
               email: this.ruleForm.email,

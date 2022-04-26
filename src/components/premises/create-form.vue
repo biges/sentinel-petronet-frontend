@@ -39,10 +39,10 @@
               @change="getProvince"
             >
               <el-option
-                v-for="item in cities"
+                v-for="item in citiesArray"
                 :key="item.id"
                 :label="item.name"
-                :value="item.id"
+                :value="item.value"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -50,14 +50,21 @@
         <div class="premise-form-content">
           <span class="premise-form-content-label">İLÇE</span>
           <el-form-item prop="location.province_id">
-            <el-input
+            <el-select
               style="width: 330px"
               class="sentinel-input"
               type="text"
-              placeholder="İlçe"
+              filterable
+              placeholder="Seçiniz"
               v-model="premiseForm.location.province_id"
             >
-            </el-input>
+              <el-option
+                v-for="item in provincesArray"
+                :key="item.id"
+                :label="item.name"
+                :value="item.value"
+              ></el-option>
+            </el-select>
           </el-form-item>
         </div>
       </div>
@@ -183,14 +190,15 @@ import { bus } from '@/main'
 import endpoints from '@/endpoints'
 import { mapActions, mapGetters } from 'vuex'
 import store from '@/store'
+import { cities, provinces } from '@/constant.js'
 export default {
   name: 'CreateForm',
   data() {
     return {
       counter: 0,
       formName: 'createPremise',
-      cities: [],
-      provinces: [],
+      citiesArray: [],
+      provincesArray: [],
       countryId: '',
       premiseForm: {
         custom_premise_id: '',
@@ -309,28 +317,23 @@ export default {
       return address
     },
     getCities() {
-      const cities = this.$api({
-        ...endpoints.getCities
+      this.citiesArray = cities.map((c) => {
+        return { label: c.name, id: c.city_id, value: c.name }
       })
-      return cities.then((r) => {
-        this.cities = r.data.data.cities
-      })
+      console.log('this.cities', this.citiesArray)
     },
     getProvince(val) {
-      let provinces = null
-      if (val) {
-        provinces = this.$api({
-          ...endpoints.getProvince,
-          params: { city_id: val }
+      let selectedCityId = cities.filter((c) => {
+        return c.name == val
+      })[0]
+      this.provincesArray = provinces
+        .filter((p) => {
+          return p.city_id == selectedCityId.id
         })
-      } else {
-        provinces = this.$api({
-          ...endpoints.getProvince
+        .map((c, index) => {
+          return { label: c.province, value: c.province, id: index }
         })
-      }
-      provinces.then((r) => {
-        this.provinces = r.data.data.provinces
-      })
+      console.log('this.provincesArray', this.provincesArray)
     },
     async submitCreateForm(val) {
       const createAddress = await this.createAddressForPremise()
@@ -436,7 +439,7 @@ export default {
     //   this.getPremiseById(this.$route.params.id)
     //   this.fillPremiseForm()
     // }
-    // this.cities = this.getCities()
+    this.getCities()
     this.getCountries().then((r) => {
       this.countryId = r.data.data.result[0].data[0].id
       console.log('country', this.countryId)
