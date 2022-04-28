@@ -1,6 +1,6 @@
 {
-  "name": "Hybrone-Sentinel-Petronet",
-  "version": "1.39.0",
+  "name": "Hybrone-Sentinel-Getir",
+  "version": "1.0.0",
   "private": true,
   "author": {
     "name": "Biges Güvenli Hayat Teknolojileri",
@@ -12,11 +12,11 @@
     "type": "git",
     "url": "https://github.com/biges/hybrone-sentinel"
   },
-  "description": "Petronet Camera System",
+  "description": "Getir Security System",
   "homepage": "https://github.com/biges/hybrone-sentinel",
   "metadata": {
     "name": "Hybrone Sentinel - Akbank",
-    "description": "Petronet Camera System",
+    "description": "Getir Security System",
     "homepage": "https://github.com/biges/hybrone-sentinel",
     "licence": "licence",
     "author": {
