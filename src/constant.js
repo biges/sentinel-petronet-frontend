@@ -45,21 +45,24 @@ export const DEVICE_TYPES = [
     label: 'Kayıt Cihazı',
     key: 'camera',
     valid: false,
-    route: '/camera'
+    route: '/camera',
+    disabled: false
   },
   {
     id: 3,
     label: 'Kayıt Cihazı',
     key: 'PANEL',
     valid: true,
-    route: '/panel'
+    route: '/panel',
+    disabled: false
   },
   {
     id: 3,
     label: 'Sensörler',
     key: 'IOT',
     valid: true,
-    route: '/iot'
+    route: '/iot',
+    disabled: false
   }
 ]
 export const DASHBOARD_VARIABLES = {

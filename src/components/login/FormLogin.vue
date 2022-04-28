@@ -102,12 +102,17 @@ export default {
           })
           getToken
             .then((r) => {
+              console.log('r::::.', r)
               if ([200].includes(r.status)) {
                 this.setAuthUser(r.data)
+
                 if (redirect) {
                   this.$router.push({ name: redirect })
                 } else {
-                  this.$router.push({ name: 'Dashboard' })
+                  console.log(r.data.data.user.permission)
+                  r.data.data.user.permission.device_access
+                    ? this.$router.push({ name: 'Dashboard' })
+                    : this.$router.push({ path: 'dashboard/iot' })
                 }
               } else if ([202].includes(r.status)) {
                 this.setAuthUser(r.data)

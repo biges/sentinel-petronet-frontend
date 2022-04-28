@@ -12,13 +12,21 @@
         :key="device_type.id"
         :to="'/' + getNormalRoute + device_type.route"
         active-class="nav-active"
+        :disabled="device_type.disabled"
       >
+        <!-- (getPermissions['sensor_access'] && device_type.key == 'IOT') ||
+          (false && device_type.key == 'PANEL') -->
         <!-- :to="parentRoute + prefixRoute" -->
         <!-- :to="'/dashboard' + device_type.route" -->
 
+        <!-- :disabled="
+            (getPermissions['sensor_access'] && device_type.key == 'IOT') ||
+            (getPermissions['device_access'] && device_type.key == 'PANEL')
+          " -->
         <el-button
           v-if="device_type.valid"
           class="__nav-button sentinel-button"
+          :disabled="device_type.disabled"
         >
           <div class="group">
             <SvgIconCCTV v-if="device_type.key == 'PANEL'"></SvgIconCCTV>
@@ -45,7 +53,7 @@ import SvgIconRefresh from '@/assets/icons/list/svg-icon-refresh.vue'
 import { bus } from '@/main.js'
 import SvgIconCCTV from '@/assets/icons/dashboard/svg-icon-cctv.vue'
 import SvgIconSensor from '@/assets/icons/dashboard/svg-icon-sensor.vue'
-
+import { mapGetters } from 'vuex'
 export default {
   name: 'DashboardNav',
   components: { SvgIconRefresh, SvgIconCCTV, SvgIconSensor },
@@ -53,6 +61,9 @@ export default {
     return { device_types: {} }
   },
   computed: {
+    ...mapGetters({
+      getPermissions: 'auth/getPermissions'
+    }),
     prefixRoute() {
       if (this.$route.name != 'DeviceLastSignals') return ''
       else {
@@ -88,7 +99,18 @@ export default {
   },
   created() {
     console.log('Route Path', this.$route.path.split('/')[1])
-    this.device_types = { ...DEVICE_TYPES }
+    this.device_types = [...DEVICE_TYPES]
+    // this.device_types = { ...DEVICE_TYPES }
+    this.device_types.forEach((item, index) => {
+      this.device_types[index].disabled =
+        item.key == 'PANEL' && this.getPermissions['device_access']
+          ? false
+          : item.key == 'IOT' && this.getPermissions['sensor_access']
+          ? false
+          : true
+      this.device_types[index].valid = !this.device_types[index].disabled
+    })
+    console.log('DeviceTYPES', this.device_types)
   },
   mounted() {
     console.log('Dashboard Nav', this.$route)

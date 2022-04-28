@@ -3,7 +3,8 @@ import Vue from 'vue'
 export default function (to, from, next) {
   console.log('From', from)
   console.log('To', to)
-  const auth = store.state.auth
+  const auth = store.state.auth.user.data.user
+  console.log('Auth Middleware', auth)
   //Route Değiştikçe 0 lanacak olan Store değişkenleri
   store.state.dataTable.selectedRows = []
   store.state.dataTable.selectedRow = {}
@@ -12,6 +13,7 @@ export default function (to, from, next) {
   let isUndefined = typeof to.name === 'undefined'
   console.log(isLoggedIn)
   console.log(isUndefined)
+  console.log(queryRedirect)
 
   const queryRedirect = to.query.redirect
 
@@ -25,9 +27,31 @@ export default function (to, from, next) {
   }
 
   if (isLoggedIn) {
-    if (queryRedirect) next({ name: 'Dashboard' })
-    if (!queryRedirect && to.name == 'Login') next({ name: 'Dashboard' })
-    next()
+    console.log('Login:::::::::::')
+    if (queryRedirect) {
+      if (
+        auth.permission['sensor_access'] &&
+        auth.permission['device_access']
+      ) {
+        console.log('GEtir God')
+        next({ name: 'Dashboard' })
+      } else {
+        if (auth.permission['sensor_access']) {
+          console.log('DashboardIOT')
+          next({ name: 'DashboardIot' })
+        } else if (auth.permission['device_access']) {
+          console.log('Device Access')
+          next({ name: 'Dashboard' })
+        }
+      }
+    }
+    if (!queryRedirect && to.name == 'Login') {
+      console.log('Buramı ')
+      next({ name: 'Dashboard' })
+    } else {
+      console.log('Else:::::::::::::')
+      next()
+    }
   } else {
     if (to.meta.layout == 'auth') {
       let payload = {
@@ -39,6 +63,7 @@ export default function (to, from, next) {
       if (!queryRedirect) delete payload.query.redirect
       next(payload)
     } else {
+      console.log('Middile Ware Else')
       next()
     }
   }
