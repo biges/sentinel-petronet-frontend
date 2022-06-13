@@ -40,7 +40,8 @@ export default {
       modal_type: null,
       selectedAction: '',
       modal_visible: false,
-      table_data: []
+      table_data: [],
+      filtered_data: {}
     }
   },
   computed: {
@@ -60,7 +61,8 @@ export default {
     handleChangePagination() {
       this.fillDataTable({
         page: this.getCurrentPage,
-        limit: this.getCurrentLimit
+        limit: this.getCurrentLimit,
+        ...this.filtered_data
       })
     },
     handleActionClick(val) {
@@ -78,8 +80,9 @@ export default {
       }
     },
     async handleFilteredData(val) {
+      this.filtered_data = { ...val }
       console.log('LİSt', val)
-      await this.fillDataTable(val)
+      await this.fillDataTable(this.filtered_data)
     },
     handleModalClose(val) {
       this.modal_visible = val

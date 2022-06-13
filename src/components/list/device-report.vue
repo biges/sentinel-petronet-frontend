@@ -64,7 +64,7 @@
           </el-select>
         </el-form-item>
       </div>
-      <div class="content">
+      <!-- <div class="content">
         <span class="span-label">BAŞLANGIÇ ZAMANI</span>
         <el-form-item prop="start_time">
           <el-date-picker
@@ -87,7 +87,7 @@
           >
           </el-date-picker>
         </el-form-item>
-      </div>
+      </div> -->
       <!-- <div class="save-button">
       <el-button type="primary" @click="handleOnSaveClick">Kaydet</el-button>
     </div> -->
@@ -163,31 +163,46 @@ export default {
   },
   methods: {
     handleReportSubmit() {
+      let params = {}
       this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
           let devicesPremiseID = []
           let currentDate = new Date()
-          if (this.start_time == '' || this.end_time == '') {
-            let end_time = new Date()
-            let start_time = new Date()
-            start_time.setDate(end_time.getDate() - 30)
-            this.end_time = end_time.toISOString()
-            this.start_time = start_time.toISOString()
-          }
-          if (this.list_val != 'all')
+          //   if (this.start_time == '' || this.end_time == '') {
+          //     let end_time = new Date()
+          //     let start_time = new Date()
+          //     start_time.setDate(end_time.getDate() - 30)
+          //     this.end_time = end_time.toISOString()
+          //     this.start_time = start_time.toISOString()
+          //   }
+          if (this.ruleForm.list_val != 'all') {
             devicesPremiseID = this.getSelectedRowsPremiseId
-          else devicesPremiseID = []
-          this.$api({
-            ...endpoints.getDeviceVguardReport,
-            params: {
+            params = {
               response_type: this.ruleForm.response_type,
-              report_type: this.ruleForm.type,
-              start_time: this.ruleForm.start_time,
-              finish_time: this.ruleForm.finish_time,
               device_id: devicesPremiseID.join(),
               page: 1,
               limit: 20
             }
+          } else {
+            devicesPremiseID = []
+            params = {
+              response_type: this.ruleForm.response_type,
+              page: 1,
+              limit: 20
+            }
+          }
+          this.$api({
+            ...endpoints.getDeviceVguardReport,
+            params: params
+            // params: {
+            //   response_type: this.ruleForm.response_type,
+            //   //   report_type: this.ruleForm.type,
+            //   //   start_time: this.ruleForm.start_time,
+            //   //   finish_time: this.ruleForm.finish_time,
+            //   device_id: devicesPremiseID.join(),
+            //   page: 1,
+            //   limit: 20
+            // }
           }).then((r) => {
             if (r.status == 200) {
               console.log(r)

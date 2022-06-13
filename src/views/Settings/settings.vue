@@ -568,7 +568,10 @@ export default {
     getBackupFile() {
       let currentDate = new Date()
 
-      let devices = this.getVguardDevicesExcelExport({ response_type: 'excel' })
+      let devices = this.getVguardDevicesExcelExport({
+        response_type: 'excel',
+        multiple_device_report: true
+      })
       console.log(devices)
       devices.then((r) => {
         console.log(r.data)

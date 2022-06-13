@@ -269,6 +269,10 @@ export const DEVICE_STATUS = [
   {
     label: 'Zaman Hatası',
     value: 'datetime_error'
+  },
+  {
+    label: 'Kimlik Hatası',
+    value: 'credentials_error'
   }
 ]
 export const PREMISE_DEVICES = [

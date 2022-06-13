@@ -19,9 +19,13 @@ const clientInstance = (baseURL) =>
         arrayFormat: 'repeat'
       })
   })
-
+// Getir Demo Adresleri
+// const cyclops = clientInstance('http://35.205.141.165:3000/api/v1/')
+// const map = 'http://35.205.141.165:8081/tile/{z}/{x}/{y}.png'
+// Petronet Lokal Sunucu Adresleri
 const cyclops = clientInstance('http://34.79.135.127:3000/api/v1/')
 const map = 'http://34.79.135.127:8081/tile/{z}/{x}/{y}.png'
+// Petronet Sunucu Adresleri
 // const cyclops = clientInstance('http://10.100.0.34:3000/api/v1/')
 // const map = 'http://10.100.0.34:8081/tile/{z}/{x}/{y}.png'
 

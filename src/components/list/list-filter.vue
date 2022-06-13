@@ -172,13 +172,25 @@ export default {
     },
     handleSearch() {
       let state = ''
+
       Object.keys(this.filtered_data).forEach((item) => {
+        console.log('handleSearch', item)
         if (this.filtered_data[item] == false) delete this.filtered_data[item]
       })
-      if (this.filtered_data.state != undefined)
+      if (
+        this.filtered_data.state != undefined &&
+        !this.filtered_data.state.includes('credentials_error')
+      ) {
         state = this.filtered_data.state.join()
-
-      this.$emit('onFilteredData', { ...this.filtered_data, state: state })
+        console.log('this.filtered_data.state', this.filtered_data.state)
+      }
+      this.$emit(
+        'onFilteredData',
+        this.filtered_data.state != undefined &&
+          this.filtered_data.state.includes('credentials_error')
+          ? { ...this.filtered_data, state: state, is_device_credentials: true }
+          : { ...this.filtered_data, state: state }
+      )
       this.is_total_count_visible = true
     }
   },
