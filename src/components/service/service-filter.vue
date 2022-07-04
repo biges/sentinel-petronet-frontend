@@ -338,7 +338,8 @@ export default {
           //   'http://10.100.0.34:3000/api/v1/tickets/import',
           //   'http://34.79.135.127:3000/api/v1/tickets/import',
           // 'http://10.81.102.51:3000/api/v1/tickets/import',
-          'http://172.30.0.51:3000/api/v1/tickets/import',
+          //   'http://172.30.0.51:3000/api/v1/tickets/import',
+          'http://192.168.1.20:3000/api/v1/tickets/import',
           form,
           config
         )

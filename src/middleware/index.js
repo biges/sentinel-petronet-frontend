@@ -28,9 +28,12 @@ const clientInstance = (baseURL) =>
 // Petronet Sunucu Adresleri
 // const cyclops = clientInstance('http://10.100.0.34:3000/api/v1/')
 // const map = 'http://10.100.0.34:8081/tile/{z}/{x}/{y}.png'
-// Petronet Sunucu Adresleri
-const cyclops = clientInstance('http://172.30.0.51:3000/api/v1/')
-const map = 'http://172.30.0.51:8082/tile/{z}/{x}/{y}.png'
+// 7 Kıta Sunucu Adresleri
+// const cyclops = clientInstance('http://172.30.0.51:3000/api/v1/')
+// const map = 'http://172.30.0.51:8082/tile/{z}/{x}/{y}.png'
+// Soil Sunucu Adresleri
+const cyclops = clientInstance('http://192.168.1.20:3000/api/v1/')
+const map = 'http://192.168.1.20:8082/tile/{z}/{x}/{y}.png'
 
 const clients = [cyclops]
 
