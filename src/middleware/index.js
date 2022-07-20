@@ -25,7 +25,7 @@ const clientInstance = (baseURL) =>
 // Petronet Lokal Sunucu Adresleri
 const cyclops = clientInstance('http://34.79.135.127:3000/api/v1/')
 const map = 'http://34.79.135.127:8081/tile/{z}/{x}/{y}.png'
-// Petronet Sunucu Adresleri
+// Lukoil Sunucu Adresleri
 // const cyclops = clientInstance('http://10.100.0.34:3000/api/v1/')
 // const map = 'http://10.100.0.34:8081/tile/{z}/{x}/{y}.png'
 // 7 Kıta Sunucu Adresleri
